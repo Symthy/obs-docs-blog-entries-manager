@@ -1,0 +1,39 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class EntriesSummary {
+    - pickupEntries: IEntries
+    - entriesTree: EntriesTreeRoots
+}
+EntriesSummary ..> EntriesTreeRoots
+
+class EntriesTreeRoots {
+    - items: Map<String, EntriesTree>
+}
+EntriesTreeRoots "1" o..> "m" EntriesTree
+class EntriesTree {
+    - category: String
+    - children: EntriesTree
+    - entries: IEntries
+}
+EntriesTree "1" o..> "m" EntriesTree
+EntriesTree "1" o..> "1" IEntries
+
+interface IEntries
+interface IEntry
+IEntries ..> IEntry
+
+class BlogEntries extends IEntries
+class BlogEntry extends IEntry
+BlogEntries "1" o..> "m" BlogEntry
+
+class DocEntries extends IEntries
+class DocEntry extends IEntry
+DocEntries "1" o..> "m" DocEntry
+
+class PhotoEntries extends IEntries
+class PhotoEntry extends IEntry
+PhotoEntries "1" o.> "m" PhotoEntry
+BlogEntry "0.1" o..> "1" PhotoEntries
+
+@enduml
