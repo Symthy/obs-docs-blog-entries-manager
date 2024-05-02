@@ -1,8 +1,7 @@
-from typing import Optional
+from typing import Optional, List
 
 from blogs.datasources.hatena.api.xml import entry_xml
 from docs_and_blog_entries_manager.blogs.datasources.hatena.api.xml import blog_entry_xml
-from docs_and_blog_entries_manager.blogs.entity.blog_entries import BlogEntries
 from docs_and_blog_entries_manager.blogs.entity.blog_entry import BlogEntry
 from docs_and_blog_entries_manager.common.constants import EXCLUDE_ENTRY_IDS_TXT_PATH
 from docs_and_blog_entries_manager.files import config
@@ -17,8 +16,10 @@ from docs_and_blog_entries_manager.files import config
 
 # Todo: refactor
 class BlogEntriesResponseBody:
-    def __init__(self, response_xml: str):
+    def __init__(self, response_xml: str, summary_entry_id: str):
         self.__response_xml = response_xml
+        self.__exclude_entry_ids = config.read_lines(EXCLUDE_ENTRY_IDS_TXT_PATH)
+        self.__exclude_entry_ids.append(summary_entry_id)  # exclude summary entry index page
 
     def next_page_url(self) -> Optional[str]:
         url = None
@@ -29,28 +30,28 @@ class BlogEntriesResponseBody:
                 break
         return url
 
-    def parse(self, summary_entry_id: str) -> BlogEntries:
+    def parse(self) -> List[BlogEntry]:
         root_node = entry_xml.convert_root_node(self.__response_xml)
         # __print_xml_children(root)
         tag_head = entry_xml.extract_tag_head(root_node)
-        exclude_ids = config.read_lines(EXCLUDE_ENTRY_IDS_TXT_PATH)
-        exclude_ids.append(summary_entry_id)  # exclude summary entry index page
 
         blog_entries = list(filter(lambda blog_entry: blog_entry is not None,
-                                   map(lambda entry_node: blog_entry_xml.parse(entry_node, tag_head, exclude_ids),
+                                   map(lambda entry_node: blog_entry_xml.parse(entry_node, tag_head,
+                                                                               self.__exclude_entry_ids),
                                        root_node.iter(tag_head + 'entry'))))
         # for entry_node in root_node.iter(tag_head + 'entry'):
         #     # __print_xml_children(entry)
         #     blog_entry = blog_entry_xml.parse(entry_node, tag_head, exclude_ids)
         #     if blog_entry is not None:
         #         blog_entries.add_entry(blog_entry)
-        return BlogEntries(blog_entries)
+        return blog_entries
 
 
 # Todo: refactor
 class BlogEntryResponseBody:
     def __init__(self, response_xml: Optional[str]):
         self.__response_xml = response_xml
+        self.__exclude_entry_ids = config.read_lines(EXCLUDE_ENTRY_IDS_TXT_PATH)
 
     def parse(self) -> Optional[BlogEntry]:
         if self.__response_xml is None:

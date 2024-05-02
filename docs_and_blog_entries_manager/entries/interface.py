@@ -43,6 +43,12 @@ class IEntry(ISerializableObject, IConvertibleMarkdownLine, ABC):
         Logger.error('Unimplemented!! (IEntry.top_category)')
         return ''
 
+    @property
+    def content(self) -> str:
+        # required override
+        Logger.error('Unimplemented!! (IEntry.content)')
+        return ''
+
     @abstractmethod
     def build_id_to_title(self) -> Dict[str, str]:
         pass

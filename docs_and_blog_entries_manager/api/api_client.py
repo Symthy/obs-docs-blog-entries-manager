@@ -14,19 +14,19 @@ class ApiClient:
         self.__base_url = base_url
         self.__base_headers = base_headers
 
-    def get(self, path: str = None) -> Optional[str]:
+    def get(self, path: str = None, query_params: list[tuple] = None) -> Optional[str]:
         url = self.__base_url if path is None else urljoin(self.__base_url, path)
-        response = requests.get(url, headers=self.__base_headers)
+        response = requests.get(url, headers=self.__base_headers, params=query_params)
         return self.__resolve_response(HTTPMethod.GET.value(), url, response)
 
-    def put(self, body: bytes, path: str = None) -> Optional[str]:
+    def put(self, body: str, path: str = None) -> Optional[str]:
         url = self.__base_url if path is None else urljoin(self.__base_url, path)
-        response = requests.put(url, headers=self.__base_headers, data=body)
+        response = requests.put(url, headers=self.__base_headers, data=body.encode(encoding='utf-8'))
         return self.__resolve_response(HTTPMethod.PUT.value(), url, response)
 
-    def post(self, body: bytes, path: str = None) -> Optional[str]:
+    def post(self, body: str, path: str = None) -> Optional[str]:
         url = self.__base_url if path is None else urljoin(self.__base_url, path)
-        response = requests.post(path, headers=self.__base_headers, data=body)
+        response = requests.post(path, headers=self.__base_headers, data=body.encode(encoding='utf-8'))
         return self.__resolve_response(HTTPMethod.POST.value(), url, response)
 
     def delete(self, path: str) -> Optional[str]:
