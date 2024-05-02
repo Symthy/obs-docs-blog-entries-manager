@@ -19,12 +19,12 @@ class ApiClient:
         response = requests.get(url, headers=self.__base_headers)
         return self.__resolve_response(HTTPMethod.GET.value(), url, response)
 
-    def put(self, body: dict, path: str = None) -> Optional[str]:
+    def put(self, body: bytes, path: str = None) -> Optional[str]:
         url = self.__base_url if path is None else urljoin(self.__base_url, path)
         response = requests.put(url, headers=self.__base_headers, data=body)
         return self.__resolve_response(HTTPMethod.PUT.value(), url, response)
 
-    def post(self, body: dict, path: str = None) -> Optional[str]:
+    def post(self, body: bytes, path: str = None) -> Optional[str]:
         url = self.__base_url if path is None else urljoin(self.__base_url, path)
         response = requests.post(path, headers=self.__base_headers, data=body)
         return self.__resolve_response(HTTPMethod.POST.value(), url, response)
