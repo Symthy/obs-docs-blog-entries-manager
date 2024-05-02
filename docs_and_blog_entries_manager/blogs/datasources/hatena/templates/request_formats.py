@@ -1,7 +1,8 @@
+from typing import List
 from xml.sax.saxutils import escape
 
+from blogs.entity.post_blog_entry import PostBlogEntry
 from common.constants import SUMMARY_PAGE_TITLE
-from docs_and_blog_entries_manager.ltimes import datetime_functions
 
 
 def summary_page_title() -> str:
@@ -15,11 +16,13 @@ __BLOG_ENTRY_TEMPLATE = """<?xml version="1.0" encoding="utf-8"?>
   <author><name>{author}</name></author>
   <content type="text/x-markdown">{content}</content>
   <updated>{update_time}</updated>
-  <category term="{category}" />
+{categories}
   <app:control>
     <app:draft>{draft}</app:draft>
   </app:control>
 </entry>"""
+
+__BLOG_ENTRY_CATEGORY_TEMPLATE = """  <category term="{category}" />"""
 
 
 def __replace_xml_escape(content: str) -> str:
@@ -30,15 +33,19 @@ def __replace_xml_escape(content: str) -> str:
     return escape(content)  # escape: <, &, >,
 
 
-def build_blog_entry_xml_body(hatena_id: str, title: str, category: str, content: str,
+def __build_categories_xml_strs(categories: List[str]) -> str:
+    return "\n".join([__BLOG_ENTRY_CATEGORY_TEMPLATE.format(category) for category in categories])
+
+
+def build_blog_entry_xml_body(hatena_id: str, entry: PostBlogEntry,
                               is_draft: bool = True, is_title_escape: bool = False) -> str:
     # title の escape も行わないと xml parse error が起きて投稿できない時が低確率である
     entry_xml = __BLOG_ENTRY_TEMPLATE.format(
-        title=__replace_xml_escape(title) if is_title_escape else title,
+        title=__replace_xml_escape(entry.title) if is_title_escape else entry.title,
         author=hatena_id,
-        content=__replace_xml_escape(content),
-        update_time=datetime_functions.resolve_entry_current_time(),
-        category=category,
+        content=__replace_xml_escape(entry.content),
+        update_time=entry.updated_at,
+        categories=__build_categories_xml_strs(entry.categories),
         draft='yes' if is_draft else 'no'  # yes or no
     )
     return entry_xml

@@ -3,6 +3,7 @@ from urllib.parse import urlparse, parse_qsl
 
 from blogs.datasources.hatena.api.blog_response_parser import BlogEntryResponseBody, BlogEntriesResponseBody
 from blogs.datasources.hatena.templates import request_formats
+from blogs.entity.post_blog_entry import PostBlogEntry
 from docs_and_blog_entries_manager.api.api_client import ApiClient
 from docs_and_blog_entries_manager.blogs.entity.blog_entries import BlogEntries
 from docs_and_blog_entries_manager.blogs.entity.blog_entry import BlogEntry
@@ -37,15 +38,20 @@ class BlogEntryRepository:
         return BlogEntries(blog_entries)
 
     # POST blog
-    def post_entry(self, title: str, category: str, content: str, is_draft: bool,
-                   is_title_escape: bool) -> Optional[BlogEntry]:
-        body = request_formats.build_blog_entry_xml_body(self.__hatena_id, title, category, content, is_draft,
-                                                         is_title_escape)
-        print('[Info] API execute: POST Blog')
+    def post(self, entry: PostBlogEntry, is_draft: bool,
+             is_title_escape: bool) -> Optional[BlogEntry]:
+        body = request_formats.build_blog_entry_xml_body(self.__hatena_id, entry, is_draft, is_title_escape)
+        Logger.info(f'POST Blog: {entry.title}')
         blog_entry_xml = self.__api_client.post(body)
         return BlogEntryResponseBody(blog_entry_xml).parse()
 
-    def post_summary_page(self, blog_summary_entry: BlogEntry) -> bool:
+    # PUT blog
+    def put(self, entry: PostBlogEntry, is_draft: bool,
+            is_title_escape: bool) -> Optional[BlogEntry]:
+        blog_entry_xml = self.__put_entry(entry, is_draft, is_title_escape)
+        return BlogEntryResponseBody(blog_entry_xml).parse()
+
+    def put_summary_page(self, blog_summary_entry: PostBlogEntry) -> bool:
         # Todo: argument is blog entry object
         # category = 'Summary'
         # title = request_formats.summary_page_title()
@@ -55,15 +61,8 @@ class BlogEntryRepository:
             return False
         return True
 
-    # PUT blog
-    def put_entry(self, entry: BlogEntry, is_draft: bool,
-                  is_title_escape: bool) -> Optional[BlogEntry]:
-        blog_entry_xml = self.__put_entry(entry, is_draft, is_title_escape)
-        return BlogEntryResponseBody(blog_entry_xml).parse()
-
-    def __put_entry(self, entry: BlogEntry, is_draft: bool, is_title_escape: bool) -> \
+    def __put_entry(self, entry: PostBlogEntry, is_draft: bool, is_title_escape: bool) -> \
             Optional[str]:
-        body = request_formats.build_blog_entry_xml_body(self.__hatena_id, entry.title, entry.top_category,
-                                                         entry.content, is_draft, is_title_escape)
+        body = request_formats.build_blog_entry_xml_body(self.__hatena_id, entry, is_draft, is_title_escape)
         Logger.info(f'PUT Blog: {entry.title}')
         return self.__api_client.put(body, entry.id)

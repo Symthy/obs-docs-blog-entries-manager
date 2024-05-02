@@ -21,7 +21,7 @@ class BlogEntry(IEntry):
     FIELD_DOC_IMAGES = 'doc_images'
 
     def __init__(self, entry_id: str, title: str, content: str, page_url: str, last_updated: Optional[datetime],
-                 categories: List[str], doc_id: Optional[str] = None, doc_images: Optional[PhotoEntries] = None):
+                 categories: List[str], doc_id: Optional[str] = None, doc_images: PhotoEntries = PhotoEntries()):
         self.__id = entry_id
         self.__title = title
         self.__content = content  # No dump
@@ -30,7 +30,7 @@ class BlogEntry(IEntry):
         self.__top_category = categories[0] if not len(categories) == 0 else NON_CATEGORY_GROUP_NAME
         self.__categories = categories
         self.__original_doc_id = doc_id
-        self.__doc_images: PhotoEntries = PhotoEntries() if doc_images is None else doc_images
+        self.__doc_images: PhotoEntries = doc_images
 
     @property
     def id(self):
@@ -67,9 +67,6 @@ class BlogEntry(IEntry):
     @property
     def original_doc_id(self):
         return self.__original_doc_id
-
-    def register_doc_id(self, doc_entry_id: str):
-        self.__original_doc_id = doc_entry_id
 
     @property
     def doc_images(self) -> Optional[PhotoEntries]:
