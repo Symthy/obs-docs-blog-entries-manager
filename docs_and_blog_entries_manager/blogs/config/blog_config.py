@@ -1,3 +1,4 @@
+import configparser
 from configparser import ConfigParser
 
 CONF_SECTION_HATENA = 'HATENA'
@@ -7,6 +8,12 @@ CONF_KEY_API_KEY = 'API_KEY'
 CONF_SUMMARY_ENTRY_ID_KEY = 'SUMMARY_ENTRY_ID'
 CONF_OAUTH_CONSUMER_KEY = 'OAUTH_CONSUMER_KEY'
 CONF_OAUTH_CONSUMER_SECRET_KEY = 'OAUTH_CONSUMER_SECRET_KEY'
+
+
+def load(config_path):
+    conf_parser = configparser.ConfigParser()
+    conf_parser.read(config_path)
+    return BlogConfig(conf_parser)
 
 
 class BlogConfig:
