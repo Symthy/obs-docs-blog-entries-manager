@@ -32,5 +32,5 @@ class PhotoEntryResponseBody:
         syntax = root_node.find(self.__PHOTO_ENTRY_HATENA_XML_NAMESPACE + 'syntax').text
         image_url = root_node.find(self.__PHOTO_ENTRY_HATENA_XML_NAMESPACE + 'imageurl').text
         # don't know if the API response includes the update time.
-        updated_datetime = datetime_functions.get_current_datetime()
+        updated_datetime = datetime_functions.current_datetime()
         return PhotoEntry(image_filename, photo_entry_id, syntax, image_url, updated_datetime)

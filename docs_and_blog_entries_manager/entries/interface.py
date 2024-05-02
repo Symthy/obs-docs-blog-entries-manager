@@ -50,13 +50,13 @@ class IEntry(ISerializableObject, IConvertibleMarkdownLine, ABC):
         return ''
 
     @abstractmethod
-    def build_id_to_title(self) -> Dict[str, str]:
+    def convert_id_to_title(self) -> Dict[str, str]:
         pass
 
 
 class IEntries(IConvertibleMarkdownLines, ABC):
     @property
-    def entry_list(self) -> List[IEntry]:
+    def items(self) -> List[IEntry]:
         # required override
         Logger.error('Unimplemented!! (IEntries.entry_list)')
         return []
@@ -66,7 +66,7 @@ class IEntries(IConvertibleMarkdownLines, ABC):
         pass
 
     @abstractmethod
-    def is_contains(self, target_entry_id: str) -> bool:
+    def contains(self, target_entry_id: str) -> bool:
         pass
 
     @abstractmethod

@@ -20,7 +20,7 @@ class BlogEntries(IEntries):
     def is_empty(self) -> bool:
         return len(self.items) == 0
 
-    def is_contains(self, target_entry_id: str) -> bool:
+    def contains(self, target_entry_id: str) -> bool:
         for entry in self.items:
             if entry.id == target_entry_id:
                 return True

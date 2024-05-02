@@ -54,7 +54,7 @@ class BlogEntry(IEntry):
 
     @property
     def updated_at_month_day(self) -> str:
-        return datetime_functions.convert_datetime_to_month_day_str(self.__updated_at)
+        return datetime_functions.convert_to_month_day_str(self.__updated_at)
 
     @property
     def categories(self) -> List[str]:
@@ -85,7 +85,7 @@ class BlogEntry(IEntry):
             return
         self.__doc_images.merge(photo_entries)
 
-    def build_id_to_title(self) -> Dict[str, str]:
+    def convert_id_to_title(self) -> Dict[str, str]:
         return {self.id: self.title}
 
     def convert_md_line(self) -> str:
