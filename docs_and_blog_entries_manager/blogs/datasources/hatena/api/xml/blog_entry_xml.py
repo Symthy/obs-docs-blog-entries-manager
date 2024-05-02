@@ -5,15 +5,6 @@ from typing import List, Optional
 from docs_and_blog_entries_manager.blogs.entity.blog_entry import BlogEntry
 
 
-def convert_root_node(xml: str) -> ET.Element:
-    return ET.fromstring(xml)
-
-
-def extract_tag_head(root: ET.Element, root_tag: str = 'feed') -> str:
-    tag_head = root.tag[:-len(root_tag)]  # tag example: {http://www.w3.org/2005/Atom}feed
-    return tag_head
-
-
 def parse(entry_node: ET.Element, tag_head: str, exclude_ids: List[str]) -> Optional[BlogEntry]:
     # id example: tag:blog.hatena.ne.jp,2013:blog-Sympathia-17680117126980108518-13574176438048806685
     # entry id is last sequence

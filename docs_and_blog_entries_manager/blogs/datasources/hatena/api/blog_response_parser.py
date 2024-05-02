@@ -1,5 +1,6 @@
 from typing import Optional
 
+from blogs.datasources.hatena.api.xml import entry_xml
 from docs_and_blog_entries_manager.blogs.datasources.hatena.api.xml import blog_entry_xml
 from docs_and_blog_entries_manager.blogs.entity.blog_entries import BlogEntries
 from docs_and_blog_entries_manager.blogs.entity.blog_entry import BlogEntry
@@ -21,17 +22,17 @@ class BlogEntriesResponseBody:
 
     def next_page_url(self) -> Optional[str]:
         url = None
-        root_node = blog_entry_xml.convert_root_node(self.__response_xml)
-        for link in root_node.iter(blog_entry_xml.extract_tag_head(root_node) + 'link'):
+        root_node = entry_xml.convert_root_node(self.__response_xml)
+        for link in root_node.iter(entry_xml.extract_tag_head(root_node) + 'link'):
             if link.attrib['rel'] == 'next':
                 url = link.attrib['href']
                 break
         return url
 
     def parse(self, summary_entry_id: str) -> BlogEntries:
-        root_node = blog_entry_xml.convert_root_node(self.__response_xml)
+        root_node = entry_xml.convert_root_node(self.__response_xml)
         # __print_xml_children(root)
-        tag_head = blog_entry_xml.extract_tag_head(root_node)
+        tag_head = entry_xml.extract_tag_head(root_node)
         exclude_ids = config.read_lines(EXCLUDE_ENTRY_IDS_TXT_PATH)
         exclude_ids.append(summary_entry_id)  # exclude summary entry index page
 
@@ -54,6 +55,6 @@ class BlogEntryResponseBody:
     def parse(self) -> Optional[BlogEntry]:
         if self.__response_xml is None:
             return None
-        root_node = blog_entry_xml.convert_root_node(self.__response_xml)
-        tag_head = blog_entry_xml.extract_tag_head(root_node, 'entry')
+        root_node = entry_xml.convert_root_node(self.__response_xml)
+        tag_head = entry_xml.extract_tag_head(root_node, 'entry')
         return blog_entry_xml.parse(root_node, tag_head, [])
