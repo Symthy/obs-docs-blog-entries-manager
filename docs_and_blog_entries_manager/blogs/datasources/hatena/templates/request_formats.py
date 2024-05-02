@@ -44,7 +44,7 @@ def build_blog_entry_xml_body(hatena_id: str, entry: PostBlogEntry,
         title=__replace_xml_escape(entry.title) if is_title_escape else entry.title,
         author=hatena_id,
         content=__replace_xml_escape(entry.content),
-        update_time=entry.updated_at,
+        update_time=entry.updated_at.to_str(),
         categories=__build_categories_xml_strs(entry.categories),
         draft='yes' if is_draft else 'no'  # yes or no
     )

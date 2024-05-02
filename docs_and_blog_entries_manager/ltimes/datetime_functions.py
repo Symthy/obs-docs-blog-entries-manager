@@ -9,11 +9,6 @@ def current_datetime() -> datetime:
     return datetime.now()
 
 
-def resolve_entry_current_time() -> str:
-    current_time = current_datetime()
-    return current_time.strftime(ENTRY_DATE_TIME_FORMAT)
-
-
 def convert_to_entry_time_str(date_time: Optional[datetime]) -> str:
     if date_time is None:
         return ''

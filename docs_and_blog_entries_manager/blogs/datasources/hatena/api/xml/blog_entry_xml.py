@@ -17,7 +17,7 @@ def parse(entry_node: ET.Element, tag_head: str, exclude_ids: List[str]) -> Opti
     last_update_time = __resolve_last_update_time(entry_node, tag_head)
     url = __extract_link(entry_node, tag_head)
     categories = __extract_categories(entry_node, tag_head)
-    return BlogEntry(entry_id, title, content, url, last_update_time, categories)
+    return BlogEntry(entry_id, title, url, last_update_time, categories)
 
 
 def __extract_content(entry_node, tag_head) -> str:

@@ -2,7 +2,7 @@ from typing import List, Optional
 
 from blogs.entity.photo.photo_entries import PhotoEntries
 from common.constants import NON_CATEGORY_GROUP_NAME
-from ltimes import datetime_functions
+from entries.values.entry_time import EntryDateTime
 
 
 class PostBlogEntry:
@@ -14,7 +14,7 @@ class PostBlogEntry:
         self.__content = content  # No dump
         self.__top_category = categories[0] if not len(categories) == 0 else NON_CATEGORY_GROUP_NAME
         self.__categories = categories
-        self.__updated_at = datetime_functions.resolve_entry_current_time()
+        self.__updated_at = EntryDateTime()
         self.__doc_images: PhotoEntries = doc_images
 
     @property
@@ -38,7 +38,7 @@ class PostBlogEntry:
         return self.__top_category
 
     @property
-    def updated_at(self) -> str:
+    def updated_at(self) -> EntryDateTime:
         return self.__updated_at
 
     @property

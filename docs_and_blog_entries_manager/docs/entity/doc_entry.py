@@ -5,6 +5,7 @@ from typing import Optional, List
 
 from common.constants import NON_CATEGORY_GROUP_NAME
 from entries.interface import IEntry
+from entries.values.entry_time import EntryDateTime
 from ltimes import datetime_functions
 
 
@@ -28,8 +29,8 @@ class DocEntry(IEntry):
         self.__top_category = categories[0] if not len(categories) == 0 else NON_CATEGORY_GROUP_NAME
         self.__categories = categories
         self.__pickup = is_pickup
-        self.__created_at: Optional[datetime] = created_at
-        self.__updated_at: Optional[datetime] = updated_at
+        self.__created_at = EntryDateTime(created_at) if created_at is not None else EntryDateTime()
+        self.__updated_at = EntryDateTime(updated_at) if updated_at is not None else self.__created_at
 
     @property
     def id(self) -> str:
@@ -61,15 +62,15 @@ class DocEntry(IEntry):
 
     @property
     def created_at(self) -> str:
-        return datetime_functions.convert_to_entry_time_str(self.__created_at)
+        return self.__created_at.to_str()
 
     @property
     def updated_at(self) -> str:
-        return datetime_functions.convert_to_entry_time_str(self.__updated_at)
+        return self.__updated_at.to_str()
 
     @property
     def updated_at_month_day(self):
-        return datetime_functions.convert_to_month_day_str(self.__updated_at)
+        return self.__updated_at.to_month_day_str()
 
     def convert_id_to_title(self) -> dict[str, str]:
         return {self.id: self.title}
