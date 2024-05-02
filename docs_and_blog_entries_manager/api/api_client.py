@@ -10,28 +10,28 @@ from docs_and_blog_entries_manager.logs.logger import Logger
 
 
 class ApiClient:
-    def __init__(self, base_url, base_headers):
+    def __init__(self, base_url: str, base_headers: dict):
         self.__base_url = base_url
         self.__base_headers = base_headers
 
-    def execute_get_api(self, path: str, headers: dict) -> Optional[str]:
-        url = urljoin(self.__base_url, path)
-        response = requests.get(url, headers=self.__base_headers | headers)
+    def get(self, path: str = None) -> Optional[str]:
+        url = self.__base_url if path is None else urljoin(self.__base_url, path)
+        response = requests.get(url, headers=self.__base_headers)
         return self.__resolve_response(HTTPMethod.GET.value(), url, response)
 
-    def execute_put_api(self, path: str, headers: dict, body: dict) -> Optional[str]:
-        url = urljoin(self.__base_url, path)
-        response = requests.put(url, headers=self.__base_headers | headers, data=body)
+    def put(self, body: dict, path: str = None) -> Optional[str]:
+        url = self.__base_url if path is None else urljoin(self.__base_url, path)
+        response = requests.put(url, headers=self.__base_headers, data=body)
         return self.__resolve_response(HTTPMethod.PUT.value(), url, response)
 
-    def execute_post_api(self, path: str, headers: dict, body: dict) -> Optional[str]:
-        url = urljoin(self.__base_url, path)
-        response = requests.post(path, headers=self.__base_headers | headers, data=body)
+    def post(self, body: dict, path: str = None) -> Optional[str]:
+        url = self.__base_url if path is None else urljoin(self.__base_url, path)
+        response = requests.post(path, headers=self.__base_headers, data=body)
         return self.__resolve_response(HTTPMethod.POST.value(), url, response)
 
-    def execute_delete_api(self, path: str, headers: dict) -> Optional[str]:
+    def delete(self, path: str) -> Optional[str]:
         url = urljoin(self.__base_url, path)
-        response = requests.delete(path, headers=self.__base_headers | headers)
+        response = requests.delete(path, headers=self.__base_headers)
         return self.__resolve_response(HTTPMethod.DELETE.value(), url, response)
 
     @staticmethod
