@@ -8,8 +8,9 @@ class BlogToDocEntryMapping:
     __HATENA_BLOG_TO_DOC_ENTRY_FILE = 'blog_to_doc_mapping.json'  # rename from hatena_blog_to_doc_dict.json
     __HATENA_BLOG_TO_DOC_ENTRY_PATH = LOCAL_STORAGE_DIR_PATH + __HATENA_BLOG_TO_DOC_ENTRY_FILE
 
-    def __init__(self):
-        blog_to_doc: Dict[str, str] = json_file.load(self.__HATENA_BLOG_TO_DOC_ENTRY_PATH)
+    def __init__(self, stored_json_file_path: str = None):
+        blog_to_doc: Dict[str, str] = json_file.load(
+            self.__HATENA_BLOG_TO_DOC_ENTRY_PATH if stored_json_file_path is None else stored_json_file_path)
         self.__blog_id_to_doc_id: Dict[str, str] = blog_to_doc
         self.__doc_id_to_blog_id: Dict[str, str] = {}
         for blog_entry_id, doc_entry_id in blog_to_doc.items():
