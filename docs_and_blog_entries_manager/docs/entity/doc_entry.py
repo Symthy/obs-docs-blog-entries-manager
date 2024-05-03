@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Optional, List
+from typing import List
 
-from common.constants import NON_CATEGORY_GROUP_NAME
 from entries.interface import IEntry
+from entries.values.category_path import CategoryPath
 from entries.values.entry_time import EntryDateTime
 from ltimes import datetime_functions
 
@@ -20,13 +20,14 @@ class DocEntry(IEntry):
     FIELD_CREATED_AT = 'created_at'
     FIELD_UPDATED_AT = 'updated_at'
 
-    def __init__(self, docs_id: str, title: str, dir_path: str, doc_file_name: str, categories: List[str],
-                 is_pickup: bool = False, created_at: Optional[datetime] = None, updated_at: Optional[datetime] = None):
+    def __init__(self, docs_id: str, title: str, dir_path: str, doc_file_name: str, category_path: CategoryPath,
+                 categories: List[str], is_pickup: bool = False, created_at: datetime = None,
+                 updated_at: datetime = None):
         self.__id = docs_id
         self.__title = title
         self.__dir_path = dir_path
         self.__doc_file_name = doc_file_name
-        self.__top_category = categories[0] if not len(categories) == 0 else NON_CATEGORY_GROUP_NAME
+        self.__category_path = category_path
         self.__categories = categories
         self.__pickup = is_pickup
         self.__created_at = EntryDateTime(created_at) if created_at is not None else EntryDateTime()
@@ -53,8 +54,8 @@ class DocEntry(IEntry):
         return self.__categories
 
     @property
-    def top_category(self) -> str:
-        return self.__top_category
+    def category_path(self) -> CategoryPath:
+        return self.__category_path
 
     @property
     def pickup(self) -> bool:

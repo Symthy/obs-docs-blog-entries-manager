@@ -40,12 +40,9 @@ class StoredEntryList(Generic[TM, TS]):
             StoredEntryList.FIELD_ENTRIES: self.__entry_id_to_title
         }
 
-    def convert_entries(self, target_entry_ids: List[str] = None) -> List[TS]:
+    def convert_entries(self) -> List[TS]:
         entry_list = [self.__stored_entry_accessor.load_entry(entry_id) for entry_id in self.entry_ids]
-        if target_entry_ids is None:
-            return entry_list
-            # filter target entry ids
-        return list(filter(lambda entry_id: entry_id in target_entry_ids, entry_list))
+        return entry_list
 
 # json data format
 # {

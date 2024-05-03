@@ -1,5 +1,7 @@
 from typing import List
 
+from entries.interface import IEntry
+from entries.values.category_path import CategoryPath
 from files import json_file
 from store.datasources.stored_entry_accessor import StoredEntryAccessor
 from store.entity.stored_entry_list import StoredEntryList
@@ -13,9 +15,15 @@ class StoredEntriesAccessor(IStoredEntriesAccessor[TM, TS]):
         self.__stored_entry_accessor = stored_entry_accessor
         self.__stored_entry_list = StoredEntryList(entry_list_file_path, stored_entry_accessor)
 
-    def load_entries(self, target_entry_ids: List[str] = None) -> TM:
-        entries = TM.new_instance(self.__stored_entry_list.convert_entries(target_entry_ids))
-        return entries
+    def load_entries_by_ids(self, target_entry_ids: List[str] = None) -> TM:
+        entry_list = self.__stored_entry_list.convert_entries()
+        filtered_entry_list = list(filter(lambda entry_id: entry_id in target_entry_ids, entry_list))
+        return TM.new_instance(filtered_entry_list)
+
+    def load_entries_by_category_path(self, category_path: CategoryPath) -> TM:
+        entry_list: List[IEntry] = self.__stored_entry_list.convert_entries()
+        filtered_entry_list = list(filter(lambda entry: entry.category_path.equals(category_path), entry_list))
+        return TM.new_instance(filtered_entry_list)
 
     def save_entries(self, entries: TM):
         for entry in entries.entry_list:

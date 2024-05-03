@@ -4,9 +4,9 @@ from datetime import datetime
 from typing import List, Optional, Dict
 
 from docs_and_blog_entries_manager.blogs.entity.photo.photo_entries import PhotoEntries
-from docs_and_blog_entries_manager.common.constants import NON_CATEGORY_GROUP_NAME
 from docs_and_blog_entries_manager.entries.interface import IEntry
 from docs_and_blog_entries_manager.ltimes import datetime_functions
+from entries.values.category_path import CategoryPath
 from entries.values.entry_time import EntryDateTime
 
 
@@ -21,13 +21,13 @@ class BlogEntry(IEntry):
     FIELD_ORIGINAL_DOC_ID = 'original_doc_id'
     FIELD_DOC_IMAGES = 'doc_images'
 
-    def __init__(self, entry_id: str, title: str, page_url: str, last_updated: datetime,
+    def __init__(self, entry_id: str, title: str, page_url: str, last_updated: datetime, category_path: CategoryPath,
                  categories: List[str], doc_id: Optional[str] = None, doc_images: PhotoEntries = PhotoEntries()):
         self.__id = entry_id
         self.__title = title
         self.__page_url = page_url
         self.__updated_at: EntryDateTime = EntryDateTime(last_updated)
-        self.__top_category = categories[0] if not len(categories) == 0 else NON_CATEGORY_GROUP_NAME
+        self.__category_path = category_path
         self.__categories = categories
         self.__original_doc_id = doc_id
         self.__doc_images: PhotoEntries = doc_images
@@ -57,8 +57,8 @@ class BlogEntry(IEntry):
         return self.__categories
 
     @property
-    def top_category(self) -> str:
-        return self.__top_category
+    def category_path(self) -> CategoryPath:
+        return self.__category_path
 
     @property
     def original_doc_id(self):

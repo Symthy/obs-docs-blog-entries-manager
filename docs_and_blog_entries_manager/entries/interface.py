@@ -38,7 +38,7 @@ class IEntry(ISerializableObject, IConvertibleMarkdownLine, ABC):
         return ''
 
     @property
-    def top_category(self) -> str:
+    def category_path(self) -> str:
         # required override
         Logger.error('Unimplemented!! (IEntry.top_category)')
         return ''
