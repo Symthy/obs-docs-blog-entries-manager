@@ -47,6 +47,10 @@ class IEntry(ISerializableObject, IConvertibleMarkdownLine, ABC):
     def convert_id_to_title(self) -> Dict[str, str]:
         pass
 
+    @abstractmethod
+    def deserialize(self, json_data: dict[str, any]):
+        pass
+
 
 class IEntries(IConvertibleMarkdownLines, ABC):
     @property
@@ -65,4 +69,8 @@ class IEntries(IConvertibleMarkdownLines, ABC):
 
     @abstractmethod
     def merge(self, entries: IEntries):
+        pass
+
+    @abstractmethod
+    def new_instance(self, entry_list: List[IEntry]) -> IEntries:
         pass

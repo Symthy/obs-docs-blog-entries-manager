@@ -88,13 +88,13 @@ class BlogEntry(IEntry):
         return vars(self)
 
     @classmethod
-    def deserialize(cls, dump_data: Dict[str, any]) -> BlogEntry:
+    def deserialize(cls, json_data: Dict[str, any]) -> BlogEntry:
         return BlogEntry(
-            dump_data[BlogEntry.FIELD_ID],
-            dump_data[BlogEntry.FIELD_TITLE],
-            dump_data[BlogEntry.FIELD_PAGE_URL],
-            datetime_functions.convert_entry_time_str_to_datetime(dump_data[BlogEntry.FIELD_UPDATED_AT]),
-            dump_data[BlogEntry.FIELD_CATEGORIES],
-            dump_data[BlogEntry.FIELD_ORIGINAL_DOC_ID],
-            PhotoEntries.deserialize(dump_data[BlogEntry.FIELD_DOC_IMAGES])
+            json_data[BlogEntry.FIELD_ID],
+            json_data[BlogEntry.FIELD_TITLE],
+            json_data[BlogEntry.FIELD_PAGE_URL],
+            datetime_functions.convert_entry_time_str_to_datetime(json_data[BlogEntry.FIELD_UPDATED_AT]),
+            json_data[BlogEntry.FIELD_CATEGORIES],
+            json_data[BlogEntry.FIELD_ORIGINAL_DOC_ID],
+            PhotoEntries.deserialize(json_data[BlogEntry.FIELD_DOC_IMAGES])
         )

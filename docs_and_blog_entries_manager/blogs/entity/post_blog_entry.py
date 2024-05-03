@@ -11,7 +11,7 @@ class PostBlogEntry:
                  doc_images: PhotoEntries = PhotoEntries()):
         self.__id = entry_id
         self.__title = title
-        self.__content = content  # No dump
+        self.__content = content
         self.__top_category = categories[0] if not len(categories) == 0 else NON_CATEGORY_GROUP_NAME
         self.__categories = categories
         self.__updated_at = EntryDateTime()

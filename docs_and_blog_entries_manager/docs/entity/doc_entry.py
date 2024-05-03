@@ -82,15 +82,15 @@ class DocEntry(IEntry):
         return vars(self)
 
     @classmethod
-    def deserialize(cls, dump_json_data: dict[str, any]) -> DocEntry:
+    def deserialize(cls, json_data: dict[str, any]) -> DocEntry:
         return DocEntry(
-            dump_json_data[DocEntry.FIELD_ID],
-            dump_json_data[DocEntry.FIELD_TITLE],
-            dump_json_data[DocEntry.FIELD_DIR_PATH],
-            dump_json_data[DocEntry.FIELD_DOC_FILE_NAME],
-            dump_json_data[DocEntry.FIELD_CATEGORIES],
+            json_data[DocEntry.FIELD_ID],
+            json_data[DocEntry.FIELD_TITLE],
+            json_data[DocEntry.FIELD_DIR_PATH],
+            json_data[DocEntry.FIELD_DOC_FILE_NAME],
+            json_data[DocEntry.FIELD_CATEGORIES],
             # field added later
-            dump_json_data[DocEntry.FIELD_PICKUP] if DocEntry.FIELD_PICKUP in dump_json_data else False,
-            datetime_functions.convert_entry_time_str_to_datetime(dump_json_data[DocEntry.FIELD_CREATED_AT]),
-            datetime_functions.convert_entry_time_str_to_datetime(dump_json_data[DocEntry.FIELD_UPDATED_AT])
+            json_data[DocEntry.FIELD_PICKUP] if DocEntry.FIELD_PICKUP in json_data else False,
+            datetime_functions.convert_entry_time_str_to_datetime(json_data[DocEntry.FIELD_CREATED_AT]),
+            datetime_functions.convert_entry_time_str_to_datetime(json_data[DocEntry.FIELD_UPDATED_AT])
         )
