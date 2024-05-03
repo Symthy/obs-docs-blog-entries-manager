@@ -13,6 +13,7 @@ class StoredEntriesAccessor(IStoredEntriesAccessor[TM, TS]):
     def __init__(self, entry_list_file_path: str, stored_entry_accessor: StoredEntryAccessor[TS]):
         self.__entry_list_file_path = entry_list_file_path
         self.__stored_entry_accessor = stored_entry_accessor
+        # Todo: stored_entry_list に stored_entry_accessor持たせてるのはおかしい。循環参照
         self.__stored_entry_list = StoredEntryList(entry_list_file_path, stored_entry_accessor)
 
     def load_entries_by_ids(self, target_entry_ids: List[str] = None) -> TM:
@@ -22,7 +23,7 @@ class StoredEntriesAccessor(IStoredEntriesAccessor[TM, TS]):
 
     def load_entries_by_category_path(self, category_path: CategoryPath) -> TM:
         entry_list: List[IEntry] = self.__stored_entry_list.convert_entries()
-        filtered_entry_list = list(filter(lambda entry: entry.category_path.equals(category_path), entry_list))
+        filtered_entry_list = list(filter(lambda entry: entry.category_path == category_path, entry_list))
         return TM.new_instance(filtered_entry_list)
 
     def save_entries(self, entries: TM):

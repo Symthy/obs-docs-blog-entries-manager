@@ -3,28 +3,26 @@ from __future__ import annotations
 from typing import List
 
 from entries.interface import IEntries, IConvertibleMarkdownLines
+from entries.values.category_path import CategoryPath
 
 
 class EntriesTree(IConvertibleMarkdownLines):
-    def __init__(self, top_category: str, children: EntriesTree, entries: IEntries):
-        self.__top_category = top_category
-        self.__children = children
-        self.__entries = entries
+    def __init__(self, category_path: CategoryPath, entries: IEntries, children: List[EntriesTree] = None):
+        self.__category_path: CategoryPath = category_path
+        self.__children: List[EntriesTree] = children if children is not None else []
+        self.__entries: IEntries = entries
 
     @property
-    def category(self) -> str:
-        return self.__top_category
+    def category_path(self) -> CategoryPath:
+        return self.__category_path
 
-    def is_exist_category(self, category) -> bool:
-        if self.__top_category == category:
-            return True
-        if self.__children.is_exist_category(category):
-            return True
-        return False
+    def equals_category_path(self, category_path: CategoryPath) -> bool:
+        return self.__category_path == category_path
 
     def convert_md_lines(self) -> List[str]:
-        lines = [f'- {self.__top_category}']
-        lines += self.__insert_indent(self.__children.convert_md_lines())
+        lines = [f'- {self.__category_path.end}']
+        for child in self.__children:
+            lines += self.__insert_indent(child.convert_md_lines())
         lines += self.__insert_indent(self.__entries.convert_md_lines())
         return lines
 

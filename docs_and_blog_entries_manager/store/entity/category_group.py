@@ -25,7 +25,7 @@ class CategoryGroup:
         return [child.category_name for child in self.__children]
 
     def find_category_path(self, category_path: CategoryPath) -> bool:
-        if self.__category_path.equals(category_path):
+        if self.__category_path == category_path:
             return True
         if not self.__category_path.starts_with(category_path):
             return False
@@ -35,6 +35,9 @@ class CategoryGroup:
         return False
 
     def category_paths(self, parent_category_path: CategoryPath = None) -> List[CategoryPath]:
+        """
+        フルパスの category_path のみ取得。途中階層のパスは含めない
+        """
         current_category_path = parent_category_path.join(self.category_name) \
             if parent_category_path is not None else CategoryPath(self.category_name)
         if len(self.sub_categories) == 0:

@@ -35,15 +35,17 @@ class CategoryTreeDefinition:
         return parent_category_path.join(target_dir_name)
 
     @property
-    def all_category_paths(self) -> List[CategoryPath]:
+    def category_full_paths(self) -> List[CategoryPath]:
+        """
+        フルパスの category_path のみ取得。途中階層のパスは含めない
+        """
         category_paths = []
         for category_group in self.__category_name_to_categories.values():
-            category_paths += category_group.find_category_path()
+            category_paths += category_group.category_paths()
         return category_paths
 
-    def exist_category_path(self, category_path: str) -> bool:
-        category_path_parts = category_path.split('/')
-        top_category = category_path_parts[0]
-        if top_category in self.__category_name_to_categories.keys():
-            return self.__category_name_to_categories[top_category].find_category_path(*category_path_parts[1:])
+    def exist_category_path(self, category_path_str: str) -> bool:
+        category_path = CategoryPath(category_path_str)
+        if category_path.top in self.__category_name_to_categories.keys():
+            return self.__category_name_to_categories[category_path.top].find_category_path(category_path)
         return False

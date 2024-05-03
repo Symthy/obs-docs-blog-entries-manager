@@ -14,6 +14,10 @@ class CategoryPath:
         return '/'.join(self.__values)
 
     @property
+    def length(self) -> int:
+        return len(self.__values)
+
+    @property
     def top(self) -> str:
         return self.__values[0]
 
@@ -24,14 +28,34 @@ class CategoryPath:
     def join(self, category_name: str) -> CategoryPath:
         return CategoryPath(self.value + '/' + category_name)
 
+    def purge_end(self) -> CategoryPath:
+        return CategoryPath('/'.join(self.__values[:-1]))
+
     def starts_with(self, other: CategoryPath) -> bool:
         """
-        前方一致
+        前方完全一致
         """
-        for i in range(len(other.__values)):
+        length = self.length if self.length < other.length else other.length
+        for i in range(length):
             if self.__values[i] != other.__values[i]:
                 return False
         return True
 
-    def equals(self, other: CategoryPath) -> bool:
+    def is_child(self, other: CategoryPath) -> bool:
+        if self.length + 1 != other.length:
+            return False
+        return self.starts_with(other)
+
+    def exist_parent(self):
+        return len(self.__values) > 1
+
+    def upper_all_paths(self) -> List[CategoryPath]:
+        if len(self.__values) <= 1:
+            return []
+        paths: List[CategoryPath] = []
+        for i in range(len(self.__values) - 1):
+            paths += CategoryPath('/'.join(self.__values[0:i + 1]))
+        return paths
+
+    def __eq__(self, other: CategoryPath) -> bool:
         return self.value == other.value
