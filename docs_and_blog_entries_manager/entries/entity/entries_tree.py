@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import List
+from typing import List, Optional
 
 from entries.interface import IEntries, IConvertibleMarkdownLines
 from entries.values.category_path import CategoryPath
@@ -16,8 +16,30 @@ class EntriesTree(IConvertibleMarkdownLines):
     def category_path(self) -> CategoryPath:
         return self.__category_path
 
+    @property
+    def children(self) -> List[EntriesTree]:
+        return self.__children
+
+    @property
+    def child_category_paths(self) -> List[CategoryPath]:
+        return list(map(lambda c: c.category_path, self.__children))
+
+    @property
+    def entries(self) -> IEntries:
+        return self.__entries
+
     def equals_category_path(self, category_path: CategoryPath) -> bool:
         return self.__category_path == category_path
+
+    def search_node(self, category_path: CategoryPath) -> Optional[EntriesTree]:
+        if self.__category_path == category_path:
+            return self
+        for child_tree in self.__children:
+            if child_tree.equals_category_path(category_path):
+                return child_tree
+            if category_path.starts_with(child_tree.category_path):
+                return child_tree.search_node(category_path)
+        return None
 
     def convert_md_lines(self) -> List[str]:
         lines = [f'- {self.__category_path.end}']

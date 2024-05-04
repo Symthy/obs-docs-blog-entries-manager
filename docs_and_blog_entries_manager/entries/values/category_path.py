@@ -54,8 +54,14 @@ class CategoryPath:
             return []
         paths: List[CategoryPath] = []
         for i in range(len(self.__values) - 1):
-            paths += CategoryPath('/'.join(self.__values[0:i + 1]))
+            paths.append(CategoryPath('/'.join(self.__values[0:i + 1])))
         return paths
 
     def __eq__(self, other: CategoryPath) -> bool:
         return self.value == other.value
+
+    def __hash__(self):
+        return hash(self.value)
+
+    def __str__(self):
+        return self.value
