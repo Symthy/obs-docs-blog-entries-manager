@@ -4,7 +4,6 @@ from typing import Dict, List, Any, Generic
 
 from files import json_file
 from ltimes import datetime_functions
-from store.datasources.stored_entry_accessor import StoredEntryAccessor
 from store.interface import TM, TS
 
 
@@ -15,8 +14,7 @@ class StoredEntryList(Generic[TM, TS]):
     FIELD_UPDATED_TIME = 'updated_time'
     FIELD_ENTRIES = 'entries'
 
-    def __init__(self, entry_list_file_path: str, stored_entry_accessor: StoredEntryAccessor[TS]):
-        self.__stored_entry_accessor = stored_entry_accessor
+    def __init__(self, entry_list_file_path: str):
         stored_entry_list = json_file.load(entry_list_file_path)
         self.__updated_time: str = stored_entry_list[StoredEntryList.FIELD_UPDATED_TIME] \
             if StoredEntryList.FIELD_UPDATED_TIME in stored_entry_list else ''
@@ -39,10 +37,6 @@ class StoredEntryList(Generic[TM, TS]):
             StoredEntryList.FIELD_UPDATED_TIME: datetime_functions.current_datetime(),
             StoredEntryList.FIELD_ENTRIES: self.__entry_id_to_title
         }
-
-    def convert_entries(self) -> List[TS]:
-        entry_list = [self.__stored_entry_accessor.load_entry(entry_id) for entry_id in self.entry_ids]
-        return entry_list
 
 # json data format
 # {
