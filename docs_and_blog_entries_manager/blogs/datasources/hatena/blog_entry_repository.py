@@ -1,11 +1,11 @@
-from typing import Optional
+from typing import Optional, List
 from urllib.parse import urlparse, parse_qsl
 
 from blogs.datasources.hatena.api.blog_response_parser import BlogEntryResponseBody, BlogEntriesResponseBody
 from blogs.datasources.hatena.templates import request_formats
-from blogs.entity.post_blog_entry import PostBlogEntry
+from blogs.datasources.model.post_blog_entry import PostBlogEntry
+from blogs.datasources.model.posted_blog_entry import PostedBlogEntry
 from docs_and_blog_entries_manager.api.api_client import ApiClient
-from docs_and_blog_entries_manager.blogs.entity.blog_entries import BlogEntries
 from docs_and_blog_entries_manager.blogs.entity.blog_entry import BlogEntry
 from logs.logger import Logger
 
@@ -18,13 +18,13 @@ class BlogEntryRepository:
 
     # Blog
     # GET Blog
-    def find_id(self, entry_id: str) -> Optional[BlogEntry]:
+    def find_id(self, entry_id: str) -> Optional[PostedBlogEntry]:
         xml_string_opt = self.__api_client.get(path=entry_id)
         return BlogEntryResponseBody(xml_string_opt).parse()
 
-    def all(self) -> BlogEntries:
+    def all(self) -> List[PostedBlogEntry]:
         next_query_params: Optional[list[tuple]] = None
-        blog_entries = []
+        blog_entries: List[PostedBlogEntry] = []
         while True:
             xml_string_opt = self.__api_client.get(query_params=next_query_params)
             if xml_string_opt is None:
@@ -35,7 +35,7 @@ class BlogEntryRepository:
             next_query_params = parse_qsl(urlparse(next_url).query)
             if next_query_params is None:
                 break
-        return BlogEntries(blog_entries)
+        return blog_entries
 
     # POST blog
     def post(self, entry: PostBlogEntry, is_draft: bool,

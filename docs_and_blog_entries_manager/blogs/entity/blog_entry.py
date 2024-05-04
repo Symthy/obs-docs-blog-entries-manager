@@ -21,13 +21,13 @@ class BlogEntry(IEntry):
     FIELD_ORIGINAL_DOC_ID = 'original_doc_id'
     FIELD_DOC_IMAGES = 'doc_images'
 
-    def __init__(self, entry_id: str, title: str, page_url: str, last_updated: datetime, category_path: CategoryPath,
+    def __init__(self, entry_id: str, title: str, page_url: str, last_updated: datetime, category_path: str,
                  categories: List[str], doc_id: Optional[str] = None, doc_images: PhotoEntries = PhotoEntries()):
         self.__id = entry_id
         self.__title = title
         self.__page_url = page_url
         self.__updated_at: EntryDateTime = EntryDateTime(last_updated)
-        self.__category_path = category_path
+        self.__category_path = CategoryPath(category_path)
         self.__categories = categories
         self.__original_doc_id = doc_id
         self.__doc_images: PhotoEntries = doc_images
@@ -72,11 +72,6 @@ class BlogEntry(IEntry):
 
     def is_images_empty(self) -> bool:
         return self.__doc_images.is_empty()
-
-    def add_photo_entries(self, photo_entries: Optional[PhotoEntries] = None):
-        if photo_entries is None:
-            return
-        self.__doc_images.merge(photo_entries)
 
     def convert_id_to_title(self) -> Dict[str, str]:
         return {self.id: self.title}

@@ -1,18 +1,21 @@
 from typing import List, Optional
 
 from blogs.entity.photo.photo_entries import PhotoEntries
-from common.constants import NON_CATEGORY_GROUP_NAME
+from entries.values.category_path import CategoryPath
 from entries.values.entry_time import EntryDateTime
 
 
 class PostBlogEntry:
+    """
+    これからブログに登録するデータを保持するためのクラス
+    """
 
-    def __init__(self, entry_id: str, title: str, content: str, categories: List[str],
+    def __init__(self, entry_id: str, title: str, content: str, category_path: CategoryPath, categories: List[str],
                  doc_images: PhotoEntries = PhotoEntries()):
         self.__id = entry_id
         self.__title = title
         self.__content = content
-        self.__top_category = categories[0] if not len(categories) == 0 else NON_CATEGORY_GROUP_NAME
+        self.__category_path = category_path
         self.__categories = categories
         self.__updated_at = EntryDateTime()
         self.__doc_images: PhotoEntries = doc_images

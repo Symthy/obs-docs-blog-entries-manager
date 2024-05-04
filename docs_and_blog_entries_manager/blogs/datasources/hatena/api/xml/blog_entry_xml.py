@@ -2,10 +2,10 @@ import xml.etree.ElementTree as ET
 from datetime import datetime
 from typing import List, Optional
 
-from docs_and_blog_entries_manager.blogs.entity.blog_entry import BlogEntry
+from blogs.datasources.model.posted_blog_entry import PostedBlogEntry
 
 
-def parse(entry_node: ET.Element, tag_head: str, exclude_ids: List[str]) -> Optional[BlogEntry]:
+def parse(entry_node: ET.Element, tag_head: str, exclude_ids: List[str]) -> Optional[PostedBlogEntry]:
     # id example: tag:blog.hatena.ne.jp,2013:blog-Sympathia-17680117126980108518-13574176438048806685
     # entry id is last sequence
     entry_id = entry_node.find(tag_head + 'id').text.rsplit('-', 1)[1]
@@ -16,8 +16,8 @@ def parse(entry_node: ET.Element, tag_head: str, exclude_ids: List[str]) -> Opti
     content = __extract_content(entry_node, tag_head)
     last_update_time = __resolve_last_update_time(entry_node, tag_head)
     url = __extract_link(entry_node, tag_head)
-    categories = __extract_categories(entry_node, tag_head)
-    return BlogEntry(entry_id, title, url, last_update_time, categories)
+    categories = __extract_categories(entry_node, tag_head)  # 必ずカテゴリが１つは付与されている
+    return PostedBlogEntry(entry_id, title, content, url, last_update_time, categories[0], categories[1:])
 
 
 def __extract_content(entry_node, tag_head) -> str:

@@ -1,8 +1,8 @@
 from typing import Optional, List
 
 from blogs.datasources.hatena.api.xml import entry_xml
+from blogs.datasources.model.posted_blog_entry import PostedBlogEntry
 from docs_and_blog_entries_manager.blogs.datasources.hatena.api.xml import blog_entry_xml
-from docs_and_blog_entries_manager.blogs.entity.blog_entry import BlogEntry
 from docs_and_blog_entries_manager.common.constants import EXCLUDE_ENTRY_IDS_TXT_PATH
 from docs_and_blog_entries_manager.files import config
 
@@ -14,7 +14,7 @@ from docs_and_blog_entries_manager.files import config
 #     for child in root:
 #         print(child.tag)
 
-# Todo: refactor
+# Todo: refactor (xmlはクラス化して隔離した方が良い)
 class BlogEntriesResponseBody:
     def __init__(self, response_xml: str, summary_entry_id: str):
         self.__response_xml = response_xml
@@ -30,7 +30,7 @@ class BlogEntriesResponseBody:
                 break
         return url
 
-    def parse(self) -> List[BlogEntry]:
+    def parse(self) -> List[PostedBlogEntry]:
         root_node = entry_xml.convert_root_node(self.__response_xml)
         # __print_xml_children(root)
         tag_head = entry_xml.extract_tag_head(root_node)
@@ -53,7 +53,7 @@ class BlogEntryResponseBody:
         self.__response_xml = response_xml
         self.__exclude_entry_ids = config.read_lines(EXCLUDE_ENTRY_IDS_TXT_PATH)
 
-    def parse(self) -> Optional[BlogEntry]:
+    def parse(self) -> Optional[PostedBlogEntry]:
         if self.__response_xml is None:
             return None
         root_node = entry_xml.convert_root_node(self.__response_xml)

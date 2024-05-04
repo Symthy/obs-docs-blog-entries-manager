@@ -6,9 +6,10 @@ from docs_and_blog_entries_manager.blogs.entity.photo.photo_entry import PhotoEn
 
 
 class PhotoEntries:
-    def __init__(self, images_dict: Optional[dict[str, PhotoEntry]] = None):
+    def __init__(self, images: List[PhotoEntry] = None):
         # key: image file name
-        self.__filename_to_photo_entry: dict[str, PhotoEntry] = {} if images_dict is None else images_dict
+        self.__filename_to_photo_entry: dict[str, PhotoEntry] = \
+            {} if images is None else {image.image_filename: image for image in images}
 
     @property
     def items(self) -> List[PhotoEntry]:
@@ -33,9 +34,9 @@ class PhotoEntries:
         entry = self.get_entry(image_filename)
         return None if entry is None else entry.syntax
 
-    def merge(self, photo_entries: PhotoEntries):
+    def merge(self, photo_entries: PhotoEntries) -> PhotoEntries:
         # overwrite
-        self.__filename_to_photo_entry |= photo_entries.__filename_to_photo_entry
+        return PhotoEntries(self.__filename_to_photo_entry | photo_entries.__filename_to_photo_entry)
 
     def serialize(self) -> dict[str, dict[str, str]]:
         entry_json_list = list(map(lambda e: e.serialize(), self.items))
