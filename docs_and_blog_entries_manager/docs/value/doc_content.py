@@ -9,9 +9,9 @@ class DocContent:
     __DOCUMENT_IMAGE_LINK_REGEX = r'!\[.*\]\((.+)\)'
     __DOCUMENT_CATEGORY_REGEX = r'#(\S+)'
 
-    def __init__(self, content: str, doc_dir_path: str):
+    def __init__(self, content: str, doc_entry_dir_path: str):
         self.__content = content
-        self.__image_paths = self.__extract_image_paths(doc_dir_path)
+        self.__image_paths = self.__extract_image_paths(doc_entry_dir_path)
         all_categories = self.__extract_categories()
         self.__categories = all_categories[1:] if len(all_categories) >= 2 else []
         self.__category_path = self.__categories[0] if len(all_categories) >= 1 else NON_CATEGORY_NAME
@@ -26,11 +26,11 @@ class DocContent:
         return categories
 
     @property
-    def content(self) -> str:
+    def value(self) -> str:
         return self.__content
 
     @property
-    def content_with_removed_categories(self):
+    def value_with_removed_categories(self):
         # BlogContent変換用。タグが付いている行は削除する。はてブ上ではタグはセクションとして扱われてしまう
         content = re.sub(r'^[ \t]*#\S+[[ \t]+#\S+]*(\r\n|\n)$', '', self.__content, flags=re.MULTILINE)
         return content

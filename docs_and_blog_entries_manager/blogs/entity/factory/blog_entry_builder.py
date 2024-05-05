@@ -17,7 +17,7 @@ class BlogEntryBuilder:
             self.__category_path = based_blog_entry.category_path
             self.__categories = based_blog_entry.categories
             self.__original_doc_id = based_blog_entry.original_doc_id
-            self.__doc_images = based_blog_entry.doc_images
+            self.__doc_images = based_blog_entry.images
 
     def id(self, value: BlogEntryId):
         self.__id = value

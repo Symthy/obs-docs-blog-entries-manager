@@ -1,4 +1,3 @@
-import re
 from typing import List
 
 from blogs.datasources.hatena.blog_entry_repository import BlogEntryRepository
@@ -19,8 +18,7 @@ class PostedBlogEntryCollector:
     def execute(self) -> List[PostedBlogEntry]:
         posted_blog_entries: List[PostedBlogEntry] = []
         for posted_blog_entry in self.__blog_entry_repository.all():
-            photo_entry_ids: List[PhotoEntryId] = self.__extract_photo_entry_id(self.__hatena_id,
-                                                                                posted_blog_entry.content)
+            photo_entry_ids: List[PhotoEntryId] = posted_blog_entry.content.photo_entry_ids
             updated_posted_blog_entry = self.__insert_photo_entries(posted_blog_entry, photo_entry_ids)
             posted_blog_entries.append(updated_posted_blog_entry)
         return posted_blog_entries
@@ -34,10 +32,3 @@ class PostedBlogEntryCollector:
                 photo_entries.append(photo_entry)
         new_posted_blog_entry = posted_blog_entry.merge_photo_entries(PhotoEntries(photo_entries))
         return new_posted_blog_entry
-
-    @staticmethod
-    def __extract_photo_entry_id(hatena_id: str, content: str) -> List[PhotoEntryId]:
-        # photo id: f:id:SYM_simu:20230101154129p:image
-        photo_entry_syntax_regex = r'\[f:id:' + hatena_id + r':([0-9]+)p:image\]'
-        photo_ids = re.findall(photo_entry_syntax_regex, content)
-        return list(map(lambda pid: PhotoEntryId(pid), photo_ids))

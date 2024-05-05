@@ -19,11 +19,11 @@ class BlogContent:
         return list(map(lambda pid: PhotoEntryId(pid), photo_ids))
 
     @property
-    def content(self) -> str:
+    def value(self) -> str:
         return self.__content
 
     @property
-    def content_with_inserted_categories(self) -> str:
+    def value_with_inserted_categories(self) -> str:
         # DocContent変換用。末尾にタグとして追加
         return self.__content + '\n' + self.__categories_line + '\n'
 

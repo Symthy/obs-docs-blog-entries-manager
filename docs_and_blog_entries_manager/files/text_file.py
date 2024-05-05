@@ -16,7 +16,7 @@ def read_first_line(file_path: str) -> str:
     return line.lstrip('#').strip()
 
 
-def __write_file(file_path, text: str):
+def write_file(file_path, text: str):
     try:
         with codecs.open(file_path, mode='w', encoding='utf-8') as f:
             f.write(text)
@@ -25,8 +25,8 @@ def __write_file(file_path, text: str):
 
 
 def write_line(file_path, line: str):
-    __write_file(file_path, line)
+    write_file(file_path, line)
 
 
 def write_lines(file_path, lines: List[str]):
-    __write_file(file_path, '\n'.join(lines))
+    write_file(file_path, '\n'.join(lines))

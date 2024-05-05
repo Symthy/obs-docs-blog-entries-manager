@@ -22,7 +22,7 @@ class BlogEntry(IEntry):
 
     def __init__(self, entry_id: BlogEntryId, title: str, page_url: str, last_updated: EntryDateTime,
                  category_path: CategoryPath, categories: List[str], doc_id: Optional[str] = None,
-                 doc_images: PhotoEntries = PhotoEntries()):
+                 images: PhotoEntries = PhotoEntries()):
         self.__id = entry_id
         self.__title = title
         self.__page_url = page_url
@@ -30,7 +30,7 @@ class BlogEntry(IEntry):
         self.__category_path = category_path
         self.__categories = categories
         self.__original_doc_id = doc_id
-        self.__doc_images: PhotoEntries = doc_images
+        self.__images: PhotoEntries = images
 
     @property
     def id(self) -> BlogEntryId:
@@ -65,13 +65,11 @@ class BlogEntry(IEntry):
         return self.__original_doc_id
 
     @property
-    def doc_images(self) -> Optional[PhotoEntries]:
-        if self.is_images_empty():
-            return None
-        return self.__doc_images
+    def images(self) -> Optional[PhotoEntries]:
+        return self.__images if not self.is_images_empty() else None
 
     def is_images_empty(self) -> bool:
-        return self.__doc_images.is_empty()
+        return self.__images.is_empty()
 
     def convert_id_to_title(self) -> Dict[BlogEntryId, str]:
         return {self.id: self.title}

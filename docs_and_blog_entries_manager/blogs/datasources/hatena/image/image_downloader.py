@@ -6,7 +6,7 @@ from exceptions.download_exception import DownloadException
 from logs.logger import Logger
 
 
-class DownLoader:
+class ImageDownLoader:
     @staticmethod
     def run(image_url: str) -> bytes:
         response = requests.get(image_url, allow_redirects=False, timeout=60)
