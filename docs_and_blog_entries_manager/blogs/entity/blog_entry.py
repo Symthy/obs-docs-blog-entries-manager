@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import List, Optional, Dict
 
+from blogs.value.blog_entry_id import BlogEntryId
 from docs_and_blog_entries_manager.blogs.entity.photo.photo_entries import PhotoEntries
 from docs_and_blog_entries_manager.entries.interface import IEntry
 from entries.values.category_path import CategoryPath
@@ -13,25 +14,26 @@ class BlogEntry(IEntry):
     FIELD_TITLE = 'title'
     FIELD_CONTENT = 'content'
     FIELD_PAGE_URL = 'page_url'
-    FIELD_TOP_CATEGORY = 'top_category'
+    FIELD_CATEGORY_PATH = 'category_path'
     FIELD_CATEGORIES = 'categories'
     FIELD_UPDATED_AT = 'updated_at'
     FIELD_ORIGINAL_DOC_ID = 'original_doc_id'
     FIELD_DOC_IMAGES = 'doc_images'
 
-    def __init__(self, entry_id: str, title: str, page_url: str, last_updated: EntryDateTime, category_path: str,
-                 categories: List[str], doc_id: Optional[str] = None, doc_images: PhotoEntries = PhotoEntries()):
+    def __init__(self, entry_id: BlogEntryId, title: str, page_url: str, last_updated: EntryDateTime,
+                 category_path: CategoryPath, categories: List[str], doc_id: Optional[str] = None,
+                 doc_images: PhotoEntries = PhotoEntries()):
         self.__id = entry_id
         self.__title = title
         self.__page_url = page_url
         self.__updated_at: EntryDateTime = last_updated
-        self.__category_path = CategoryPath(category_path)
+        self.__category_path = category_path
         self.__categories = categories
         self.__original_doc_id = doc_id
         self.__doc_images: PhotoEntries = doc_images
 
     @property
-    def id(self):
+    def id(self) -> BlogEntryId:
         return self.__id
 
     @property
@@ -71,7 +73,7 @@ class BlogEntry(IEntry):
     def is_images_empty(self) -> bool:
         return self.__doc_images.is_empty()
 
-    def convert_id_to_title(self) -> Dict[str, str]:
+    def convert_id_to_title(self) -> Dict[BlogEntryId, str]:
         return {self.id: self.title}
 
     def convert_md_line(self) -> str:
@@ -83,10 +85,11 @@ class BlogEntry(IEntry):
     @classmethod
     def deserialize(cls, json_data: Dict[str, any]) -> BlogEntry:
         return BlogEntry(
-            json_data[BlogEntry.FIELD_ID],
+            BlogEntryId(json_data[BlogEntry.FIELD_ID]),
             json_data[BlogEntry.FIELD_TITLE],
             json_data[BlogEntry.FIELD_PAGE_URL],
             EntryDateTime(json_data[BlogEntry.FIELD_UPDATED_AT]),
+            CategoryPath(json_data[BlogEntry.FIELD_CATEGORY_PATH]),
             json_data[BlogEntry.FIELD_CATEGORIES],
             json_data[BlogEntry.FIELD_ORIGINAL_DOC_ID],
             PhotoEntries.deserialize(json_data[BlogEntry.FIELD_DOC_IMAGES])

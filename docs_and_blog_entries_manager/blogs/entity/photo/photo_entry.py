@@ -3,6 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Dict, Optional
 
+from blogs.value.photo_entry_id import PhotoEntryId
 from docs_and_blog_entries_manager.ltimes import datetime_functions
 
 
@@ -12,7 +13,7 @@ class PhotoEntry:
     FIELD_IMAGE_URL = 'image_url'
     FIELD_UPDATED_AT = 'updated_at'
 
-    def __init__(self, image_filename: str, entry_id: str, syntax: str, image_url: str,
+    def __init__(self, image_filename: str, entry_id: PhotoEntryId, syntax: str, image_url: str,
                  updated_at: Optional[datetime] = None):
         self.__image_filename = image_filename
         self.__id = entry_id
@@ -25,7 +26,7 @@ class PhotoEntry:
         return self.__image_filename
 
     @property
-    def id(self) -> str:
+    def id(self) -> PhotoEntryId:
         return self.__id
 
     @property
@@ -46,7 +47,7 @@ class PhotoEntry:
     def serialize(self) -> Dict[str, Dict[str, str]]:
         return {
             self.__image_filename: {
-                PhotoEntry.FIELD_ID: self.__id,
+                PhotoEntry.FIELD_ID: self.__id.value,
                 PhotoEntry.FIELD_SYNTAX: self.__syntax,
                 PhotoEntry.FIELD_IMAGE_URL: self.__image_url,
                 PhotoEntry.FIELD_UPDATED_AT: self.updated_at
@@ -57,7 +58,7 @@ class PhotoEntry:
     def deserialize(cls, image_filename: str, dump_data: Dict[str, str]):
         return PhotoEntry(
             image_filename,
-            dump_data[PhotoEntry.FIELD_ID],
+            PhotoEntryId(dump_data[PhotoEntry.FIELD_ID]),
             dump_data[PhotoEntry.FIELD_SYNTAX],
             dump_data[PhotoEntry.FIELD_IMAGE_URL],
             datetime_functions.convert_entry_time_str_to_datetime(dump_data[PhotoEntry.FIELD_UPDATED_AT])

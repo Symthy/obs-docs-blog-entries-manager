@@ -5,6 +5,7 @@ from typing import Optional, List
 
 from blogs.entity.blog_entry import BlogEntry
 from blogs.entity.photo.photo_entries import PhotoEntries
+from blogs.value.blog_entry_id import BlogEntryId
 from entries.values.category_path import CategoryPath
 from entries.values.entry_date_time import EntryDateTime
 
@@ -32,8 +33,8 @@ class PostedBlogEntry:
         return self.__content
 
     def convert_to_blog_entry(self) -> BlogEntry:
-        return BlogEntry(self.__id, self.__title, self.__page_url, EntryDateTime(self.__updated_at.to_datetime()),
-                         self.__category_path.value, self.__categories, self.__original_doc_id, self.__images)
+        return BlogEntry(BlogEntryId(self.__id), self.__title, self.__page_url, self.__updated_at,
+                         self.__category_path, self.__categories, self.__original_doc_id, self.__images)
 
     def merge_photo_entries(self, images: PhotoEntries) -> PostedBlogEntry:
         new_photo_entries = self.__images.merge(images)

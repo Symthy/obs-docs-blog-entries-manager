@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import List, Optional
 
 from docs.entity.doc_entry import DocEntry
+from docs.value.doc_entry_id import DocEntryId
 from entries.interface import IEntries
 
 
@@ -11,19 +12,6 @@ class DocEntries(IEntries):
         self.__entries: dict[str, DocEntry] = {}
         if entries is not None:
             self.__entries = {entry.id: entry for entry in entries}
-
-    def __eq__(self, other) -> bool:
-        if not isinstance(other, self.__class__):
-            return False
-        if not len(self.__entries) == len(other.__entries):
-            return False
-        for entry in self.__entries:
-            other_entry = other.get_entry(entry.id)
-            if other_entry is None:
-                return False
-            if not entry.__dict__ == other_entry.__dict__:
-                return False
-        return True
 
     @property
     def items(self) -> List[DocEntry]:
@@ -35,13 +23,13 @@ class DocEntries(IEntries):
     def is_empty(self) -> bool:
         return len(self.__entries) == 0
 
-    def contains(self, target_entry_id: str) -> bool:
-        for entry in self.__entries:
+    def contains(self, target_entry_id: DocEntryId) -> bool:
+        for entry in self.items:
             if entry.id == target_entry_id:
                 return True
         return False
 
-    def get_entry(self, entry_id) -> Optional[DocEntry]:
+    def get(self, entry_id: DocEntryId) -> Optional[DocEntry]:
         for entry in self.items:
             if entry.id == entry_id:
                 return entry
@@ -64,3 +52,16 @@ class DocEntries(IEntries):
     @classmethod
     def new_instance(cls, entry_list: List[DocEntry]) -> DocEntries:
         return DocEntries(entry_list)
+
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, self.__class__):
+            return False
+        if not len(self.__entries) == len(other.__entries):
+            return False
+        for entry in self.items:
+            other_entry = other.get(entry.id)
+            if other_entry is None:
+                return False
+            if not entry.__dict__ == other_entry.__dict__:
+                return False
+        return True

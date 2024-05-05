@@ -2,6 +2,7 @@ from typing import Optional
 
 from blogs.datasources.hatena.api.xml import entry_xml
 from blogs.entity.photo.photo_entry import PhotoEntry
+from blogs.value.photo_entry_id import PhotoEntryId
 from ltimes import datetime_functions
 
 
@@ -28,7 +29,7 @@ class PhotoEntryResponseBody:
         hatena_entry_id = root_node.find(self.__PHOTO_ENTRY_XML_NAMESPACE + 'id').text
         if hatena_entry_id is None:
             return None
-        photo_entry_id = hatena_entry_id.rsplit('-', 1)[1]
+        photo_entry_id = PhotoEntryId(hatena_entry_id.rsplit('-', 1)[1])
         syntax = root_node.find(self.__PHOTO_ENTRY_HATENA_XML_NAMESPACE + 'syntax').text
         image_url = root_node.find(self.__PHOTO_ENTRY_HATENA_XML_NAMESPACE + 'imageurl').text
         # don't know if the API response includes the update time.

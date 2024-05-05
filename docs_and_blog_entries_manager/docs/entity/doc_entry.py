@@ -2,9 +2,11 @@ from __future__ import annotations
 
 from typing import List
 
+from docs.value.doc_entry_id import DocEntryId
 from entries.interface import IEntry
 from entries.values.category_path import CategoryPath
 from entries.values.entry_date_time import EntryDateTime
+from files import file_system
 
 
 class DocEntry(IEntry):
@@ -18,10 +20,10 @@ class DocEntry(IEntry):
     FIELD_CREATED_AT = 'created_at'
     FIELD_UPDATED_AT = 'updated_at'
 
-    def __init__(self, docs_id: str, title: str, dir_path: str, doc_file_name: str, category_path: CategoryPath,
+    def __init__(self, doc_id: DocEntryId, title: str, dir_path: str, doc_file_name: str, category_path: CategoryPath,
                  categories: List[str], is_pickup: bool = False, created_at: EntryDateTime = None,
                  updated_at: EntryDateTime = None):
-        self.__id = docs_id
+        self.__id = doc_id
         self.__title = title
         self.__dir_path = dir_path
         self.__doc_file_name = doc_file_name
@@ -32,7 +34,7 @@ class DocEntry(IEntry):
         self.__updated_at = updated_at if updated_at is not None else self.__created_at
 
     @property
-    def id(self) -> str:
+    def id(self) -> DocEntryId:
         return self.__id
 
     @property
@@ -42,6 +44,10 @@ class DocEntry(IEntry):
     @property
     def dir_path(self) -> str:
         return self.__dir_path
+
+    @property
+    def doc_file_path(self) -> str:
+        return file_system.join_path(self.dir_path, self.__doc_file_name)
 
     @property
     def doc_file_name(self) -> str:
@@ -71,23 +77,23 @@ class DocEntry(IEntry):
     def updated_at_month_day(self):
         return self.__updated_at.to_month_day_str()
 
-    def convert_id_to_title(self) -> dict[str, str]:
+    def convert_id_to_title(self) -> dict[DocEntryId, str]:
         return {self.id: self.title}
 
     def convert_md_line(self) -> str:
-        return f'- [{self.title}]({self.dir_path}{self.doc_file_name})'
+        return f'- [{self.title}]({self.doc_file_path})'
 
-    def serialize(self, json_data=None) -> dict:
+    def serialize(self) -> dict:
         return vars(self)
 
     @classmethod
     def deserialize(cls, json_data: dict[str, any]) -> DocEntry:
         return DocEntry(
-            json_data[DocEntry.FIELD_ID],
+            DocEntryId(json_data[DocEntry.FIELD_ID]),
             json_data[DocEntry.FIELD_TITLE],
             json_data[DocEntry.FIELD_DIR_PATH],
             json_data[DocEntry.FIELD_DOC_FILE_NAME],
-            json_data[DocEntry.FIELD_CATEGORY_PATH],
+            CategoryPath(json_data[DocEntry.FIELD_CATEGORY_PATH]),
             json_data[DocEntry.FIELD_CATEGORIES],
             # field added later
             json_data[DocEntry.FIELD_PICKUP] if DocEntry.FIELD_PICKUP in json_data else False,

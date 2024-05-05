@@ -74,3 +74,15 @@ class IEntries(IConvertibleMarkdownLines, ABC):
     @abstractmethod
     def new_instance(self, entry_list: List[IEntry]) -> IEntries:
         pass
+
+
+class IEntryId(ABC):
+    @property
+    def value(self) -> str:
+        # required override
+        Logger.error('Unimplemented!! (IEntryId.value)')
+        return ''
+
+    @abstractmethod
+    def new_instance(self, entry_id: str) -> IEntryId:
+        pass

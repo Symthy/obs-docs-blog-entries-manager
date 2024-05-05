@@ -36,7 +36,8 @@ class PhotoEntries:
 
     def merge(self, photo_entries: PhotoEntries) -> PhotoEntries:
         # overwrite
-        return PhotoEntries(self.__filename_to_photo_entry | photo_entries.__filename_to_photo_entry)
+        merged_filename_to_photo_entry = self.__filename_to_photo_entry | photo_entries.__filename_to_photo_entry
+        return PhotoEntries(list(merged_filename_to_photo_entry.values()))
 
     def serialize(self) -> dict[str, dict[str, str]]:
         entry_json_list = list(map(lambda e: e.serialize(), self.items))
@@ -45,10 +46,10 @@ class PhotoEntries:
             dump_json |= entry_json
         return dump_json
 
-    @classmethod
-    def deserialize(cls, filename_to_entry_json: dict[str, dict[str, str]]):
+    @staticmethod
+    def deserialize(filename_to_entry_json: dict[str, dict[str, str]]):
         photo_entry_dict = {}
         for image_filename, photo_entry_json in filename_to_entry_json.items():
             if len(photo_entry_json) > 0:
                 photo_entry_dict[image_filename] = PhotoEntry.deserialize(image_filename, photo_entry_json)
-        return PhotoEntries(photo_entry_dict)
+        return PhotoEntries(list(photo_entry_dict.values()))

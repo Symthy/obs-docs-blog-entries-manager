@@ -4,46 +4,53 @@ from typing import Dict, List, Any, Generic
 
 from files import json_file
 from ltimes import datetime_functions
-from store.interface import TM, TS
+from store.interface import TM, TS, TI
 
 
-class StoredEntryList(Generic[TM, TS]):
+class StoredEntryList(Generic[TM, TS, TI]):
     """
     xxx_entry_list.jsonの全データを保持するクラス
     """
-    FIELD_UPDATED_TIME = 'updated_time'
+    FIELD_UPDATED_AT = 'updated_at'
     FIELD_ENTRIES = 'entries'
 
-    def __init__(self, entry_list_file_path: str):
-        stored_entry_list = json_file.load(entry_list_file_path)
-        self.__updated_time: str = stored_entry_list[StoredEntryList.FIELD_UPDATED_TIME] \
-            if StoredEntryList.FIELD_UPDATED_TIME in stored_entry_list else ''
-        self.__entry_id_to_title: Dict[str, str] = stored_entry_list[StoredEntryList.FIELD_ENTRIES] \
-            if StoredEntryList.FIELD_ENTRIES in stored_entry_list else {}
+    def __init__(self, entry_id_to_title: Dict[TI, str], updated_at: str):
+        self.__entry_id_to_title = entry_id_to_title
+        self.__updated_at = updated_at
 
     @property
-    def entry_ids(self) -> List[str]:
+    def entry_ids(self) -> List[TI]:
         return list(self.__entry_id_to_title.keys())
 
     def push_entry(self, entry: TS):
         self.__entry_id_to_title[entry.id] = entry.title
 
-    def exist_id(self, entry_id: str) -> bool:
+    def exist_id(self, entry_id: TI) -> bool:
         return entry_id in self.__entry_id_to_title.keys()
 
-    def search_by_title(self, keyword: str) -> List[str]:
+    def search_by_title(self, keyword: str) -> List[TI]:
         entry_ids = [eid for eid, title in self.__entry_id_to_title.items() if keyword.lower() in title.lower()]
         return entry_ids
 
     def serialize(self) -> Dict[str, Any]:
         return {
-            StoredEntryList.FIELD_UPDATED_TIME: datetime_functions.current_datetime(),
-            StoredEntryList.FIELD_ENTRIES: self.__entry_id_to_title
+            StoredEntryList.FIELD_UPDATED_AT: datetime_functions.current_datetime(),
+            StoredEntryList.FIELD_ENTRIES: {eid.value: title for eid, title in self.__entry_id_to_title}
         }
+
+    @staticmethod
+    def deserialize(entry_list_file_path: str) -> StoredEntryList:
+        stored_entry_list_json: dict[str: any] = json_file.load(entry_list_file_path)
+        updated_at: str = stored_entry_list_json[StoredEntryList.FIELD_UPDATED_AT] \
+            if StoredEntryList.FIELD_UPDATED_AT in stored_entry_list_json else ''
+        entry_id_to_tile: dict[str, str] = stored_entry_list_json[StoredEntryList.FIELD_ENTRIES] \
+            if StoredEntryList.FIELD_ENTRIES in stored_entry_list_json else {}
+        entry_id_to_title: Dict[TI, str] = {TI.new_instance(eid): title for eid, title in entry_id_to_tile}
+        return StoredEntryList(entry_id_to_title, updated_at)
 
 # json data format
 # {
-#   "updated_time": "2022-01-02T03:04:05",
+#   "updated_at": "2022-01-02T03:04:05+0900",
 #   "entries": {
 #     "id": "title"
 #      :

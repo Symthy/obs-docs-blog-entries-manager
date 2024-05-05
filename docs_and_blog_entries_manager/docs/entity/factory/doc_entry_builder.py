@@ -1,14 +1,13 @@
 from typing import Optional, List
 
 from docs.entity.doc_entry import DocEntry
-from docs.entity.factory.doc_entry_id_builder import DocEntryIdBuilder
+from docs.value.doc_entry_id import DocEntryId
 from entries.values.category_path import CategoryPath
 from entries.values.entry_date_time import EntryDateTime
 
 
 class DocEntryBuilder:
-    def __init__(self, doc_entry_id_builder: DocEntryIdBuilder, based_doc_entry: DocEntry = None):
-        self.__doc_entry_id_builder = doc_entry_id_builder
+    def __init__(self, based_doc_entry: DocEntry = None):
         if based_doc_entry is not None:
             self.__id = based_doc_entry.id
             self.__title = based_doc_entry.title
@@ -20,7 +19,7 @@ class DocEntryBuilder:
             self.__created_at: Optional[EntryDateTime] = based_doc_entry.created_at
             self.__updated_at: Optional[EntryDateTime] = based_doc_entry.updated_at
 
-    def id(self, value: str):
+    def id(self, value: DocEntryId):
         self.__id = value
         return self
 
@@ -57,9 +56,12 @@ class DocEntryBuilder:
         return self
 
     def build(self):
+        if not ((self.__id is None and self.__created_at is None) or (
+                self.__id is not None and self.__created_at is not None)):
+            raise AttributeError(f'Invalid id and created_at (id: {self.__id}, created_at: {self.__created_at})')
         current_date_time = EntryDateTime()
         return DocEntry(
-            self.__id if self.__id is not None else self.__doc_entry_id_builder.build(current_date_time),
+            self.__id if self.__id is not None else DocEntryId.build(current_date_time),
             self.__title,
             self.__dir_path,
             self.__doc_file_name,

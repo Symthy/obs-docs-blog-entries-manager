@@ -2,14 +2,14 @@ from __future__ import annotations
 
 from typing import List
 
+from blogs.value.blog_entry_id import BlogEntryId
 from docs_and_blog_entries_manager.blogs.entity.blog_entry import BlogEntry
 from docs_and_blog_entries_manager.entries.interface import IEntries
 
 
 class BlogEntries(IEntries):
     def __init__(self, entries: List[BlogEntry] = None):
-        # Todo: examination. use dict? see
-        self.__entries: dict[str, BlogEntry] = {}
+        self.__entries: dict[BlogEntryId, BlogEntry] = {}
         if entries is not None:
             self.__entries = {entry.id: entry for entry in entries}
 
@@ -20,7 +20,7 @@ class BlogEntries(IEntries):
     def is_empty(self) -> bool:
         return len(self.items) == 0
 
-    def contains(self, target_entry_id: str) -> bool:
+    def contains(self, target_entry_id: BlogEntryId) -> bool:
         for entry in self.items:
             if entry.id == target_entry_id:
                 return True

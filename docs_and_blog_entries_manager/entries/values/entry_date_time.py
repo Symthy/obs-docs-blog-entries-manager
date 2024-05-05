@@ -5,7 +5,7 @@ from datetime import datetime
 from ltimes import datetime_functions
 
 ENTRY_DATE_TIME_FORMAT = "%Y-%m-%dT%H:%M:%S%z"
-DATE_TIME_FORMAT_NUMBER_SEQUENCE = "%Y%m%d%H%M%S"
+DATE_TIME_FORMAT_NUMBER_SEQUENCE = "%Y%m%d%H%M%S%f"
 
 
 class EntryDateTime:
@@ -23,6 +23,7 @@ class EntryDateTime:
         return datetime.strftime(self.__value, ENTRY_DATE_TIME_FORMAT)
 
     def to_str_with_num_sequence(self) -> str:
+        # 秒以下はマイクロ秒(6桁)まで含む
         return datetime.strftime(self.__value, DATE_TIME_FORMAT_NUMBER_SEQUENCE)
 
     def to_datetime(self) -> datetime:

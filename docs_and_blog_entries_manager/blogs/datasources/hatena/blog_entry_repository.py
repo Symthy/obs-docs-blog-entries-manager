@@ -7,19 +7,20 @@ from blogs.datasources.model.post_blog_entry import PostBlogEntry
 from blogs.datasources.model.posted_blog_entry import PostedBlogEntry
 from docs_and_blog_entries_manager.api.api_client import ApiClient
 from docs_and_blog_entries_manager.blogs.entity.blog_entry import BlogEntry
+from entries.interface import IEntryId
 from logs.logger import Logger
 
 
 class BlogEntryRepository:
-    def __init__(self, blog_api_client: ApiClient, hatena_id: str, summary_entry_id: str):
+    def __init__(self, blog_api_client: ApiClient, hatena_id: str, summary_entry_id: IEntryId):
         self.__api_client = blog_api_client
         self.__hatena_id = hatena_id
         self.__summary_entry_id = summary_entry_id
 
     # Blog
     # GET Blog
-    def find_id(self, entry_id: str) -> Optional[PostedBlogEntry]:
-        xml_string_opt = self.__api_client.get(path=entry_id)
+    def find_id(self, entry_id: IEntryId) -> Optional[PostedBlogEntry]:
+        xml_string_opt = self.__api_client.get(path=entry_id.value)
         return BlogEntryResponseBody(xml_string_opt).parse()
 
     def all(self) -> List[PostedBlogEntry]:
@@ -29,7 +30,7 @@ class BlogEntryRepository:
             xml_string_opt = self.__api_client.get(query_params=next_query_params)
             if xml_string_opt is None:
                 break
-            blog_entries_xml = BlogEntriesResponseBody(xml_string_opt, self.__summary_entry_id)
+            blog_entries_xml = BlogEntriesResponseBody(xml_string_opt, self.__summary_entry_id.value)
             blog_entries.extend(blog_entries_xml.parse())
             next_url = blog_entries_xml.next_page_url()
             next_query_params = parse_qsl(urlparse(next_url).query)
