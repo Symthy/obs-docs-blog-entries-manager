@@ -6,6 +6,7 @@ from common.constants import DOCS_DIR_PATH
 from docs.entity.doc_entries import DocEntries
 from docs.entity.doc_entry import DocEntry
 from docs.entity.factory.doc_entry_builder import DocEntryBuilder
+from docs.value.doc_entry_id import DocEntryId
 from files import file_system
 from store.datasources.stored_entry_accessor import StoredEntryAccessor
 from store.entity.blog_to_doc_entry_mapping import BlogToDocEntryMapping
@@ -13,7 +14,7 @@ from store.entity.blog_to_doc_entry_mapping import BlogToDocEntryMapping
 
 class BlogToDocEntryConverter:
     def __init__(self, blog_to_doc_entry_mapping: BlogToDocEntryMapping,
-                 stored_doc_entry_accessor: StoredEntryAccessor[DocEntry]):
+                 stored_doc_entry_accessor: StoredEntryAccessor[DocEntry, DocEntryId]):
         self.__blog_to_doc_entry_mapping = blog_to_doc_entry_mapping
         self.__stored_doc_entry_accessor = stored_doc_entry_accessor
 
@@ -22,7 +23,7 @@ class BlogToDocEntryConverter:
         return DocEntries(doc_entries)
 
     def convert(self, blog_entry: BlogEntry) -> DocEntry:
-        doc_id: Optional[str] = self.__blog_to_doc_entry_mapping.find_doc_entry_id(blog_entry.id)
+        doc_id: Optional[DocEntryId] = self.__blog_to_doc_entry_mapping.find_doc_entry_id(blog_entry.id)
         if doc_id is None:
             builder = DocEntryBuilder()
             builder.title(blog_entry.title)

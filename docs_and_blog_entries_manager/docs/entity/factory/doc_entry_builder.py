@@ -59,6 +59,7 @@ class DocEntryBuilder:
         if not ((self.__id is None and self.__created_at is None) or (
                 self.__id is not None and self.__created_at is not None)):
             raise AttributeError(f'Invalid id and created_at (id: {self.__id}, created_at: {self.__created_at})')
+        # Todo: 他項目のチェック。Validationは entity内に置くべき？
         current_date_time = EntryDateTime()
         return DocEntry(
             self.__id if self.__id is not None else DocEntryId.build(current_date_time),
