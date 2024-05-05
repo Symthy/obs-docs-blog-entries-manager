@@ -3,5 +3,14 @@ import base64
 
 def read_b64(picture_file_path: str) -> str:
     with open(picture_file_path, 'rb') as f:
-        pic_data = f.read()
+        pic_data: bytes = f.read()
     return base64.b64encode(pic_data).decode('utf-8')
+
+
+def encode_base64(image_data: bytes) -> str:
+    return base64.b64encode(image_data).decode('utf-8')
+
+
+def write(file_path, image_data: bytes):
+    with open(file_path, "wb") as f:
+        f.write(image_data)

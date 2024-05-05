@@ -10,7 +10,7 @@ from store.datasources.stored_entry_accessor import StoredEntryAccessor
 from store.entity.blog_to_doc_entry_mapping import BlogToDocEntryMapping
 
 
-class BlogToDocEntryConverter:
+class DocToBlogEntryConverter:
     def __init__(self, blog_to_doc_entry_mapping: BlogToDocEntryMapping,
                  stored_blog_entry_accessor: StoredEntryAccessor[BlogEntry, BlogEntryId]):
         self.__blog_to_doc_entry_mapping = blog_to_doc_entry_mapping
