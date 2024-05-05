@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from datetime import datetime
 
 from ltimes import datetime_functions
@@ -28,3 +30,6 @@ class EntryDateTime:
 
     def to_month_day_str(self) -> str:
         return self.to_datetime().strftime('%Y/%m')
+
+    def is_time_after(self, other: EntryDateTime) -> bool:
+        return self.__value > other.__value

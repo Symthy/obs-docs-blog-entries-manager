@@ -28,6 +28,9 @@ class StoredEntryList(Generic[TM, TS]):
     def push_entry(self, entry: TS):
         self.__entry_id_to_title[entry.id] = entry.title
 
+    def exist_id(self, entry_id: str) -> bool:
+        return entry_id in self.__entry_id_to_title.keys()
+
     def search_by_title(self, keyword: str) -> List[str]:
         entry_ids = [eid for eid, title in self.__entry_id_to_title.items() if keyword.lower() in title.lower()]
         return entry_ids

@@ -1,13 +1,11 @@
 from __future__ import annotations
 
-from datetime import datetime
 from typing import List, Optional, Dict
 
 from docs_and_blog_entries_manager.blogs.entity.photo.photo_entries import PhotoEntries
 from docs_and_blog_entries_manager.entries.interface import IEntry
-from docs_and_blog_entries_manager.ltimes import datetime_functions
 from entries.values.category_path import CategoryPath
-from entries.values.entry_time import EntryDateTime
+from entries.values.entry_date_time import EntryDateTime
 
 
 class BlogEntry(IEntry):
@@ -21,12 +19,12 @@ class BlogEntry(IEntry):
     FIELD_ORIGINAL_DOC_ID = 'original_doc_id'
     FIELD_DOC_IMAGES = 'doc_images'
 
-    def __init__(self, entry_id: str, title: str, page_url: str, last_updated: datetime, category_path: str,
+    def __init__(self, entry_id: str, title: str, page_url: str, last_updated: EntryDateTime, category_path: str,
                  categories: List[str], doc_id: Optional[str] = None, doc_images: PhotoEntries = PhotoEntries()):
         self.__id = entry_id
         self.__title = title
         self.__page_url = page_url
-        self.__updated_at: EntryDateTime = EntryDateTime(last_updated)
+        self.__updated_at: EntryDateTime = last_updated
         self.__category_path = CategoryPath(category_path)
         self.__categories = categories
         self.__original_doc_id = doc_id
@@ -45,8 +43,8 @@ class BlogEntry(IEntry):
         return self.__page_url
 
     @property
-    def updated_at(self) -> str:
-        return self.__updated_at.to_str()
+    def updated_at(self) -> EntryDateTime:
+        return self.__updated_at
 
     @property
     def updated_at_month_day(self) -> str:
@@ -88,7 +86,7 @@ class BlogEntry(IEntry):
             json_data[BlogEntry.FIELD_ID],
             json_data[BlogEntry.FIELD_TITLE],
             json_data[BlogEntry.FIELD_PAGE_URL],
-            datetime_functions.convert_entry_time_str_to_datetime(json_data[BlogEntry.FIELD_UPDATED_AT]),
+            EntryDateTime(json_data[BlogEntry.FIELD_UPDATED_AT]),
             json_data[BlogEntry.FIELD_CATEGORIES],
             json_data[BlogEntry.FIELD_ORIGINAL_DOC_ID],
             PhotoEntries.deserialize(json_data[BlogEntry.FIELD_DOC_IMAGES])

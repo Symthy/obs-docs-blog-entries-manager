@@ -2,7 +2,7 @@ from typing import List, Optional
 
 from blogs.entity.photo.photo_entries import PhotoEntries
 from entries.values.category_path import CategoryPath
-from entries.values.entry_time import EntryDateTime
+from entries.values.entry_date_time import EntryDateTime
 
 
 class PostBlogEntry:
