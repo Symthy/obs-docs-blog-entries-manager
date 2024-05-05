@@ -2,6 +2,7 @@ from typing import Optional
 
 from blogs.datasources.hatena.api.photo_response_parser import PhotoEntryResponseBody
 from blogs.datasources.hatena.templates import request_formats
+from blogs.value.photo_entry_id import PhotoEntryId
 from docs_and_blog_entries_manager.api.api_client import ApiClient
 from docs_and_blog_entries_manager.blogs.entity.photo.photo_entry import PhotoEntry
 from docs_and_blog_entries_manager.ltimes import datetime_functions
@@ -14,9 +15,9 @@ class PhotoEntryRepository:
         self.__api_client = api_client
 
     # GET Photo
-    def find_id(self, entry_id: str) -> Optional[PhotoEntry]:
-        path = f'edit/{entry_id}'
-        Logger.info(f'GET Photo: {entry_id}')
+    def find_id(self, entry_id: PhotoEntryId) -> Optional[PhotoEntry]:
+        path = f'edit/{entry_id.value}'
+        Logger.info(f'GET Photo: {entry_id.value}')
         xml_string_opt = self.__api_client.get(path)
         return PhotoEntryResponseBody(xml_string_opt).parse('')
 

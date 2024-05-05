@@ -1,4 +1,4 @@
-NON_CATEGORY_GROUP_NAME = 'Others'
+NON_CATEGORY_NAME = 'Others'
 SUMMARY_PAGE_TITLE = "Knowledge Stack & Index (全記事一覧)"
 
 LOCAL_STORAGE_DIR_PATH = './storage/'
