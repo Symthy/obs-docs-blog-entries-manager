@@ -42,7 +42,7 @@ class PostedBlogEntry:
 
     def convert_to_blog_entry(self) -> BlogEntry:
         return BlogEntry(BlogEntryId(self.__id), self.__title, self.__page_url, self.__updated_at,
-                         self.__category_path, self.__categories, self.__original_doc_id, self.__images)
+                         self.__category_path, self.__categories, self.__images)
 
     def merge_photo_entries(self, images: PhotoEntries) -> PostedBlogEntry:
         new_photo_entries = self.__images.merge(images)

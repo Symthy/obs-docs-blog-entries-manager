@@ -16,8 +16,7 @@ class BlogEntryBuilder:
             self.__updated_at = based_blog_entry.updated_at
             self.__category_path = based_blog_entry.category_path
             self.__categories = based_blog_entry.categories
-            self.__original_doc_id = based_blog_entry.original_doc_id
-            self.__doc_images = based_blog_entry.images
+            self.__images = based_blog_entry.images
 
     def id(self, value: BlogEntryId):
         self.__id = value
@@ -43,12 +42,8 @@ class BlogEntryBuilder:
         self.__categories = value
         return self
 
-    def original_doc_id(self, value: str):
-        self.__original_doc_id = value
-        return self
-
-    def doc_images(self, value: PhotoEntries):
-        self.__doc_images = value
+    def images(self, value: PhotoEntries):
+        self.__images = value
         return self
 
     def build(self) -> BlogEntry:
@@ -61,5 +56,4 @@ class BlogEntryBuilder:
                          self.__updated_at if self.__updated_at is not None else EntryDateTime(),
                          self.__category_path,
                          self.__categories,
-                         self.__original_doc_id,
-                         self.__doc_images)
+                         self.__images)

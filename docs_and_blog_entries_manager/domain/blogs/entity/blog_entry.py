@@ -21,15 +21,13 @@ class BlogEntry(IEntry):
     FIELD_DOC_IMAGES = 'doc_images'
 
     def __init__(self, entry_id: BlogEntryId, title: str, page_url: str, last_updated: EntryDateTime,
-                 category_path: CategoryPath, categories: List[str], doc_id: Optional[str] = None,
-                 images: PhotoEntries = PhotoEntries()):
+                 category_path: CategoryPath, categories: List[str], images: PhotoEntries = PhotoEntries()):
         self.__id = entry_id
         self.__title = title
         self.__page_url = page_url
         self.__updated_at: EntryDateTime = last_updated
         self.__category_path = category_path
         self.__categories = categories
-        self.__original_doc_id = doc_id
         self.__images: PhotoEntries = images
 
     @property
@@ -59,10 +57,6 @@ class BlogEntry(IEntry):
     @property
     def category_path(self) -> CategoryPath:
         return self.__category_path
-
-    @property
-    def original_doc_id(self):
-        return self.__original_doc_id
 
     @property
     def images(self) -> Optional[PhotoEntries]:

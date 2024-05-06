@@ -65,6 +65,7 @@ class BlogEntryCollectorService:
         return DocDataSet(doc_entry, doc_content, DocImages(doc_images))
 
     def __save_documents(self, doc_data_sets: List[DocDataSet]):
+        # Todo: ミス。docのIDはファイル作成時間を使うので、ファイル出力してからでないとidが決まらない
         for doc_data_set in doc_data_sets:
             self.__stored_doc_entry_accessor.save_entry(doc_data_set.entry)
             doc_file_path = doc_data_set.entry.doc_file_path

@@ -3,8 +3,6 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import List, Dict
 
-from docs_and_blog_entries_manager.logs.logger import Logger
-
 
 class ISerializableObject(ABC):
     @abstractmethod
@@ -26,22 +24,19 @@ class IConvertibleMarkdownLines(ABC):
 
 class IEntry(ISerializableObject, IConvertibleMarkdownLine, ABC):
     @property
-    def id(self) -> str:
+    def id(self) -> IEntryId:
         # required override
-        Logger.error('Unimplemented!! (IEntry.id)')
-        return ''
+        raise Exception('Unimplemented!! (IEntry.id)')
 
     @property
     def title(self) -> str:
         # required override
-        Logger.error('Unimplemented!! (IEntry.title)')
-        return ''
+        raise Exception('Unimplemented!! (IEntry.title)')
 
     @property
     def category_path(self) -> str:
         # required override
-        Logger.error('Unimplemented!! (IEntry.top_category)')
-        return ''
+        raise Exception('Unimplemented!! (IEntry.top_category)')
 
     @abstractmethod
     def convert_id_to_title(self) -> Dict[str, str]:
@@ -56,8 +51,7 @@ class IEntries(IConvertibleMarkdownLines, ABC):
     @property
     def items(self) -> List[IEntry]:
         # required override
-        Logger.error('Unimplemented!! (IEntries.entry_list)')
-        return []
+        raise Exception('Unimplemented!! (IEntries.entry_list)')
 
     @abstractmethod
     def is_empty(self) -> bool:
@@ -80,8 +74,7 @@ class IEntryId(ABC):
     @property
     def value(self) -> str:
         # required override
-        Logger.error('Unimplemented!! (IEntryId.value)')
-        return ''
+        raise Exception('Unimplemented!! (IEntryId.value)')
 
     @abstractmethod
     def new_instance(self, entry_id: str) -> IEntryId:
