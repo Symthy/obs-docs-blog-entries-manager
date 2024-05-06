@@ -1,11 +1,11 @@
 import pytest
 
-from entries.entity.entries_tree_roots import EntriesTreeRoots
-from entries.interface import IEntries
-from entries.services.entries_tree_roots_restorer import EntriesTreeRootsRestorer
-from entries.values.category_path import CategoryPath
-from store.datasources.stored_entries_accessor import StoredEntriesAccessor
-from store.entity.category_tree_definition import CategoryTreeDefinition
+from domain.entries.entity.entries_tree_roots import EntriesTreeRoots
+from domain.entries.interface import IEntries
+from domain.entries.services.entries_tree_roots_restorer import EntriesTreeRootsRestorer
+from domain.entries.values.category_path import CategoryPath
+from domain.store.datasources import StoredEntriesAccessor
+from domain.store.entity.category_tree_definition import CategoryTreeDefinition
 
 
 @pytest.fixture

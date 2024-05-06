@@ -161,4 +161,3 @@ cython_debug/
 
 # VSCode
 .VSCodeCounter/
-__init__.py

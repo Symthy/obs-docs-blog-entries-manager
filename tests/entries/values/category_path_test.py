@@ -1,4 +1,4 @@
-from entries.values.category_path import CategoryPath
+from domain.entries.values.category_path import CategoryPath
 
 
 def test_is_child():
