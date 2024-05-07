@@ -1,8 +1,8 @@
 from typing import Dict, Optional, List
 
 from common.constants import LOCAL_STORAGE_DIR_PATH
-from domain.blogs.value import BlogEntryId
-from domain.docs.value import DocEntryId
+from domain.blogs.value.blog_entry_id import BlogEntryId
+from domain.docs.value.doc_entry_id import DocEntryId
 from files import json_file
 
 

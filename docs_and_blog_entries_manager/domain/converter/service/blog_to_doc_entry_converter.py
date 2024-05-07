@@ -1,10 +1,8 @@
 from typing import Optional
 
 from common.constants import DOCS_DIR_PATH
-from domain.blogs.entity.blog_entries import BlogEntries
 from domain.blogs.entity.blog_entry import BlogEntry
 from domain.docs import DocEntry
-from domain.docs.entity.doc_entries import DocEntries
 from domain.docs.entity.factory.doc_entry_builder import DocEntryBuilder
 from domain.docs.value import DocEntryId
 from domain.store.datasources.stored_entry_accessor import StoredEntryAccessor
@@ -18,25 +16,25 @@ class BlogToDocEntryConverter:
         self.__blog_to_doc_entry_mapping = blog_to_doc_entry_mapping
         self.__stored_doc_entry_accessor = stored_doc_entry_accessor
 
-    def convert_bulk_entries(self, blog_entries: BlogEntries) -> DocEntries:
-        doc_entries = list(map(lambda blog_entry: self.convert(blog_entry), blog_entries.items))
-        return DocEntries(doc_entries)
+    def convert_to_new(self, blog_entry: BlogEntry, doc_id: DocEntryId):
+        builder = DocEntryBuilder()
+        builder.id(doc_id)
+        builder.title(blog_entry.title)
+        builder.dir_path(file_system.join_path(DOCS_DIR_PATH, blog_entry.category_path.value))
+        builder.doc_file_name(f'{blog_entry.title}.md')  # Todo: Windowsで使えない文字変換
+        builder.category_path(blog_entry.category_path)
+        builder.categories(blog_entry.categories)
+        builder.updated_at(blog_entry.updated_at)
+        return builder.build()
 
-    def convert(self, blog_entry: BlogEntry) -> DocEntry:
+    def convert_to_existing(self, blog_entry: BlogEntry) -> Optional[DocEntry]:
         doc_id: Optional[DocEntryId] = self.__blog_to_doc_entry_mapping.find_doc_entry_id(blog_entry.id)
         if doc_id is None:
-            builder = DocEntryBuilder()
-            builder.title(blog_entry.title)
-            builder.dir_path(file_system.join_path(DOCS_DIR_PATH, blog_entry.category_path.value))
-            builder.doc_file_name(f'{blog_entry.title}.md')  # Todo: Windowsで使えない文字変換
-            builder.category_path(blog_entry.category_path)
-            builder.categories(blog_entry.categories)
-            builder.pickup(False)
-            return builder.build()
+            return None
 
-        old_doc_entry: DocEntry = self.__stored_doc_entry_accessor.load_entry(doc_id)
-        if blog_entry.updated_at.is_time_after(old_doc_entry.updated_at):
-            builder = DocEntryBuilder(old_doc_entry)
+        existed_doc_entry: DocEntry = self.__stored_doc_entry_accessor.load_entry(doc_id)
+        if blog_entry.updated_at.is_time_after(existed_doc_entry.updated_at):
+            builder = DocEntryBuilder(existed_doc_entry)
             builder.title(blog_entry.title)
             builder.dir_path(file_system.join_path(DOCS_DIR_PATH, blog_entry.category_path.value))
             builder.doc_file_name(f'{blog_entry.title}.md')  # Todo: Windowsで使えない文字変換
@@ -44,4 +42,4 @@ class BlogToDocEntryConverter:
             builder.categories(blog_entry.categories)
             builder.updated_at(blog_entry.updated_at)
             return builder.build()
-        return old_doc_entry
+        return existed_doc_entry

@@ -19,7 +19,7 @@ class PostedBlogEntry:
 
     def __init__(self, hatena_id: str, entry_id: str, title: str, content: str, page_url: str, last_updated: datetime,
                  categories: List[str], doc_id: Optional[str] = None,
-                 images: PhotoEntries = PhotoEntries()):
+                 photo_entries: PhotoEntries = PhotoEntries()):
         self.__hatena_id = hatena_id
         self.__id = entry_id
         self.__title = title
@@ -29,7 +29,7 @@ class PostedBlogEntry:
         self.__category_path = CategoryPath(top_category)
         self.__categories = categories if len(categories) >= 2 else []
         self.__original_doc_id = doc_id
-        self.__images: PhotoEntries = images
+        self.__photo_entries: PhotoEntries = photo_entries
         self.__content = BlogContent(content, self.__category_path, self.__categories, hatena_id)
 
     @property
@@ -37,15 +37,23 @@ class PostedBlogEntry:
         return self.__category_path
 
     @property
+    def title(self) -> str:
+        return self.__title
+
+    @property
     def content(self) -> BlogContent:
         return self.__content
 
+    @property
+    def photo_entries(self) -> PhotoEntries:
+        return self.__photo_entries
+
     def convert_to_blog_entry(self) -> BlogEntry:
         return BlogEntry(BlogEntryId(self.__id), self.__title, self.__page_url, self.__updated_at,
-                         self.__category_path, self.__categories, self.__images)
+                         self.__category_path, self.__categories, self.__photo_entries)
 
     def merge_photo_entries(self, images: PhotoEntries) -> PostedBlogEntry:
-        new_photo_entries = self.__images.merge(images)
+        new_photo_entries = self.__photo_entries.merge(images)
         return PostedBlogEntry(self.__hatena_id, self.__id, self.__title, self.__content.value, self.__page_url,
                                self.__updated_at.to_datetime(), [self.__category_path.value, self.__categories],
                                self.__original_doc_id, new_photo_entries)
