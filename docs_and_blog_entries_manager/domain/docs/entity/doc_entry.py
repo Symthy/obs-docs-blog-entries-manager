@@ -85,18 +85,3 @@ class DocEntry(IEntry):
 
     def serialize(self) -> dict:
         return vars(self)
-
-    @classmethod
-    def deserialize(cls, json_data: dict[str, any]) -> DocEntry:
-        return DocEntry(
-            DocEntryId(json_data[DocEntry.FIELD_ID]),
-            json_data[DocEntry.FIELD_TITLE],
-            json_data[DocEntry.FIELD_DIR_PATH],
-            json_data[DocEntry.FIELD_DOC_FILE_NAME],
-            CategoryPath(json_data[DocEntry.FIELD_CATEGORY_PATH]),
-            json_data[DocEntry.FIELD_CATEGORIES],
-            # field added later
-            json_data[DocEntry.FIELD_PICKUP] if DocEntry.FIELD_PICKUP in json_data else False,
-            EntryDateTime(json_data[DocEntry.FIELD_CREATED_AT]),
-            EntryDateTime(json_data[DocEntry.FIELD_UPDATED_AT])
-        )

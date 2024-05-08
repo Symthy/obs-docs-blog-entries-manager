@@ -1,0 +1,49 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+
+package application {
+    package service {
+        class BlogEntryCollectorService
+    }
+}
+
+application.service.BlogEntryCollectorService ..> domain.converter
+application.service.BlogEntryCollectorService ...> domain.store
+application.service.BlogEntryCollectorService ...> domain.blogs
+application.service.BlogEntryCollectorService ...> domain.docs
+
+package domain {
+    package blogs {
+        class BlogEntry
+    }
+    package docs {
+        class DocEntry
+    }
+    package converter {
+        class BlogsToDocsConverter
+        class DocsToBlogsConverter
+    }
+    package store {
+        class StoredEntryAccessor
+        interface IStoredEntryAccessor
+        IStoredEntryAccessor <|. StoredEntryAccessor
+    }
+    package entries {
+        interface IEntry
+        class EntryTree
+        EntryTreeRestorer .> EntryTree
+        EntryTree .> IEntry
+    }
+    entries.IEntry <|.. blogs.BlogEntry
+    entries.IEntry <|... docs.DocEntry
+    entries.EntryTreeRestorer ...> store.IStoredEntryAccessor
+
+    converter.BlogsToDocsConverter ..> blogs.BlogEntry
+    converter.BlogsToDocsConverter ...> docs.DocEntry
+    converter.DocsToBlogsConverter ..> blogs.BlogEntry
+    converter.DocsToBlogsConverter ...> docs.DocEntry
+    store.StoredEntryAccessor ..> entries.IEntry
+}
+
+@enduml

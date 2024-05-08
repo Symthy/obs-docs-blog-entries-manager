@@ -17,25 +17,6 @@ from domain.store.entity.blog_to_doc_entry_mapping import BlogToDocEntryMapping
 from files import file_system, text_file, image_file
 
 
-class DocDataSet:
-    def __init__(self, entry: DocEntry, content: DocContent, images: DocImages):
-        self.__entry = entry
-        self.__content = content
-        self.__images = images
-
-    @property
-    def entry(self) -> DocEntry:
-        return self.__entry
-
-    @property
-    def content(self) -> DocContent:
-        return self.__content
-
-    @property
-    def images(self) -> DocImages:
-        return self.__images
-
-
 # Todo: 責務持たせすぎ。分割
 class BlogEntryCollectorService:
     def __init__(self, document_storage_dir_path: str,
@@ -69,6 +50,7 @@ class BlogEntryCollectorService:
             doc_entry_id = self.__save_doc_file(doc_entry_dir_path, posted_blog_entry.title, doc_content, doc_images)
             blog_entry = posted_blog_entry.convert_to_blog_entry()
             doc_entry: DocEntry = self.__blog_to_doc_entry_converter.convert_to_new(blog_entry, doc_entry_id)
+            self.__save_entry_data(blog_entry, doc_entry)
 
     def __save_doc_file(self, doc_entry_dir_path: str, title: str, content: DocContent,
                         images: DocImages) -> DocEntryId:

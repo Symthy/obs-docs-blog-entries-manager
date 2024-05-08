@@ -43,7 +43,11 @@ class IEntry(ISerializableObject, IConvertibleMarkdownLine, ABC):
         pass
 
     @abstractmethod
-    def deserialize(self, json_data: dict[str, any]):
+    def serialize(self) -> object:
+        pass
+
+    @abstractmethod
+    def deserialize(self, json_data: Dict[str, any]):
         pass
 
 
@@ -78,4 +82,10 @@ class IEntryId(ABC):
 
     @abstractmethod
     def new_instance(self, entry_id: str) -> IEntryId:
+        pass
+
+
+class IEntryDeserializer(ABC):
+    @abstractmethod
+    def deserialize(self, json_data: dict[str, any]) -> IEntry:
         pass

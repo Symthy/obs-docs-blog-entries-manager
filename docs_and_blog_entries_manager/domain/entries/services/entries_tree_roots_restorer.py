@@ -1,4 +1,3 @@
-# Todo: 外だし
 from domain.entries.entity.entries_tree import EntriesTree
 from domain.entries.entity.entries_tree_roots import EntriesTreeRoots
 from domain.entries.interface import IEntries

@@ -17,7 +17,6 @@ class BlogEntry(IEntry):
     FIELD_CATEGORY_PATH = 'category_path'
     FIELD_CATEGORIES = 'categories'
     FIELD_UPDATED_AT = 'updated_at'
-    FIELD_ORIGINAL_DOC_ID = 'original_doc_id'
     FIELD_DOC_IMAGES = 'doc_images'
 
     def __init__(self, entry_id: BlogEntryId, title: str, page_url: str, last_updated: EntryDateTime,
@@ -65,24 +64,11 @@ class BlogEntry(IEntry):
     def is_images_empty(self) -> bool:
         return self.__images.is_empty()
 
-    def convert_id_to_title(self) -> Dict[BlogEntryId, str]:
-        return {self.id: self.title}
+    def convert_id_to_title(self) -> Dict[str, str]:
+        return {self.id.value: self.title}
 
     def convert_md_line(self) -> str:
         return f'- [{self.title}]({self.page_url}) ({self.updated_at_month_day})'
 
     def serialize(self) -> object:
         return vars(self)
-
-    @classmethod
-    def deserialize(cls, json_data: Dict[str, any]) -> BlogEntry:
-        return BlogEntry(
-            BlogEntryId(json_data[BlogEntry.FIELD_ID]),
-            json_data[BlogEntry.FIELD_TITLE],
-            json_data[BlogEntry.FIELD_PAGE_URL],
-            EntryDateTime(json_data[BlogEntry.FIELD_UPDATED_AT]),
-            CategoryPath(json_data[BlogEntry.FIELD_CATEGORY_PATH]),
-            json_data[BlogEntry.FIELD_CATEGORIES],
-            json_data[BlogEntry.FIELD_ORIGINAL_DOC_ID],
-            PhotoEntries.deserialize(json_data[BlogEntry.FIELD_DOC_IMAGES])
-        )
