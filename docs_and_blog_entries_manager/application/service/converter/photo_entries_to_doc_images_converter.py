@@ -1,8 +1,8 @@
 from typing import List
 
-from domain.blogs.datasources.hatena.image.image_downloader import ImageDownLoader
 from domain.blogs.entity.photo.photo_entries import PhotoEntries
 from domain.docs.entity.image.doc_image import DocImage
+from infrastructure.hatena.image.image_downloader import ImageDownLoader
 
 
 class PhotoEntriesToDocImagesConverter:

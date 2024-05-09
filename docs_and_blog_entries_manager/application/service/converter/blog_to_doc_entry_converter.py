@@ -2,12 +2,12 @@ from typing import Optional
 
 from common.constants import DOCS_DIR_PATH
 from domain.blogs.entity.blog_entry import BlogEntry
-from domain.docs import DocEntry
+from domain.docs.entity.doc_entry import DocEntry
 from domain.docs.entity.factory.doc_entry_builder import DocEntryBuilder
-from domain.docs.value import DocEntryId
-from domain.store.datasources.stored_entry_accessor import StoredEntryAccessor
-from domain.store.entity.blog_to_doc_entry_mapping import BlogToDocEntryMapping
+from domain.docs.value.doc_entry_id import DocEntryId
+from domain.entries.entity.blog_to_doc_entry_mapping import BlogToDocEntryMapping
 from files import file_system
+from infrastructure.store.stored_entry_accessor import StoredEntryAccessor
 
 
 class BlogToDocEntryConverter:

@@ -1,11 +1,11 @@
 from typing import List
 
-from domain.blogs.datasources.hatena.blog_entry_repository import BlogEntryRepository
-from domain.blogs.datasources.hatena.photo_entry_repository import PhotoEntryRepository
-from domain.blogs.datasources.model.posted_blog_entry import PostedBlogEntry
+from domain.blogs.datasource.model.posted_blog_entry import PostedBlogEntry
 from domain.blogs.entity.photo.photo_entries import PhotoEntries
 from domain.blogs.entity.photo.photo_entry import PhotoEntry
 from domain.blogs.value.photo_entry_id import PhotoEntryId
+from infrastructure.hatena.blog_entry_repository import BlogEntryRepository
+from infrastructure.hatena.photo_entry_repository import PhotoEntryRepository
 
 
 class PostedBlogEntryCollector:

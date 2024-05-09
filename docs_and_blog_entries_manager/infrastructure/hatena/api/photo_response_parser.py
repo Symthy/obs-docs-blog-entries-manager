@@ -1,8 +1,8 @@
 from typing import Optional
 
-from domain.blogs.datasources.hatena.api.xml import entry_xml
 from domain.blogs.entity.photo.photo_entry import PhotoEntry
 from domain.blogs.value.photo_entry_id import PhotoEntryId
+from infrastructure.hatena.api.xml import entry_xml
 from ltimes import datetime_functions
 
 

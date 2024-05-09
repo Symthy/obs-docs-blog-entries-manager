@@ -4,14 +4,24 @@
 
 package application {
     package service {
-        class BlogEntryCollectorService
+'        class BlogEntryCollectorService
+
+        package converter {
+            class BlogsToDocsConverter
+            class DocsToBlogsConverter
+        }
     }
 }
 
-application.service.BlogEntryCollectorService ..> domain.converter
-application.service.BlogEntryCollectorService ...> domain.store
-application.service.BlogEntryCollectorService ...> domain.blogs
-application.service.BlogEntryCollectorService ...> domain.docs
+application.service.converter.BlogsToDocsConverter ..> domain.blogs.BlogEntry
+application.service.converter.BlogsToDocsConverter ..> domain.docs.DocEntry
+application.service.converter.DocsToBlogsConverter ..> domain.blogs.BlogEntry
+application.service.converter.DocsToBlogsConverter ..> domain.docs.DocEntry
+
+'application.service.BlogEntryCollectorService ..> domain.converter
+'application.service.BlogEntryCollectorService ...> domain.store
+'application.service.BlogEntryCollectorService ...> domain.blogs
+'application.service.BlogEntryCollectorService ...> domain.docs
 
 package domain {
     package blogs {
@@ -20,30 +30,25 @@ package domain {
     package docs {
         class DocEntry
     }
-    package converter {
-        class BlogsToDocsConverter
-        class DocsToBlogsConverter
-    }
-    package store {
-        class StoredEntryAccessor
-        interface IStoredEntryAccessor
-        IStoredEntryAccessor <|. StoredEntryAccessor
-    }
     package entries {
         interface IEntry
         class EntryTree
+        interface IStoredEntryAccessor
         EntryTreeRestorer .> EntryTree
         EntryTree .> IEntry
     }
-    entries.IEntry <|.. blogs.BlogEntry
-    entries.IEntry <|... docs.DocEntry
-    entries.EntryTreeRestorer ...> store.IStoredEntryAccessor
+    blogs.BlogEntry ..|> entries.IEntry
+    docs.DocEntry ..|> entries.IEntry
+}
 
-    converter.BlogsToDocsConverter ..> blogs.BlogEntry
-    converter.BlogsToDocsConverter ...> docs.DocEntry
-    converter.DocsToBlogsConverter ..> blogs.BlogEntry
-    converter.DocsToBlogsConverter ...> docs.DocEntry
-    store.StoredEntryAccessor ..> entries.IEntry
+domain.entries.EntryTreeRestorer ..> domain.entries.IStoredEntryAccessor
+domain.entries.IEntry <.. infrastructure.store.StoredEntryAccessor
+domain.entries.IStoredEntryAccessor <|.. infrastructure.store.StoredEntryAccessor
+
+package infrastructure {
+    package store {
+        class StoredEntryAccessor
+    }
 }
 
 @enduml

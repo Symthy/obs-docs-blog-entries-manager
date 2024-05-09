@@ -2,9 +2,9 @@ from typing import Optional, List
 
 from docs_and_blog_entries_manager.common.constants import EXCLUDE_ENTRY_IDS_TXT_PATH
 from docs_and_blog_entries_manager.files import config
-from domain.blogs.datasources.hatena.api.xml import blog_entry_xml
-from domain.blogs.datasources.hatena.api.xml import entry_xml
-from domain.blogs.datasources.model.posted_blog_entry import PostedBlogEntry
+from domain.blogs.datasource.model.posted_blog_entry import PostedBlogEntry
+from infrastructure.hatena.api.xml import blog_entry_xml
+from infrastructure.hatena.api.xml import entry_xml
 
 
 # def __print_xml_children(root: ET.Element):

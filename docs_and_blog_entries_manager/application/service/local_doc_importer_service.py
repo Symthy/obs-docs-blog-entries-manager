@@ -1,4 +1,4 @@
-from domain.store.entity.category_tree_definition import CategoryTreeDefinition
+from domain.entries.entity.category_tree_definition import CategoryTreeDefinition
 
 
 class LocalDocImporterService:

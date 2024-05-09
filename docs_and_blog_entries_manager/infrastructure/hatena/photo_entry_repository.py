@@ -2,11 +2,11 @@ from typing import Optional
 
 from docs_and_blog_entries_manager.api.api_client import ApiClient
 from docs_and_blog_entries_manager.ltimes import datetime_functions
-from domain.blogs.datasources.hatena.api.photo_response_parser import PhotoEntryResponseBody
-from domain.blogs.datasources.hatena.templates import request_formats
 from domain.blogs.entity.photo.photo_entry import PhotoEntry
 from domain.blogs.value.photo_entry_id import PhotoEntryId
 from files import image_file, file_path
+from infrastructure.hatena.api.photo_response_parser import PhotoEntryResponseBody
+from infrastructure.hatena.templates import request_formats
 from logs.logger import Logger
 
 

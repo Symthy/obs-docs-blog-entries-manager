@@ -1,5 +1,5 @@
 from domain.entries.interface import IEntryDeserializer
-from domain.store.interface import IStoredEntryAccessor, TS, TI
+from domain.entries.interface import IStoredEntryAccessor, TS, TI
 from exceptions.entry_loading_exception import EntryLoadingException
 from exceptions.entry_saving_exception import EntrySavingException
 from files import json_file, file_system

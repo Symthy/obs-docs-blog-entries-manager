@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from typing import List
 
+from domain.entries.entity.category_group import CategoryGroup
 from domain.entries.values.category_path import CategoryPath
-from domain.store.entity.category_group import CategoryGroup
 from files import file_system
 
 

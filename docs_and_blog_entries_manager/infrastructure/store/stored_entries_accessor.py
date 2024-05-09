@@ -1,9 +1,9 @@
 from typing import List, Callable
 
+from domain.entries.interface import IStoredEntriesAccessor, IStoredEntryAccessor, TM, TI, TS
 from domain.entries.values.category_path import CategoryPath
-from domain.store.entity.stored_entry_list import StoredEntryList
-from domain.store.interface import IStoredEntriesAccessor, IStoredEntryAccessor, TM, TI, TS
 from files import json_file
+from infrastructure.store.stored_entry_list import StoredEntryList
 
 
 class StoredEntriesAccessor(IStoredEntriesAccessor[TM, TS, TI]):

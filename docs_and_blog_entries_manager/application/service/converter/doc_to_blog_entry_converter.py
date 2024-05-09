@@ -1,13 +1,13 @@
 from typing import Optional
 
-from domain.blogs.entity import BlogEntryBuilder
 from domain.blogs.entity.blog_entries import BlogEntries
 from domain.blogs.entity.blog_entry import BlogEntry
-from domain.blogs.value import BlogEntryId
-from domain.docs import DocEntry
+from domain.blogs.entity.factory.blog_entry_builder import BlogEntryBuilder
+from domain.blogs.value.blog_entry_id import BlogEntryId
 from domain.docs.entity.doc_entries import DocEntries
-from domain.store.datasources.stored_entry_accessor import StoredEntryAccessor
-from domain.store.entity.blog_to_doc_entry_mapping import BlogToDocEntryMapping
+from domain.docs.entity.doc_entry import DocEntry
+from domain.entries.entity.blog_to_doc_entry_mapping import BlogToDocEntryMapping
+from infrastructure.store.stored_entry_accessor import StoredEntryAccessor
 
 
 class DocToBlogEntryConverter:

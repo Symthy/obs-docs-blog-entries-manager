@@ -2,7 +2,7 @@ from typing import List
 from xml.sax.saxutils import escape
 
 from common.constants import SUMMARY_PAGE_TITLE
-from domain.blogs.datasources.model.post_blog_entry import PostBlogEntry
+from domain.blogs.datasource.model.post_blog_entry import PostBlogEntry
 
 
 def summary_page_title() -> str:

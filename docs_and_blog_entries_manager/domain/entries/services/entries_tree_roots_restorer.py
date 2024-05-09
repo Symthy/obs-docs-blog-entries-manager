@@ -1,9 +1,9 @@
+from domain.entries.entity.category_tree_definition import CategoryTreeDefinition
 from domain.entries.entity.entries_tree import EntriesTree
 from domain.entries.entity.entries_tree_roots import EntriesTreeRoots
 from domain.entries.interface import IEntries
 from domain.entries.values.category_path import CategoryPath
-from domain.store.datasources.stored_entries_accessor import StoredEntriesAccessor
-from domain.store.entity.category_tree_definition import CategoryTreeDefinition
+from infrastructure.store.stored_entries_accessor import StoredEntriesAccessor
 
 
 class EntriesTreeRootsRestorer:

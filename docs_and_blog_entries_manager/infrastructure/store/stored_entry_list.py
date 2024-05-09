@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Any, Generic
 
-from domain.store.interface import TM, TS, TI
+from domain.entries.interface import TM, TS, TI
 from files import json_file
 from ltimes import datetime_functions
 

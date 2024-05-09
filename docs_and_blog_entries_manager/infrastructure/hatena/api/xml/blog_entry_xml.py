@@ -2,7 +2,7 @@ import xml.etree.ElementTree as ET
 from datetime import datetime
 from typing import List, Optional
 
-from domain.blogs.datasources.model.posted_blog_entry import PostedBlogEntry
+from domain.blogs.datasource.model.posted_blog_entry import PostedBlogEntry
 
 
 def parse(hatena_id, entry_node: ET.Element, tag_head: str, exclude_ids: List[str]) -> Optional[PostedBlogEntry]:
