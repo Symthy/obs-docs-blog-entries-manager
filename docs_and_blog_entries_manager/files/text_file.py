@@ -4,7 +4,7 @@ from typing import List
 from docs_and_blog_entries_manager.logs.logger import Logger
 
 
-def read_lines(file_path: str) -> str:
+def read_file(file_path: str) -> str:
     with codecs.open(file_path, mode='r', encoding='utf-8') as f:
         lines = f.read()
     return lines

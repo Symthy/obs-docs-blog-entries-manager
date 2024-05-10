@@ -1,12 +1,12 @@
 from typing import Optional
 
+from application.service.converter.mappings.blog_to_doc_entry_mapping import BlogToDocEntryMapping
 from domain.blogs.entity.blog_entries import BlogEntries
 from domain.blogs.entity.blog_entry import BlogEntry
 from domain.blogs.entity.factory.blog_entry_builder import BlogEntryBuilder
 from domain.blogs.value.blog_entry_id import BlogEntryId
 from domain.docs.entity.doc_entries import DocEntries
 from domain.docs.entity.doc_entry import DocEntry
-from domain.entries.entity.blog_to_doc_entry_mapping import BlogToDocEntryMapping
 from infrastructure.store.stored_entry_accessor import StoredEntryAccessor
 
 
@@ -30,7 +30,6 @@ class DocToBlogEntryConverter:
             builder.categories(doc_entry.categories)
             # Todo: 画像
             # builder.doc_images(doc_entry.)
-            builder.original_doc_id(doc_entry.id.value)
             return builder.build()
 
         existed_blog_entry: BlogEntry = self.__stored_blog_entry_accessor.load_entry(blog_id)
@@ -42,6 +41,5 @@ class DocToBlogEntryConverter:
             builder.categories(doc_entry.categories)
             # Todo: 画像
             # builder.doc_images(doc_entry.)
-            builder.original_doc_id(doc_entry.id.value)
             return builder.build()
         return existed_blog_entry

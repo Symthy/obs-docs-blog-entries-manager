@@ -1,6 +1,7 @@
 from typing import List
 
 from application.service.converter.blog_to_doc_entry_converter import BlogToDocEntryConverter
+from application.service.converter.mappings.blog_to_doc_entry_mapping import BlogToDocEntryMapping
 from application.service.converter.photo_entries_to_doc_images_converter import PhotoEntriesToDocImagesConverter
 from common.constants import DOCS_DIR_PATH
 from domain.blogs.datasource.model.posted_blog_entry import PostedBlogEntry
@@ -11,7 +12,6 @@ from domain.docs.entity.doc_entry import DocEntry
 from domain.docs.entity.image.doc_images import DocImages
 from domain.docs.value.doc_content import DocContent
 from domain.docs.value.doc_entry_id import DocEntryId
-from domain.entries.entity.blog_to_doc_entry_mapping import BlogToDocEntryMapping
 from domain.entries.values.entry_date_time import EntryDateTime
 from files import file_system, text_file, image_file
 from infrastructure.store.stored_entry_accessor import StoredEntryAccessor
