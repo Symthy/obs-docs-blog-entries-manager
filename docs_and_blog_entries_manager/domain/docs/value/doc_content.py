@@ -2,6 +2,7 @@ import re
 from typing import List
 
 from common.constants import NON_CATEGORY_NAME
+from domain.entries.values.category_path import CategoryPath
 from files import file_system
 
 
@@ -38,6 +39,10 @@ class DocContent:
     @property
     def image_paths(self) -> List[str]:
         return self.__image_paths
+
+    @property
+    def category_path(self) -> CategoryPath:
+        return self.__category_path
 
     @property
     def categories(self) -> List[str]:

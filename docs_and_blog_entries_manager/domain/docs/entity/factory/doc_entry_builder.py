@@ -11,7 +11,6 @@ class DocEntryBuilder:
         if based_doc_entry is not None:
             self.__id = based_doc_entry.id
             self.__title = based_doc_entry.title
-            self.__dir_path = based_doc_entry.dir_path
             self.__doc_file_name = based_doc_entry.doc_file_name
             self.__category_path = based_doc_entry.category_path
             self.__categories = based_doc_entry.categories
@@ -25,10 +24,6 @@ class DocEntryBuilder:
 
     def title(self, value: str):
         self.__title = value
-        return self
-
-    def dir_path(self, value: str):
-        self.__dir_path = value
         return self
 
     def doc_file_name(self, value: str):
@@ -64,7 +59,6 @@ class DocEntryBuilder:
         return DocEntry(
             self.__id if self.__id is not None else DocEntryId.build(current_date_time),
             self.__title,
-            self.__dir_path,
             self.__doc_file_name,
             self.__category_path,
             self.__categories,

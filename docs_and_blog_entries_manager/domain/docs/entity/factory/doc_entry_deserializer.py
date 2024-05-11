@@ -10,7 +10,6 @@ class DocEntryDeserializer(IEntryDeserializer):
         return DocEntry(
             DocEntryId(json_data[DocEntry.FIELD_ID]),
             json_data[DocEntry.FIELD_TITLE],
-            json_data[DocEntry.FIELD_DIR_PATH],
             json_data[DocEntry.FIELD_DOC_FILE_NAME],
             CategoryPath(json_data[DocEntry.FIELD_CATEGORY_PATH]),
             json_data[DocEntry.FIELD_CATEGORIES],

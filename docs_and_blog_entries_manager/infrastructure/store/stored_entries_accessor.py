@@ -3,7 +3,7 @@ from typing import List, Callable
 from domain.entries.interface import IStoredEntriesAccessor, IStoredEntryAccessor, TM, TI, TS
 from domain.entries.values.category_path import CategoryPath
 from files import json_file
-from infrastructure.store.stored_entry_list_holder import StoredEntryList
+from infrastructure.store.stored_entry_list_holder import StoredEntryListHolder
 
 
 class StoredEntriesAccessor(IStoredEntriesAccessor[TM, TS, TI]):
@@ -12,7 +12,7 @@ class StoredEntriesAccessor(IStoredEntriesAccessor[TM, TS, TI]):
                  entries_builder: Callable[[List[TS]], TM]):
         self.__entry_list_file_path = entry_list_file_path
         self.__stored_entry_accessor = stored_entry_accessor
-        self.__stored_entry_list = StoredEntryList.deserialize(entry_list_file_path)
+        self.__stored_entry_list = StoredEntryListHolder.deserialize(entry_list_file_path)
         self.__entries_builder = entries_builder
 
     def load_entries(self) -> TM:

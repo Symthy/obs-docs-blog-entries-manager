@@ -30,3 +30,8 @@ def write_line(file_path, line: str):
 
 def write_lines(file_path, lines: List[str]):
     write_file(file_path, '\n'.join(lines))
+
+
+def add_end_line(file_path: str, line: str):
+    with open(file_path, mode='a') as f:
+        f.write(f'{line}\n')

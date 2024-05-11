@@ -12,7 +12,6 @@ from files import file_system
 class DocEntry(IEntry):
     FIELD_ID = 'id'
     FIELD_TITLE = 'title'
-    FIELD_DIR_PATH = 'dir_path'
     FIELD_DOC_FILE_NAME = 'doc_file_name'
     FIELD_CATEGORY_PATH = 'category_path'
     FIELD_CATEGORIES = 'categories'
@@ -20,12 +19,11 @@ class DocEntry(IEntry):
     FIELD_CREATED_AT = 'created_at'
     FIELD_UPDATED_AT = 'updated_at'
 
-    def __init__(self, doc_id: DocEntryId, title: str, dir_path: str, doc_file_name: str, category_path: CategoryPath,
+    def __init__(self, doc_id: DocEntryId, title: str, doc_file_name: str, category_path: CategoryPath,
                  categories: List[str], is_pickup: bool = False, created_at: EntryDateTime = None,
                  updated_at: EntryDateTime = None):
         self.__id = doc_id
         self.__title = title
-        self.__dir_path = dir_path
         self.__doc_file_name = doc_file_name
         self.__category_path = category_path
         self.__categories = categories
@@ -42,12 +40,8 @@ class DocEntry(IEntry):
         return self.__title
 
     @property
-    def dir_path(self) -> str:
-        return self.__dir_path
-
-    @property
     def doc_file_path(self) -> str:
-        return file_system.join_path(self.dir_path, self.__doc_file_name)
+        return file_system.join_path('.', self.category_path.value, self.__doc_file_name)
 
     @property
     def doc_file_name(self) -> str:

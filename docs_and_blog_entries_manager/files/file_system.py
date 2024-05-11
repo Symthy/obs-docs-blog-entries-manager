@@ -36,7 +36,24 @@ def get_dir_path_from_file_path(path: str) -> str:
     return path.rsplit('/', 1)[0]
 
 
+def get_file_paths_in_target_dir(target_dir_path: str) -> List[str]:
+    files = os.listdir(target_dir_path)
+    return [target_dir_path + f for f in files if os.path.isfile(os.path.join(target_dir_path, f))]
+
+
+def get_file_name(file_path: str) -> str:
+    return os.path.basename(file_path)
+
+
+def get_file_name_without_ext(file_path: str) -> str:
+    return os.path.splitext(os.path.basename(file_path))[0]
+
+
 def get_created_file_time(file_path: str) -> datetime:
     created_unix_time = Path(file_path).stat().st_ctime
     created_date_time = datetime.fromtimestamp(created_unix_time)
     return created_date_time
+
+
+def get_updated_file_time(file_path: str) -> datetime:
+    return datetime.fromtimestamp(os.path.getmtime(file_path))

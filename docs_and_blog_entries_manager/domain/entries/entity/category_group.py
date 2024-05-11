@@ -34,9 +34,10 @@ class CategoryGroup:
                 return True
         return False
 
-    def category_paths(self, parent_category_path: CategoryPath = None) -> List[CategoryPath]:
+    def category_full_paths(self, parent_category_path: CategoryPath = CategoryPath('.')) -> List[CategoryPath]:
         """
         フルパスの category_path のみ取得。途中階層のパスは含めない
+        末端ノードに到達した時だけリストにいれることで実現
         """
         current_category_path = parent_category_path.join(self.category_name) \
             if parent_category_path is not None else CategoryPath(self.category_name)
@@ -44,5 +45,17 @@ class CategoryGroup:
             return [current_category_path]
         category_paths = []
         for child in self.__children:
-            category_paths += child.category_paths(current_category_path)
+            category_paths += child.category_full_paths(current_category_path)
+        return category_paths
+
+    def all_category_paths(self, parent_category_path: CategoryPath = CategoryPath('.')):
+        """
+        すべての category_path を取得。途中階層のパスを含める
+        末端ノードに到達した時だけリストにいれることで実現
+        """
+        current_category_path = parent_category_path.join(self.category_name) \
+            if parent_category_path is not None else CategoryPath(self.category_name)
+        category_paths = [current_category_path]
+        for child in self.__children:
+            category_paths += child.all_category_paths(current_category_path)
         return category_paths

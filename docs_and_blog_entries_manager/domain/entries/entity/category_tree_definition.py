@@ -24,6 +24,28 @@ class CategoryTreeDefinition:
             categories[dir_name] = category_group
         return CategoryTreeDefinition(categories)
 
+    @property
+    def category_full_paths(self) -> List[CategoryPath]:
+        """
+        フルパスの category_path のみ取得。途中階層のパスは含めない
+        """
+        category_paths = []
+        for category_group in self.__category_name_to_categories.values():
+            category_paths += category_group.category_full_paths()
+        return category_paths
+
+    @property
+    def all_categoory_paths(self) -> List[CategoryPath]:
+        """
+        途中階層も含めて全ての category_path を取得
+        """
+
+    def exist_category_path(self, category_path_str: str) -> bool:
+        category_path = CategoryPath(category_path_str)
+        if category_path.top in self.__category_name_to_categories.keys():
+            return self.__category_name_to_categories[category_path.top].find_category_path(category_path)
+        return False
+
     def __build_category_group(self, dir_path: str, target_dir_name: str,
                                parent_category_path: CategoryPath = None) -> CategoryGroup:
         sub_dir_names = file_system.get_dir_names_in_target_dir(dir_path)
@@ -39,19 +61,3 @@ class CategoryTreeDefinition:
         if parent_category_path is None:
             return CategoryPath(target_dir_name)
         return parent_category_path.join(target_dir_name)
-
-    @property
-    def category_full_paths(self) -> List[CategoryPath]:
-        """
-        フルパスの category_path のみ取得。途中階層のパスは含めない
-        """
-        category_paths = []
-        for category_group in self.__category_name_to_categories.values():
-            category_paths += category_group.category_paths()
-        return category_paths
-
-    def exist_category_path(self, category_path_str: str) -> bool:
-        category_path = CategoryPath(category_path_str)
-        if category_path.top in self.__category_name_to_categories.keys():
-            return self.__category_name_to_categories[category_path.top].find_category_path(category_path)
-        return False
