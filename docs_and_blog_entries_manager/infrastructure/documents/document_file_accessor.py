@@ -41,7 +41,11 @@ class DocumentFileAccessor:
         return DocEntryId(created_date_time.to_str_with_num_sequence())
 
     def insert_category_path_to_content(self, doc_file_path: str, category_path: CategoryPath):
-        text_file.add_end_line(doc_file_path, category_path.value)
+        content = DocContent(text_file.read_file(doc_file_path), file_system.get_dir_path_from_file_path(doc_file_path))
+        if content.not_exist_category_path:
+            text_file.add_end_line(doc_file_path, category_path.value)
+        else:
+            content.update_category(category_path, content.categories)
 
     def __build_file_path(self, doc_file_path: str) -> str:
         return file_system.join_path(self.__document_root_dir_path, doc_file_path)

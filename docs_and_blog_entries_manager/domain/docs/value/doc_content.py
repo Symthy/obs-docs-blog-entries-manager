@@ -1,7 +1,8 @@
-import re
-from typing import List
+from __future__ import annotations
 
-from common.constants import NON_CATEGORY_NAME
+import re
+from typing import List, Optional
+
 from domain.entries.values.category_path import CategoryPath
 from files import file_system
 
@@ -12,10 +13,11 @@ class DocContent:
 
     def __init__(self, content: str, doc_entry_dir_path: str):
         self.__content = content
+        self.__doc_entry_dir_path = doc_entry_dir_path
         self.__image_paths = self.__extract_image_paths(doc_entry_dir_path)
         all_categories = self.__extract_categories()
         self.__categories = all_categories[1:] if len(all_categories) >= 2 else []
-        self.__category_path = self.__categories[0] if len(all_categories) >= 1 else NON_CATEGORY_NAME
+        self.__category_path = self.__categories[0] if len(all_categories) >= 1 else None
 
     def __extract_image_paths(self, doc_dir_path: str) -> List[str]:
         # 画像ファイルのパスはmdファイルからの相対パス (image/xxxx)
@@ -41,8 +43,17 @@ class DocContent:
         return self.__image_paths
 
     @property
-    def category_path(self) -> CategoryPath:
+    def category_path(self) -> Optional[CategoryPath]:
         return self.__category_path
+
+    @property
+    def not_exist_category_path(self) -> bool:
+        return self.__category_path is None
+
+    def update_category(self, category_path: CategoryPath, categories: List[str]) -> DocContent:
+        new_category_line = ' '.join(list(map(lambda c: f'#{c}', [category_path.value, *categories]))) + '\n'
+        updated_content = self.value_with_removed_categories + new_category_line
+        return DocContent(updated_content, self.__doc_entry_dir_path)
 
     @property
     def categories(self) -> List[str]:
