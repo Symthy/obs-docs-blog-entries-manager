@@ -28,6 +28,14 @@ def get_dir_name_from_dir_path(path: str) -> str:
     return path.rsplit('/', 1)[1]
 
 
+def get_file_name_from_file_path(path: str) -> str:
+    return path.rsplit('/', 1)[1]
+
+
+def get_dir_path_from_file_path(path: str) -> str:
+    return path.rsplit('/', 1)[0]
+
+
 def get_created_file_time(file_path: str) -> datetime:
     created_unix_time = Path(file_path).stat().st_ctime
     created_date_time = datetime.fromtimestamp(created_unix_time)
