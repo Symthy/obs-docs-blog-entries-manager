@@ -1,12 +1,14 @@
 from typing import Optional
 
-from application.service.converter.mappings.blog_to_doc_entry_mapping import BlogToDocEntryMapping
+from domain.blogs.datasource.model.post_blog_entry import PostBlogEntry
 from domain.blogs.entity.blog_entries import BlogEntries
 from domain.blogs.entity.blog_entry import BlogEntry
 from domain.blogs.entity.factory.blog_entry_builder import BlogEntryBuilder
 from domain.blogs.value.blog_entry_id import BlogEntryId
+from domain.docs.datasources.model.document_dataset import DocumentDataset
 from domain.docs.entity.doc_entries import DocEntries
 from domain.docs.entity.doc_entry import DocEntry
+from infrastructure.store.blog_to_doc_entry_mapping import BlogToDocEntryMapping
 from infrastructure.store.stored_entry_accessor import StoredEntryAccessor
 
 
@@ -43,3 +45,11 @@ class DocToBlogEntryConverter:
             # builder.doc_images(doc_entry.)
             return builder.build()
         return existed_blog_entry
+
+    @classmethod
+    def convert_to_post(cls, doc_dataset: DocumentDataset) -> PostBlogEntry:
+        title = doc_dataset.doc_entry.title
+        category_path = doc_dataset.doc_entry.category_path
+        categories = doc_dataset.doc_entry.categories
+        return PostBlogEntry(title, doc_dataset.doc_content.value, category_path, categories,
+                             doc_dataset.doc_content.image_paths)

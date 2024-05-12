@@ -19,7 +19,7 @@ class StoredEntriesAccessor(IStoredEntriesAccessor[TM, TS, TI]):
         return self.__entries_builder(
             [self.__stored_entry_accessor.load_entry(entry_id) for entry_id in self.__stored_entry_list.entry_ids])
 
-    def load_entries_by_id(self, target_entry_ids: List[TI] = None) -> TM:
+    def load_entries_by_ids(self, target_entry_ids: List[TI] = None) -> TM:
         entry_list = list(
             map(lambda entry_id: self.__stored_entry_accessor.load_entry(entry_id),
                 filter(lambda entry_id: entry_id in self.__stored_entry_list.entry_ids, target_entry_ids)))

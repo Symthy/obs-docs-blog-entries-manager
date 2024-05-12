@@ -1,5 +1,6 @@
 from typing import List
 
+from domain.docs.datasources.model.document_dataset import DocumentDataset
 from domain.docs.entity.doc_entries import DocEntries
 from domain.docs.entity.doc_entry import DocEntry
 from domain.docs.entity.image.doc_images import DocImages
@@ -9,25 +10,33 @@ from domain.entries.values.category_path import CategoryPath
 from domain.entries.values.entry_date_time import EntryDateTime
 from files import text_file, file_system, image_file
 from infrastructure.documents.doc_entry_restorer import DocEntryRestorer
+from infrastructure.store.stored_entry_accessor import StoredEntryAccessor
 from infrastructure.store.stored_entry_list_holder import StoredEntryListHolder
 
 
 class DocumentFileAccessor:
-    def __init__(self, document_root_dir_path, stored_entry_list_holder: StoredEntryListHolder):
+    def __init__(self, document_root_dir_path, stored_entry_list: StoredEntryListHolder,
+                 stored_doc_entry_accessor: StoredEntryAccessor[DocEntry, DocEntryId]):
         self.__document_root_dir_path = document_root_dir_path
-        self.__stored_entry_list_holder = stored_entry_list_holder
+        self.__stored_entry_list = stored_entry_list
+        self.__stored_doc_entry_accessor = stored_doc_entry_accessor
         self.__doc_entry_restorer = DocEntryRestorer(document_root_dir_path)
 
-    def load(self, doc_file_path: str) -> DocContent:
+    def __load_document(self, doc_file_path: str) -> DocContent:
         content: str = text_file.read_file(file_system.join_path(doc_file_path))
         doc_dir_path = file_system.get_dir_path_from_file_path(doc_file_path)
         return DocContent(content, doc_dir_path)
+
+    def find_document(self, doc_id: DocEntryId) -> DocumentDataset:
+        doc_entry = self.__stored_doc_entry_accessor.load_entry(doc_id)
+        content = self.__load_document(doc_entry.doc_file_path)
+        return DocumentDataset(doc_entry, content)
 
     def find_non_register_doc_entries(self, doc_entry_paths: List[str]) -> DocEntries:
         doc_id_to_path = self.__all_doc_id_to_file_path(doc_entry_paths)
         doc_entries: List[DocEntry] = []
         for doc_id, doc_entry_path in doc_id_to_path:
-            if not self.__stored_entry_list_holder.exist_id(doc_id):
+            if not self.__stored_entry_list.exist_id(doc_id):
                 doc_entries.append(self.__doc_entry_restorer.execute(doc_entry_path))
         return DocEntries(doc_entries)
 

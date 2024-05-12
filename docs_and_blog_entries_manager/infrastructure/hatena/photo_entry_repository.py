@@ -1,7 +1,7 @@
-from typing import Optional
+from typing import Optional, List
 
 from docs_and_blog_entries_manager.api.api_client import ApiClient
-from docs_and_blog_entries_manager.ltimes import datetime_functions
+from domain.blogs.entity.photo.photo_entries import PhotoEntries
 from domain.blogs.entity.photo.photo_entry import PhotoEntry
 from domain.blogs.value.photo_entry_id import PhotoEntryId
 from files import image_file, file_path
@@ -22,7 +22,14 @@ class PhotoEntryRepository:
         return PhotoEntryResponseBody(xml_string_opt).parse('')
 
     # POST photo
-    # Todo: 引数をPhotoEntryにできないか
+    def post_all(self, image_file_paths: List[str]) -> PhotoEntries:
+        photo_entries: List[PhotoEntry] = []
+        for image_path in image_file_paths:
+            entry_opt = self.post(image_path)
+            if entry_opt is not None:
+                photo_entries.append(entry_opt)
+        return PhotoEntries(photo_entries)
+
     def post(self, image_file_path: str) -> Optional[PhotoEntry]:
         def __build_hatena_photo_entry_body() -> Optional[str]:
             # Todo: refactor use library
@@ -37,9 +44,10 @@ class PhotoEntryRepository:
             split_str = image_file_path.rsplit('.', 1)
             path_without_extension = split_str[0]
             file_name_without_extension = file_path.get_file_name(path_without_extension)
-            title = f'{datetime_functions.resolve_current_time_sequence()}_{file_name_without_extension}'
-            extension = split_str[1].lower()
+            title = file_name_without_extension
+            extension = split_str[-1].lower()
             if not extension in __PIC_EXTENSION_TO_CONTENT_TYPE:
+                Logger.warn(f'Non support image file extension: {image_file_path}')
                 return None
             b64_pic_data = image_file.read_b64(image_file_path)
             return request_formats.build_photo_entry_post_xml_body(title,

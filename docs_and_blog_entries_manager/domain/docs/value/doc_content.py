@@ -14,7 +14,7 @@ class DocContent:
     def __init__(self, content: str, doc_entry_dir_path: str):
         self.__content = content
         self.__doc_entry_dir_path = doc_entry_dir_path
-        self.__image_paths = self.__extract_image_paths(doc_entry_dir_path)
+        self.__image_paths_from_doc_file = self.__extract_image_paths(doc_entry_dir_path)
         all_categories = self.__extract_categories()
         self.__categories = all_categories[1:] if len(all_categories) >= 2 else []
         self.__category_path = self.__categories[0] if len(all_categories) >= 1 else None
@@ -39,8 +39,13 @@ class DocContent:
         return content
 
     @property
+    def image_paths_from_doc_file(self) -> List[str]:
+        return self.__image_paths_from_doc_file
+
+    @property
     def image_paths(self) -> List[str]:
-        return self.__image_paths
+        return list(
+            map(lambda path: file_system.join_path(self.__category_path, path), self.__image_paths_from_doc_file))
 
     @property
     def category_path(self) -> Optional[CategoryPath]:

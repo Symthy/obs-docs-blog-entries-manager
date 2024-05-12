@@ -37,7 +37,7 @@ class BlogEntriesResponseBody:
         tag_head = entry_xml.extract_tag_head(root_node)
 
         blog_entries = list(filter(lambda blog_entry: blog_entry is not None,
-                                   map(lambda entry_node: blog_entry_xml.parse(hatena_id, entry_node, tag_head,
+                                   map(lambda entry_node: blog_entry_xml.parse(self.__hatena_id, entry_node, tag_head,
                                                                                self.__exclude_entry_ids),
                                        root_node.iter(tag_head + 'entry'))))
         # for entry_node in root_node.iter(tag_head + 'entry'):
@@ -50,7 +50,8 @@ class BlogEntriesResponseBody:
 
 # Todo: refactor
 class BlogEntryResponseBody:
-    def __init__(self, response_xml: Optional[str]):
+    def __init__(self, hatena_id, response_xml: Optional[str]):
+        self.__hatena_id = hatena_id
         self.__response_xml = response_xml
         self.__exclude_entry_ids = config.read_lines(EXCLUDE_ENTRY_IDS_TXT_PATH)
 
@@ -59,4 +60,4 @@ class BlogEntryResponseBody:
             return None
         root_node = entry_xml.convert_root_node(self.__response_xml)
         tag_head = entry_xml.extract_tag_head(root_node, 'entry')
-        return blog_entry_xml.parse(root_node, tag_head, [])
+        return blog_entry_xml.parse(self.__hatena_id, root_node, tag_head, [])

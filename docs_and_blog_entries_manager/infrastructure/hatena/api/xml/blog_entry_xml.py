@@ -5,7 +5,7 @@ from typing import List, Optional
 from domain.blogs.datasource.model.posted_blog_entry import PostedBlogEntry
 
 
-def parse(hatena_id, entry_node: ET.Element, tag_head: str, exclude_ids: List[str]) -> Optional[PostedBlogEntry]:
+def parse(hatena_id: str, entry_node: ET.Element, tag_head: str, exclude_ids: List[str]) -> Optional[PostedBlogEntry]:
     # id example: tag:blog.hatena.ne.jp,2013:blog-Sympathia-17680117126980108518-13574176438048806685
     # entry id is last sequence
     entry_id = entry_node.find(tag_head + 'id').text.rsplit('-', 1)[1]

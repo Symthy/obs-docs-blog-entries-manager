@@ -17,7 +17,7 @@ class PostedBlogEntryCollector:
 
     def execute(self) -> List[PostedBlogEntry]:
         posted_blog_entries: List[PostedBlogEntry] = []
-        for posted_blog_entry in self.__blog_entry_repository.all():
+        for posted_blog_entry in self.__blog_entry_repository.find_all():
             photo_entry_ids: List[PhotoEntryId] = posted_blog_entry.content.photo_entry_ids
             updated_posted_blog_entry = self.__insert_photo_entries(posted_blog_entry, photo_entry_ids)
             posted_blog_entries.append(updated_posted_blog_entry)

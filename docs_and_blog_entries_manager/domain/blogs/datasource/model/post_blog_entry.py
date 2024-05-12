@@ -1,6 +1,5 @@
-from typing import List, Optional
+from typing import List
 
-from domain.blogs.entity.photo.photo_entries import PhotoEntries
 from domain.entries.values.category_path import CategoryPath
 from domain.entries.values.entry_date_time import EntryDateTime
 
@@ -10,19 +9,14 @@ class PostBlogEntry:
     これからブログに登録するデータを保持するためのクラス
     """
 
-    def __init__(self, entry_id: str, title: str, content: str, category_path: CategoryPath, categories: List[str],
-                 doc_images: PhotoEntries = PhotoEntries()):
-        self.__id = entry_id
+    def __init__(self, title: str, content: str, category_path: CategoryPath, categories: List[str],
+                 doc_image_paths: List[str] = None):
         self.__title = title
         self.__content = content
         self.__category_path = category_path
         self.__categories = categories
         self.__updated_at = EntryDateTime()
-        self.__doc_images: PhotoEntries = doc_images
-
-    @property
-    def id(self):
-        return self.__id
+        self.__doc_image_paths = doc_image_paths if doc_image_paths is not None else []
 
     @property
     def title(self):
@@ -37,18 +31,13 @@ class PostBlogEntry:
         return self.__categories
 
     @property
-    def top_category(self) -> str:
-        return self.__top_category
+    def category_path(self) -> CategoryPath:
+        return self.__category_path
 
     @property
     def updated_at(self) -> EntryDateTime:
         return self.__updated_at
 
     @property
-    def doc_images(self) -> Optional[PhotoEntries]:
-        if self.is_images_empty():
-            return None
-        return self.__doc_images
-
-    def is_images_empty(self) -> bool:
-        return self.__doc_images.is_empty()
+    def doc_image_paths(self) -> List[str]:
+        return self.__doc_image_paths
