@@ -41,4 +41,4 @@ class ApiClient:
             Logger.info(f'API success: url={url}')
             return response.text  # format: xml
         else:
-            raise ApiException(http_method, url, response.text)
+            raise ApiException(http_method, url, response.text, response.status_code, response.reason, response.text)

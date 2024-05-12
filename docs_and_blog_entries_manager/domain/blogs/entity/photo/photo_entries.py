@@ -30,6 +30,22 @@ class PhotoEntries:
             return None
         return self.__filename_to_photo_entry[image_filename]
 
+    def get_entries(self, image_filename: List[str]) -> List[PhotoEntry]:
+        photo_entries = []
+        for image_filename in image_filename:
+            photo_entry_opt = self.get_entry(image_filename)
+            if photo_entry_opt is None:
+                continue
+            photo_entries.append(photo_entry_opt)
+        return photo_entries
+
+    def non_exist_entries(self, image_filenames: List[str]) -> PhotoEntries:
+        photo_entries: List[PhotoEntry] = []
+        for existed_photo_entry in self.__filename_to_photo_entry.values():
+            if existed_photo_entry.image_filename not in image_filenames:
+                photo_entries.append(existed_photo_entry)
+        return PhotoEntries(photo_entries)
+
     def get_syntax(self, image_filename: str) -> Optional[str]:
         entry = self.get_entry(image_filename)
         return None if entry is None else entry.syntax

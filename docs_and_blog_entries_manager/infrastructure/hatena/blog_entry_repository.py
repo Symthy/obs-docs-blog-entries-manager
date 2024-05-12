@@ -46,7 +46,8 @@ class BlogEntryRepository:
         return BlogEntryResponseBody(self.__hatena_id, blog_entry_xml).parse()
 
     # PUT blog
-    def put(self, entry: PostBlogEntry, is_draft: bool, is_title_escape: bool) -> Optional[PostedBlogEntry]:
+    def put(self, entry: PostBlogEntry, is_draft: bool = False, is_title_escape: bool = True) \
+            -> Optional[PostedBlogEntry]:
         blog_entry_xml = self.__put_entry(entry, is_draft, is_title_escape)
         return BlogEntryResponseBody(self.__hatena_id, blog_entry_xml).parse()
 

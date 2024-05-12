@@ -2,6 +2,7 @@ from typing import List
 
 from domain.entries.values.category_path import CategoryPath
 from domain.entries.values.entry_date_time import EntryDateTime
+from files import file_system
 
 
 class PostBlogEntry:
@@ -41,3 +42,7 @@ class PostBlogEntry:
     @property
     def doc_image_paths(self) -> List[str]:
         return self.__doc_image_paths
+
+    @property
+    def doc_image_filenames(self) -> List[str]:
+        return list(map(lambda path: file_system.get_file_name_from_file_path(path), self.__doc_image_paths))

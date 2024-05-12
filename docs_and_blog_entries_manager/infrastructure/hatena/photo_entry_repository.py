@@ -62,9 +62,20 @@ class PhotoEntryRepository:
 
     # UPDATE(DELETE+POST) photo
     # because PUT can change title only
-    # Todo: 引数をPhotoEntryのみにできないか
     def put(self, image_file_path: str, photo_entry: PhotoEntry) -> Optional[PhotoEntry]:
-        path = f'edit/{photo_entry.id}'
-        Logger.info('DELETE Photo')
-        self.__api_client.delete(path)
+        # Todo: error
+        self.__delete(photo_entry)
         return self.post(image_file_path)
+
+    # DELETE
+    def delete_all(self, photo_entries: PhotoEntries):
+        for photo_entry in photo_entries.items:
+            self.__delete(photo_entry)
+
+    def __delete(self, photo_entry: PhotoEntry):
+        path = f'edit/{photo_entry.id}'
+        res = self.__api_client.delete(path)
+        if res is None:
+            # Todo: error
+            return None
+        Logger.info(f'DELETE Photo: {photo_entry.id}')
