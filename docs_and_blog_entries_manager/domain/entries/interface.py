@@ -103,7 +103,7 @@ class IStoredEntryAccessor(ABC, Generic[TS, TI]):
     def load_entry(self, entry_id: TI) -> TS:
         pass
 
-    def save_entry(self, entry: TI):
+    def save_entry(self, entry: TS):
         pass
 
 

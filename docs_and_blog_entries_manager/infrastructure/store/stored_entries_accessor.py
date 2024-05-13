@@ -3,17 +3,21 @@ from typing import List, Callable
 from domain.entries.interface import IStoredEntriesAccessor, IStoredEntryAccessor, TM, TI, TS
 from domain.entries.values.category_path import CategoryPath
 from files import json_file
+from infrastructure.store.stored_entry_accessor import _StoredEntryAccessor
 from infrastructure.store.stored_entry_list_holder import StoredEntryListHolder
 
 
-class StoredEntriesAccessor(IStoredEntriesAccessor[TM, TS, TI]):
+class StoredEntriesAccessor(IStoredEntriesAccessor[TM, TS, TI], IStoredEntryAccessor[TS, TI]):
 
-    def __init__(self, entry_list_file_path: str, stored_entry_accessor: IStoredEntryAccessor,
+    def __init__(self, entry_list_file_path: str, stored_entry_accessor: _StoredEntryAccessor,
                  entries_builder: Callable[[List[TS]], TM]):
         self.__entry_list_file_path = entry_list_file_path
         self.__stored_entry_accessor = stored_entry_accessor
         self.__stored_entry_list = StoredEntryListHolder.deserialize(entry_list_file_path)
         self.__entries_builder = entries_builder
+
+    def load_entry(self, entry_id: TI) -> TS:
+        return self.__stored_entry_accessor.load_entry(entry_id)
 
     def load_entries(self) -> TM:
         return self.__entries_builder(
@@ -34,6 +38,9 @@ class StoredEntriesAccessor(IStoredEntriesAccessor[TM, TS, TI]):
             else:
                 del entry  # 不要なインスタンスは即解放。メモリ節約
         return self.__entries_builder(entry_list)
+
+    def save_entry(self, entry: TS):
+        return self.__stored_entry_accessor.save_entry(entry)
 
     def save_entries(self, entries: TM):
         for entry in entries.items:

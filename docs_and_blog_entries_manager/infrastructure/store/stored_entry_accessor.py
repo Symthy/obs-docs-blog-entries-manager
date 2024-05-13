@@ -5,7 +5,7 @@ from exceptions.entry_saving_exception import EntrySavingException
 from files import json_file, file_system
 
 
-class StoredEntryAccessor(IStoredEntryAccessor[TS, TI]):
+class _StoredEntryAccessor(IStoredEntryAccessor[TS, TI]):
 
     def __init__(self, stored_entry_dir_path: str, entry_deserializer: IEntryDeserializer):
         self.__stored_entry_dir_path = stored_entry_dir_path
