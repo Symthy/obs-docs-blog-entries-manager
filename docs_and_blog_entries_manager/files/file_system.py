@@ -1,4 +1,5 @@
 import os
+import shutil
 from datetime import datetime
 from pathlib import Path
 from typing import List
@@ -57,3 +58,11 @@ def get_created_file_time(file_path: str) -> datetime:
 
 def get_updated_file_time(file_path: str) -> datetime:
     return datetime.fromtimestamp(os.path.getmtime(file_path))
+
+
+def copy_file(from_path: str, to_path: str):
+    shutil.copy2(from_path, to_path)
+
+
+def remove_file(file_path: str):
+    os.remove(file_path)

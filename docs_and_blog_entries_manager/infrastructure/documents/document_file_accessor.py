@@ -10,13 +10,13 @@ from domain.entries.values.category_path import CategoryPath
 from domain.entries.values.entry_date_time import EntryDateTime
 from files import text_file, file_system, image_file
 from infrastructure.documents.doc_entry_restorer import DocEntryRestorer
-from infrastructure.store.stored_entry_accessor import StoredEntryAccessor
+from infrastructure.store.stored_entry_accessor import _StoredEntryAccessor
 from infrastructure.store.stored_entry_list_holder import StoredEntryListHolder
 
 
 class DocumentFileAccessor:
     def __init__(self, document_root_dir_path, stored_entry_list: StoredEntryListHolder,
-                 stored_doc_entry_accessor: StoredEntryAccessor[DocEntry, DocEntryId]):
+                 stored_doc_entry_accessor: _StoredEntryAccessor[DocEntry, DocEntryId]):
         self.__document_root_dir_path = document_root_dir_path
         self.__stored_entry_list = stored_entry_list
         self.__stored_doc_entry_accessor = stored_doc_entry_accessor
