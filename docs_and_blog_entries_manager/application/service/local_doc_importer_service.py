@@ -15,9 +15,9 @@ class LocalDocImporterService:
         self.__document_file_accessor = document_file_accessor
         self.__stored_doc_entries_accessor = stored_doc_entries_accessor
 
-    def __execute(self):
+    def execute(self):
         """
-        一覧にあるか確認して、ないものは追加。カテゴリ付与もする
+        内部保持のEntry一覧にあるか確認して、ないものは登録。記事にカテゴリ付与も行う
         """
         all_category_paths: List[CategoryPath] = self.__category_tree_def.all_categoory_paths
         non_exist_doc_entries: DocEntries = self.__document_file_accessor.find_non_register_doc_entries(

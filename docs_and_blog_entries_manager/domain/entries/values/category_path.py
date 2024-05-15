@@ -18,6 +18,10 @@ class CategoryPath:
         return len(self.__values)
 
     @property
+    def is_empty(self) -> bool:
+        return self.length == 0
+
+    @property
     def top(self) -> str:
         return self.__values[0]
 

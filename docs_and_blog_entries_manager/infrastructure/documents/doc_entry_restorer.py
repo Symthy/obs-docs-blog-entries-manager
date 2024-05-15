@@ -6,14 +6,14 @@ from files import file_system, text_file
 
 
 class DocEntryRestorer:
-    def __init__(self, document_root_dir_path):
-        self.__document_root_dir_path = document_root_dir_path
+    def __init__(self, root_dir_path):
+        self.__root_dir_path = root_dir_path
 
-    def execute(self, doc_entry_path) -> DocEntry:
-        doc_file_path = self.__build_file_path(doc_entry_path)
+    def execute(self, doc_entry_file_path) -> DocEntry:
+        doc_file_path = self.__build_file_path(doc_entry_file_path)
         title = file_system.get_file_name_without_ext(doc_file_path)
         file_name = file_system.get_file_name(doc_file_path)
-        content = DocContent(text_file.read_file(doc_file_path), doc_entry_path)
+        content = DocContent(text_file.read_file(doc_file_path), doc_entry_file_path)
         category_path = content.category_path
         categories = content.categories
         created_at = file_system.get_created_file_time(doc_file_path)
@@ -23,4 +23,4 @@ class DocEntryRestorer:
                         EntryDateTime(updated_at))
 
     def __build_file_path(self, doc_entry_path: str) -> str:
-        return file_system.join_path(self.__document_root_dir_path, doc_entry_path)
+        return file_system.join_path(self.__root_dir_path, doc_entry_path)

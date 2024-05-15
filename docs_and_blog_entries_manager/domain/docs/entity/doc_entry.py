@@ -71,6 +71,14 @@ class DocEntry(IEntry):
     def updated_at_month_day(self):
         return self.__updated_at.to_month_day_str()
 
+    @property
+    def is_inprogress(self) -> bool:
+        return self.__category_path.is_empty
+
+    @property
+    def is_completed(self) -> bool:
+        return not self.is_inprogress
+
     def convert_id_to_title(self) -> dict[DocEntryId, str]:
         return {self.id: self.title}
 

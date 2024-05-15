@@ -22,6 +22,11 @@ def get_dir_names_in_target_dir(target_dir_path: str) -> List[str]:
     return [d for d in files if os.path.isdir(join_path(target_dir_path, d))]
 
 
+def get_file_paths_in_target_dir(target_dir_path: str) -> List[str]:
+    files = os.listdir(target_dir_path)
+    return [target_dir_path + f for f in files if os.path.isfile(os.path.join(target_dir_path, f))]
+
+
 def get_dir_name_from_dir_path(path: str) -> str:
     if path.endswith('/'):
         # dir path: xxx/
