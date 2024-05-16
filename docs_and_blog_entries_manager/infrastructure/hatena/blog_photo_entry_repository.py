@@ -20,7 +20,7 @@ class BlogPhotoEntryRepository:
         return posted_blog_entry_opt.convert_to_blog_entry()
 
     def update(self, post_blog_entry: PostBlogEntry, existed_blog_entry: BlogEntry) -> BlogEntry | None:
-        posted_blog_entry_opt = self.__blog_entry_repository.put(post_blog_entry)
+        posted_blog_entry_opt = self.__blog_entry_repository.put(existed_blog_entry.id, post_blog_entry)
         if posted_blog_entry_opt is None:
             return None
         for image_path in post_blog_entry.doc_image_paths:

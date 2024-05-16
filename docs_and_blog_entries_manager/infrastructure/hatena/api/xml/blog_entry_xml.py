@@ -21,9 +21,9 @@ def parse(hatena_id: str, entry_node: ET.Element, tag_head: str, exclude_ids: Li
 
 
 def __extract_content(entry_node, tag_head) -> str:
-    for cont in entry_node.iter(tag_head + 'content'):
-        if cont.attrib['type'] == 'text/x-markdown':
-            return cont.text
+    for content in entry_node.iter(tag_head + 'content'):
+        if content.attrib['type'] == 'text/x-markdown':
+            return content.text
     return ''
 
 

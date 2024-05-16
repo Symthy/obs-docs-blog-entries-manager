@@ -1,14 +1,13 @@
 from domain.entries.entity.category_tree_definition import CategoryTreeDefinition
 from domain.entries.entity.entries_tree import EntriesTree
 from domain.entries.entity.entries_tree_roots import EntriesTreeRoots
-from domain.entries.interface import IEntries
+from domain.entries.interface import IEntries, IStoredEntriesAccessor
 from domain.entries.values.category_path import CategoryPath
-from infrastructure.store.stored_entries_accessor import StoredEntriesAccessor
 
 
 class EntriesTreeRootsRestorer:
     def __init__(self, category_tree_definition: CategoryTreeDefinition,
-                 stored_entries_accessor: StoredEntriesAccessor):
+                 stored_entries_accessor: IStoredEntriesAccessor):
         self.__category_tree_definition = category_tree_definition
         self.__stored_entries_accessor = stored_entries_accessor
 

@@ -38,14 +38,14 @@ def __build_categories_xml_strs(categories: List[str]) -> str:
 
 
 def build_blog_entry_xml_body(hatena_id: str, entry: PostBlogEntry,
-                              is_draft: bool = True, is_title_escape: bool = False) -> str:
+                              is_draft: bool = False, is_title_escape: bool = True) -> str:
     # title の escape も行わないと xml parse error が起きて投稿できない時が低確率である
     entry_xml = __BLOG_ENTRY_TEMPLATE.format(
         title=__replace_xml_escape(entry.title) if is_title_escape else entry.title,
         author=hatena_id,
         content=__replace_xml_escape(entry.content),
         update_time=entry.updated_at.to_str(),
-        categories=__build_categories_xml_strs(entry.categories),
+        categories=__build_categories_xml_strs([entry.category_path.value, *entry.categories]),
         draft='yes' if is_draft else 'no'  # yes or no
     )
     return entry_xml
