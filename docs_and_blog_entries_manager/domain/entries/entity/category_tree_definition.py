@@ -14,9 +14,9 @@ class CategoryTreeDefinition:
         self.__category_name_to_categories = category_name_to_categories if category_name_to_categories is not None else {}
 
     @classmethod
-    def build(cls, local_document_dir_path):
+    def build(cls, document_root_dir_path):
         dir_names = file_system.get_dir_names_in_target_dir(
-            cls.__LOCAL_DOCUMENT_ROOT_DIR_PATH if local_document_dir_path is None else local_document_dir_path)
+            cls.__LOCAL_DOCUMENT_ROOT_DIR_PATH if document_root_dir_path is None else document_root_dir_path)
         categories: dict[str, CategoryGroup] = {}
         for dir_name in dir_names:
             dir_full_path = file_system.join_path(cls.__LOCAL_DOCUMENT_ROOT_DIR_PATH, dir_name)

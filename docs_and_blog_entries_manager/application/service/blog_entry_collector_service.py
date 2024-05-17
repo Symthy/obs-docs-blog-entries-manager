@@ -34,8 +34,8 @@ class BlogEntryCollectorService:
             doc_content = DocContent(posted_blog_entry.content.value_with_inserted_categories, doc_entry_path)
             doc_images = self.__photo_entries_to_doc_images_converter.execute(posted_blog_entry.photo_entries,
                                                                               doc_entry_path)
-            doc_entry_id = self.__document_file_accessor.save_doc_set(doc_entry_path, posted_blog_entry.title,
-                                                                      doc_content, doc_images)
+            doc_entry_id = self.__document_file_accessor.save_document_set(doc_entry_path, posted_blog_entry.title,
+                                                                           doc_content, doc_images)
             blog_entry = posted_blog_entry.convert_to_blog_entry()
             doc_entry: DocEntry = self.__blog_to_doc_entry_converter.convert_to_new(blog_entry, doc_entry_id)
             self.__entry_persistence_service.save_entry_data(blog_entry, doc_entry)

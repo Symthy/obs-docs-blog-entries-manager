@@ -40,14 +40,18 @@ class DocumentFileAccessor:
                 doc_entries.append(self.__doc_entry_restorer.execute(doc_entry_path))
         return DocEntries(doc_entries)
 
-    def save_doc_set(self, doc_entry_dir_path: str, title: str, content: DocContent,
-                     images: DocImages) -> DocEntryId:
+    def save_document_set(self, doc_entry_dir_path: str, title: str, content: DocContent,
+                          images: DocImages) -> DocEntryId:
         doc_file_path = file_system.join_path(doc_entry_dir_path, f'{title}.md')
         text_file.write_file(doc_file_path, content.value)
         for image in images.items:
             image_file.write(image.file_path, image.image_data)
         created_date_time = EntryDateTime(file_system.get_created_file_time(doc_file_path))
         return DocEntryId(created_date_time.to_str_with_num_sequence())
+
+    def save_summary_file(self, content: DocContent):
+        summary_file_path = file_system.join_path(self.__document_root_dir_path, 'summary.md')
+        text_file.write_file(summary_file_path, content.value)
 
     def insert_category_path_to_content(self, doc_file_path: str, category_path: CategoryPath):
         content = DocContent(text_file.read_file(doc_file_path), file_system.get_dir_path_from_file_path(doc_file_path))

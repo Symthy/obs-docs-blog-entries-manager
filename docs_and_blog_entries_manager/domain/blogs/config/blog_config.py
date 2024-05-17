@@ -6,14 +6,9 @@ CONF_KEY_HATENA_ID = 'HATENA_ID'
 CONF_KEY_BLOG_ID = 'BLOG_ID'
 CONF_KEY_API_KEY = 'API_KEY'
 CONF_SUMMARY_ENTRY_ID_KEY = 'SUMMARY_ENTRY_ID'
+CONF_SUMMARY_ENTRY_TITLE_KEY = 'SUMMARY_ENTRY_TITLE'
 CONF_OAUTH_CONSUMER_KEY = 'OAUTH_CONSUMER_KEY'
 CONF_OAUTH_CONSUMER_SECRET_KEY = 'OAUTH_CONSUMER_SECRET_KEY'
-
-
-def load(config_path):
-    conf_parser = configparser.ConfigParser()
-    conf_parser.read(config_path)
-    return BlogConfig(conf_parser)
 
 
 class BlogConfig:
@@ -22,8 +17,15 @@ class BlogConfig:
         self.__blog_id = conf.get(CONF_SECTION_HATENA, CONF_KEY_BLOG_ID)
         self.__api_key = conf.get(CONF_SECTION_HATENA, CONF_KEY_API_KEY)
         self.__summary_entry_id = conf.get(CONF_SECTION_HATENA, CONF_SUMMARY_ENTRY_ID_KEY)
+        self.__summary_entry_title = conf.get(CONF_SECTION_HATENA, CONF_SUMMARY_ENTRY_TITLE_KEY)
         self.__oauth_client_id = conf.get(CONF_SECTION_HATENA, CONF_OAUTH_CONSUMER_KEY)
         self.__oauth_client_secret_id = conf.get(CONF_SECTION_HATENA, CONF_OAUTH_CONSUMER_SECRET_KEY)
+
+    @staticmethod
+    def load(config_path):
+        conf_parser = configparser.ConfigParser()
+        conf_parser.read(config_path)
+        return BlogConfig(conf_parser)
 
     @property
     def hatena_id(self):
@@ -40,6 +42,10 @@ class BlogConfig:
     @property
     def summary_entry_id(self):
         return self.__summary_entry_id
+
+    @property
+    def summary_entry_title(self):
+        return self.__summary_entry_title
 
     @property
     def oauth_api_key(self):

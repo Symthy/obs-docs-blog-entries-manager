@@ -8,7 +8,8 @@ class EntriesSummary:
     __PICKUP_ENTRY_HEAD_LINE = 'Pickup:'
     __ALL_ENTRY_HEAD_LINE = 'All:'
 
-    def __init__(self, entries_tree_roots: EntriesTreeRoots, pickup_entries: IEntries = None):
+    def __init__(self, title: str, entries_tree_roots: EntriesTreeRoots, pickup_entries: IEntries = None):
+        self.__title = title
         self.__pickup_entries = pickup_entries
         self.__entries_tree_roots = entries_tree_roots
 
@@ -19,6 +20,10 @@ class EntriesSummary:
     @property
     def __entry_tree_lines(self) -> List[str]:
         return self.__entries_tree_roots.convert_md_lines()
+
+    @property
+    def title(self):
+        return self.__title
 
     @property
     def all_entry_lines(self) -> List[str]:
@@ -32,5 +37,9 @@ class EntriesSummary:
         return lines
 
     @property
-    def text(self) -> str:
+    def list_text(self) -> str:
         return '\n'.join(self.all_entry_lines)
+
+    @property
+    def content(self) -> str:
+        return f'{self.__title}\n\n{self.list_text}'
