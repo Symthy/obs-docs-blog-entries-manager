@@ -27,6 +27,10 @@ class DocumentFileAccessor:
         doc_dir_path = file_system.get_dir_path_from_file_path(doc_file_path)
         return DocContent(content, doc_dir_path)
 
+    def get_file_paths(self, category_path: CategoryPath) -> List[str]:
+        target_dir_path = file_system.join_path(self.__document_root_dir_path, category_path.value)
+        return file_system.get_file_paths_in_target_dir(target_dir_path)
+
     def find_document(self, doc_id: DocEntryId) -> DocumentDataset:
         doc_entry = self.__stored_doc_entry_accessor.load_entry(doc_id)
         content = self.__load_document(doc_entry.doc_file_path)

@@ -79,6 +79,9 @@ class DocEntry(IEntry):
     def is_completed(self) -> bool:
         return not self.is_inprogress
 
+    def equals_path(self, other: DocEntry) -> bool:
+        return self.category_path == other.category_path
+
     def convert_id_to_title(self) -> dict[DocEntryId, str]:
         return {self.id: self.title}
 

@@ -35,10 +35,14 @@ class CategoryTreeDefinition:
         return category_paths
 
     @property
-    def all_categoory_paths(self) -> List[CategoryPath]:
+    def all_category_paths(self) -> List[CategoryPath]:
         """
         途中階層も含めて全ての category_path を取得
         """
+        category_paths = []
+        for category_group in self.__category_name_to_categories.values():
+            category_paths += category_group.all_category_paths()
+        return category_paths
 
     def exist_category_path(self, category_path_str: str) -> bool:
         category_path = CategoryPath(category_path_str)

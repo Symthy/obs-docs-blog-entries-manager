@@ -9,10 +9,15 @@ class EntriesTreeRoots(IConvertibleMarkdownLines):
     def __init__(self, category_path_to_entries_tree: dict[CategoryPath, EntriesTree]):
         self.__category_path_to_entries_tree = category_path_to_entries_tree
 
-    def get_root_paths(self) -> List[CategoryPath]:
+    @property
+    def root_paths(self) -> List[CategoryPath]:
         return list(self.__category_path_to_entries_tree.keys())
 
-    def get_top_tree(self, category_path: CategoryPath) -> Optional[EntriesTree]:
+    @property
+    def root_trees(self) -> List[EntriesTree]:
+        return list(self.__category_path_to_entries_tree.values())
+
+    def get_root_tree(self, category_path: CategoryPath) -> Optional[EntriesTree]:
         if category_path in self.__category_path_to_entries_tree.keys():
             return self.__category_path_to_entries_tree[category_path]
         return None
@@ -24,7 +29,7 @@ class EntriesTreeRoots(IConvertibleMarkdownLines):
         if self.exist(category_path):
             return self.__category_path_to_entries_tree[category_path]
         for path in self.__category_path_to_entries_tree.keys():
-            node = self.get_top_tree(path).search_node(category_path)
+            node = self.get_root_tree(path).search_node(category_path)
             if node is not None:
                 return node
         return None

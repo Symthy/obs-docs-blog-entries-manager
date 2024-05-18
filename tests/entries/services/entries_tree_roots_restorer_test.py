@@ -1,11 +1,11 @@
 import pytest
-from infrastructure.store.datasources import StoredEntriesAccessor
 
 from domain.entries.entity.category_tree_definition import CategoryTreeDefinition
 from domain.entries.entity.entries_tree_roots import EntriesTreeRoots
 from domain.entries.interface import IEntries
 from domain.entries.services.entries_tree_roots_restorer import EntriesTreeRootsRestorer
 from domain.entries.values.category_path import CategoryPath
+from infrastructure.store.stored_entries_accessor import StoredEntriesAccessor
 
 
 @pytest.fixture
@@ -80,8 +80,8 @@ def test_execute(input_mocks):
     actual: EntriesTreeRoots = restorer.execute()
 
     assert actual.root_num() == 2
-    assert actual.get_top_tree(CategoryPath('Backend')).entries == input_mocks['mock_entries'][2]
-    assert actual.get_top_tree(CategoryPath('Frontend')).entries == input_mocks['mock_entries'][7]
+    assert actual.get_root_tree(CategoryPath('Backend')).entries == input_mocks['mock_entries'][2]
+    assert actual.get_root_tree(CategoryPath('Frontend')).entries == input_mocks['mock_entries'][7]
     assert len(actual.search_tree(CategoryPath('Frontend/JS')).children) == 2
     assert CategoryPath('Frontend/JS/React') in actual.search_tree(CategoryPath('Frontend/JS')).child_category_paths
     assert CategoryPath('Frontend/JS/Vue') in actual.search_tree(CategoryPath('Frontend/JS')).child_category_paths

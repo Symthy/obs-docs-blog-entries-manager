@@ -19,7 +19,7 @@ class LocalDocImporterService:
         """
         内部保持のEntry一覧にあるか確認して、ないものは登録。記事にカテゴリ付与も行う
         """
-        all_category_paths: List[CategoryPath] = self.__category_tree_def.all_categoory_paths
+        all_category_paths: List[CategoryPath] = self.__category_tree_def.all_category_paths
         non_exist_doc_entries: DocEntries = self.__document_file_accessor.find_non_register_doc_entries(
             list(map(lambda path: path.value, all_category_paths)))
         if non_exist_doc_entries.is_empty():
