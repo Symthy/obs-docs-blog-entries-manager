@@ -15,4 +15,5 @@ class EntriesSummaryFactory:
         category_tree_def = CategoryTreeDefinition.build(self.__document_root_dir_path)
         entries_tree_roots_restorer = EntriesTreeRootsRestorer(category_tree_def, self.__stored_entries_accessor)
         entries_tree_roots = entries_tree_roots_restorer.execute()
-        return EntriesSummary(self.__summary_entry_title, entries_tree_roots)
+        pickup_entries = self.__stored_entries_accessor.load_pickup_entries()
+        return EntriesSummary(self.__summary_entry_title, entries_tree_roots, pickup_entries)

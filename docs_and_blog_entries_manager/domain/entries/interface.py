@@ -123,6 +123,9 @@ class IStoredEntriesAccessor(ABC, Generic[TM, TS, TI]):
     def load_entries_by_category_path(self, category_path: CategoryPath) -> TM:
         pass
 
+    def load_pickup_entries(self) -> TM:
+        pass
+
     def save_entries(self, entries: TM):
         pass
 

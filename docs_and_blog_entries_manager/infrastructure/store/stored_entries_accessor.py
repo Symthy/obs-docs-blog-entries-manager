@@ -5,6 +5,7 @@ from domain.entries.values.category_path import CategoryPath
 from files import json_file
 from infrastructure.store.factory.stored_entry_list_deserializer import IStoredEntryListDeserializer
 from infrastructure.store.stored_entry_accessor import _StoredEntryAccessor
+from infrastructure.store.stored_entry_list_holder import StoredEntryListHolder
 
 
 class StoredEntriesAccessor(IStoredEntriesAccessor[TM, TS, TI], IStoredEntryAccessor[TS, TI]):
@@ -14,7 +15,7 @@ class StoredEntriesAccessor(IStoredEntriesAccessor[TM, TS, TI], IStoredEntryAcce
                  entries_builder: Callable[[List[TS]], TM]):
         self.__entry_list_file_path = entry_list_file_path
         self.__stored_entry_accessor = stored_entry_accessor
-        self.__stored_entry_list = stored_entry_list_deserializer.deserialize()
+        self.__stored_entry_list: StoredEntryListHolder = stored_entry_list_deserializer.deserialize()
         self.__entries_builder = entries_builder
 
     def load_entry(self, entry_id: TI) -> TS:
@@ -39,6 +40,10 @@ class StoredEntriesAccessor(IStoredEntriesAccessor[TM, TS, TI], IStoredEntryAcce
             else:
                 del entry  # 不要なインスタンスは即解放。メモリ節約
         return self.__entries_builder(entry_list)
+
+    def load_pickup_entries(self) -> TM:
+        entries = list(map(lambda entry_id: self.load_entry(entry_id), self.__stored_entry_list.pickup_entry_ids))
+        return self.__entries_builder(entries)
 
     def save_entry(self, entry: TS):
         return self.__stored_entry_accessor.save_entry(entry)

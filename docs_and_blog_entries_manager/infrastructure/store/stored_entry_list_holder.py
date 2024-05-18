@@ -22,8 +22,8 @@ class StoredEntryListHolder(Generic[TM, TS, TI]):
         return list(self.__entry_id_to_pickup.keys())
 
     @property
-    def entries(self) -> dict[TI, bool]:
-        return self.__entry_id_to_pickup
+    def pickup_entry_ids(self) -> List[TI]:
+        return [entry_id for entry_id, pickup in self.__entry_id_to_pickup if pickup is True]
 
     @property
     def update_at(self) -> str:
