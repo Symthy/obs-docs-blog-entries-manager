@@ -47,6 +47,10 @@ class IEntry(ISerializableObject, IConvertibleMarkdownLine, ABC):
         raise Exception('Unimplemented!! (IEntry.pickup)')
 
     @abstractmethod
+    def update_pickup(self, pickup: bool) -> IEntry:
+        pass
+
+    @abstractmethod
     def convert_id_to_title(self) -> Dict[str, str]:
         pass
 

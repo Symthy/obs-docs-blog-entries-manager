@@ -36,6 +36,9 @@ class StoredEntryListHolder(Generic[TM, TS, TI]):
         for entry in entries.items:
             self.push_entry(entry)
 
+    def update_pickup(self, entry_id: TI, pickup: bool):
+        self.__entry_id_to_pickup[entry_id] = pickup
+
     def exist_id(self, entry_id: TI) -> bool:
         return entry_id in self.__entry_id_to_pickup
 

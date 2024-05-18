@@ -54,5 +54,9 @@ class StoredEntriesAccessor(IStoredEntriesAccessor[TM, TS, TI], IStoredEntryAcce
             self.__stored_entry_accessor.save_entry(entry)
         json_file.save(self.__entry_list_file_path, self.__stored_entry_list.serialize())
 
+    def update_pickup(self, entry_id: TI, pickup: bool):
+        self.__stored_entry_list.update_pickup(entry_id, pickup)
+        self.__stored_entry_accessor.update_pickup(entry_id, pickup)
+
     def has_entry(self, entry_id: TI) -> bool:
         return entry_id in self.__stored_entry_list.entry_ids

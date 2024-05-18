@@ -28,3 +28,8 @@ class _StoredEntryAccessor(IStoredEntryAccessor[TS, TI]):
             json_file.save(stored_json_path, entry)
         except Exception as e:
             raise EntrySavingException(entry, e)
+
+    def update_pickup(self, entry_id: TI, pickup: bool):
+        entry = self.load_entry(entry_id)
+        updated_entry = entry.update_pickup(pickup)
+        self.save_entry(updated_entry)

@@ -68,6 +68,10 @@ class BlogEntry(IEntry):
     def images(self) -> Optional[PhotoEntries]:
         return self.__images if not self.is_images_empty() else None
 
+    def update_pickup(self, pickup: bool) -> BlogEntry:
+        return BlogEntry(self.id, self.title, self.page_url, self.updated_at, self.category_path, self.categories,
+                         self.images, pickup)
+
     def is_images_empty(self) -> bool:
         return self.__images.is_empty()
 
