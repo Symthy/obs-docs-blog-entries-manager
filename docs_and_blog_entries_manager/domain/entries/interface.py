@@ -41,6 +41,11 @@ class IEntry(ISerializableObject, IConvertibleMarkdownLine, ABC):
         # required override
         raise Exception('Unimplemented!! (IEntry.top_category)')
 
+    @property
+    def pickup(self) -> bool:
+        # required override
+        raise Exception('Unimplemented!! (IEntry.pickup)')
+
     @abstractmethod
     def convert_id_to_title(self) -> Dict[str, str]:
         pass
@@ -83,8 +88,9 @@ class IEntryId(ABC):
         # required override
         raise Exception('Unimplemented!! (IEntryId.value)')
 
+    @classmethod
     @abstractmethod
-    def new_instance(self, entry_id: str) -> IEntryId:
+    def new_instance(cls, entry_id: str) -> IEntryId:
         pass
 
 

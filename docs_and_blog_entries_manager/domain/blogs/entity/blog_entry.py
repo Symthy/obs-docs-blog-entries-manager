@@ -14,16 +14,19 @@ class BlogEntry(IEntry):
     FIELD_TITLE = 'title'
     FIELD_CONTENT = 'content'
     FIELD_PAGE_URL = 'page_url'
+    FIELD_PICKUP = 'pickup'
     FIELD_CATEGORY_PATH = 'category_path'
     FIELD_CATEGORIES = 'categories'
     FIELD_UPDATED_AT = 'updated_at'
     FIELD_DOC_IMAGES = 'doc_images'
 
     def __init__(self, entry_id: BlogEntryId, title: str, page_url: str, last_updated: EntryDateTime,
-                 category_path: CategoryPath, categories: List[str], images: PhotoEntries = PhotoEntries()):
+                 category_path: CategoryPath, categories: List[str], images: PhotoEntries = PhotoEntries(),
+                 pickup: bool = False):
         self.__id = entry_id
         self.__title = title
         self.__page_url = page_url
+        self.__pickup = pickup
         self.__updated_at: EntryDateTime = last_updated
         self.__category_path = category_path
         self.__categories = categories
@@ -40,6 +43,10 @@ class BlogEntry(IEntry):
     @property
     def page_url(self):
         return self.__page_url
+
+    @property
+    def pickup(self) -> bool:
+        return self.__pickup
 
     @property
     def updated_at(self) -> EntryDateTime:

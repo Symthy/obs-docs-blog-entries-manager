@@ -3,17 +3,18 @@ from typing import List, Callable
 from domain.entries.interface import IStoredEntriesAccessor, IStoredEntryAccessor, TM, TI, TS
 from domain.entries.values.category_path import CategoryPath
 from files import json_file
+from infrastructure.store.factory.stored_entry_list_deserializer import IStoredEntryListDeserializer
 from infrastructure.store.stored_entry_accessor import _StoredEntryAccessor
-from infrastructure.store.stored_entry_list_holder import StoredEntryListHolder
 
 
 class StoredEntriesAccessor(IStoredEntriesAccessor[TM, TS, TI], IStoredEntryAccessor[TS, TI]):
 
     def __init__(self, entry_list_file_path: str, stored_entry_accessor: _StoredEntryAccessor,
+                 stored_entry_list_deserializer: IStoredEntryListDeserializer,
                  entries_builder: Callable[[List[TS]], TM]):
         self.__entry_list_file_path = entry_list_file_path
         self.__stored_entry_accessor = stored_entry_accessor
-        self.__stored_entry_list = StoredEntryListHolder.deserialize(entry_list_file_path)
+        self.__stored_entry_list = stored_entry_list_deserializer.deserialize()
         self.__entries_builder = entries_builder
 
     def load_entry(self, entry_id: TI) -> TS:
@@ -47,10 +48,6 @@ class StoredEntriesAccessor(IStoredEntriesAccessor[TM, TS, TI], IStoredEntryAcce
             self.__stored_entry_list.push_entry(entry)
             self.__stored_entry_accessor.save_entry(entry)
         json_file.save(self.__entry_list_file_path, self.__stored_entry_list.serialize())
-
-    def search_entry_id(self, keyword: str) -> List[TI]:
-        # Todo: specify other than title in keyword
-        return self.__stored_entry_list.search_by_title(keyword)
 
     def has_entry(self, entry_id: TI) -> bool:
         return entry_id in self.__stored_entry_list.entry_ids

@@ -17,6 +17,7 @@ class BlogEntryBuilder:
             self.__category_path = based_blog_entry.category_path
             self.__categories = based_blog_entry.categories
             self.__images = based_blog_entry.images
+            self.__pickup = based_blog_entry.pickup
 
     def id(self, value: BlogEntryId):
         self.__id = value
@@ -46,6 +47,9 @@ class BlogEntryBuilder:
         self.__images = value
         return self
 
+    def pickup(self, value: bool):
+        self.__pickup = value
+
     def build(self) -> BlogEntry:
         if self.__id is None:
             raise AttributeError('Invalid blog entry ID')
@@ -56,4 +60,5 @@ class BlogEntryBuilder:
                          self.__updated_at if self.__updated_at is not None else EntryDateTime(),
                          self.__category_path,
                          self.__categories,
-                         self.__images)
+                         self.__images,
+                         self.__pickup if self.__pickup is not None else False)

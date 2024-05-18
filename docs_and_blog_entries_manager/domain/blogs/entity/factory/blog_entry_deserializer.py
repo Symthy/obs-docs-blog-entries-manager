@@ -15,5 +15,6 @@ class BlogEntryDeserializer(IEntryDeserializer):
             EntryDateTime(json_data[BlogEntry.FIELD_UPDATED_AT]),
             CategoryPath(json_data[BlogEntry.FIELD_CATEGORY_PATH]),
             json_data[BlogEntry.FIELD_CATEGORIES],
-            PhotoEntries.deserialize(json_data[BlogEntry.FIELD_DOC_IMAGES])
+            PhotoEntries.deserialize(json_data[BlogEntry.FIELD_DOC_IMAGES]),
+            json_data[BlogEntry.FIELD_PICKUP],
         )

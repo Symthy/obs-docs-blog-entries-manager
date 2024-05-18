@@ -9,7 +9,8 @@ class BlogEntryId(IEntryId):
             raise ValueError(f'Invalid blog entry ID: {entry_id}')
         self.__value = entry_id
 
-    def new_instance(self, entry_id: str) -> BlogEntryId:
+    @classmethod
+    def new_instance(cls, entry_id: str) -> BlogEntryId:
         return BlogEntryId(entry_id)
 
     @property
@@ -18,3 +19,6 @@ class BlogEntryId(IEntryId):
 
     def __eq__(self, other: BlogEntryId):
         return self.__value == other.__value
+
+    def __hash__(self):
+        return hash(self.__value)
