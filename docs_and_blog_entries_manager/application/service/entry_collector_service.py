@@ -2,12 +2,12 @@ from typing import List
 
 from application.service.converter.blog_to_doc_entry_converter import BlogToDocEntryConverter
 from application.service.converter.photo_entries_to_doc_images_converter import PhotoEntriesToDocImagesConverter
-from application.service.store.entry_persistence_service import EntryPersistenceService
 from domain.blogs.datasource.model.posted_blog_entry import PostedBlogEntry
 from domain.blogs.services.posted_blog_entry_collector import PostedBlogEntryCollector
 from domain.docs.entity.doc_entry import DocEntry
 from domain.docs.value.doc_content import DocContent
 from infrastructure.documents.document_file_accessor import DocumentFileAccessor
+from infrastructure.store.composite.stored_both_entries_accessor import StoredBothEntriesAccessor
 
 
 class BlogEntryCollectorService:
@@ -15,12 +15,12 @@ class BlogEntryCollectorService:
                  posted_blog_entry_collector: PostedBlogEntryCollector,
                  blog_to_doc_entry_converter: BlogToDocEntryConverter,
                  photo_entries_to_doc_images_converter: PhotoEntriesToDocImagesConverter,
-                 entry_persistence_service: EntryPersistenceService,
+                 stored_both_entries_accessor: StoredBothEntriesAccessor,
                  document_file_accessor: DocumentFileAccessor):
         self.__posted_blog_entry_collector = posted_blog_entry_collector
         self.__blog_to_doc_entry_converter = blog_to_doc_entry_converter
         self.__photo_entries_to_doc_images_converter = photo_entries_to_doc_images_converter
-        self.__entry_persistence_service = entry_persistence_service
+        self.__stored_both_entries_accessor = stored_both_entries_accessor
         self.__document_file_accessor = document_file_accessor
 
     def execute(self):
@@ -38,4 +38,4 @@ class BlogEntryCollectorService:
                                                                            doc_content, doc_images)
             blog_entry = posted_blog_entry.convert_to_blog_entry()
             doc_entry: DocEntry = self.__blog_to_doc_entry_converter.convert_to_new(blog_entry, doc_entry_id)
-            self.__entry_persistence_service.save_entry_data(blog_entry, doc_entry)
+            self.__stored_both_entries_accessor.save_entry(blog_entry, doc_entry)
