@@ -23,6 +23,9 @@ class BlogEntryPusherService:
 
     def execute(self, doc_id: DocEntryId):
         doc_dateset = self.__document_file_accessor.find_document(doc_id)
+        if not doc_dateset.doc_entry.contains_blog_category():
+            Logger.info('Push skip. because Blog category is nothing')
+            return
         blog_entry_id_opt = self.__blog_to_doc_mapping.find_blog_entry_id(doc_id)
         if blog_entry_id_opt is None:
             self.__post_blog(doc_dateset, doc_id)

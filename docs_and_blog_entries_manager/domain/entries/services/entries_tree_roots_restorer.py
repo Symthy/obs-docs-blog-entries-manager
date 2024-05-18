@@ -26,7 +26,8 @@ class EntriesTreeRootsRestorer:
         category_path_to_entries = {}
         for category_full_path in self.__category_tree_definition.category_full_paths:
             entries = self.__stored_entries_accessor.load_entries_by_category_path(category_full_path)
-            category_path_to_entries[category_full_path] = entries
+            if not entries.is_empty():
+                category_path_to_entries[category_full_path] = entries
             if not category_full_path.exist_parent():
                 continue
             for upper_category_path in category_full_path.upper_all_paths():

@@ -5,3 +5,5 @@ LOCAL_STORAGE_DIR_PATH = './storage/'
 CONF_DIR_PATH = './conf/'
 DOCS_DIR_PATH = './docs/'
 EXCLUDE_ENTRY_IDS_TXT_PATH = CONF_DIR_PATH + 'exclude_entry_ids.txt'
+
+BLOG_CATEGORY = 'Blog'

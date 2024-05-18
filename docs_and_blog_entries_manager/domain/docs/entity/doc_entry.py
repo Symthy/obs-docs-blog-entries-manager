@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import List
 
+from common.constants import BLOG_CATEGORY
 from domain.docs.value.doc_entry_id import DocEntryId
 from domain.entries.interface import IEntry
 from domain.entries.values.category_path import CategoryPath
@@ -82,11 +83,15 @@ class DocEntry(IEntry):
     def equals_path(self, other: DocEntry) -> bool:
         return self.category_path == other.category_path
 
+    def contains_blog_category(self) -> bool:
+        return BLOG_CATEGORY in self.__categories
+
     def convert_id_to_title(self) -> dict[DocEntryId, str]:
         return {self.id: self.title}
 
     def convert_md_line(self) -> str:
-        return f'- [{self.title}]({self.doc_file_path})'
+        blog_mark = '【B】' if self.contains_blog_category else ''
+        return f'- {blog_mark}[{self.title}]({self.doc_file_path}) (ID:{self.id})'
 
     def serialize(self) -> dict:
         return vars(self)

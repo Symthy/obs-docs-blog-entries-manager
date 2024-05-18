@@ -1,5 +1,6 @@
 from typing import Optional
 
+from common.constants import BLOG_CATEGORY
 from domain.blogs.datasource.model.post_blog_entry import PostBlogEntry
 from domain.blogs.entity.blog_entries import BlogEntries
 from domain.blogs.entity.blog_entry import BlogEntry
@@ -29,7 +30,7 @@ class DocToBlogEntryConverter:
             builder.title(doc_entry.title)
             builder.updated_at(doc_entry.updated_at)
             builder.category_path(doc_entry.category_path)
-            builder.categories(doc_entry.categories)
+            builder.categories([category for category in doc_entry.categories if category != BLOG_CATEGORY])
             # Todo: 画像
             # builder.doc_images(doc_entry.)
             return builder.build()
@@ -40,7 +41,7 @@ class DocToBlogEntryConverter:
             builder.title(doc_entry.title)
             builder.updated_at(doc_entry.updated_at)
             builder.category_path(doc_entry.category_path)
-            builder.categories(doc_entry.categories)
+            builder.categories([category for category in doc_entry.categories if category != BLOG_CATEGORY])
             # Todo: 画像
             # builder.doc_images(doc_entry.)
             return builder.build()
