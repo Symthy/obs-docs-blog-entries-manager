@@ -17,6 +17,10 @@ class DocEntries(IEntries):
     def items(self) -> List[DocEntry]:
         return list(self.__entries.values())
 
+    @property
+    def items_filtered_blog_category(self):
+        return list(filter(lambda entry: entry.contains_blog_category(), self.__entries.values()))
+
     def size(self) -> int:
         return len(self.__entries)
 

@@ -21,6 +21,7 @@ class BlogEntryPusherService:
         self.__blog_to_doc_mapping = blog_to_doc_mapping
         self.__stored_blog_entries_accessor = stored_blog_entries_accessor
 
+    # Todo: DocumentにBlogマーク付けて投稿する
     def execute(self, doc_id: DocEntryId):
         doc_dateset = self.__document_file_accessor.find_document(doc_id)
         if not doc_dateset.doc_entry.contains_blog_category():
@@ -29,6 +30,7 @@ class BlogEntryPusherService:
         blog_entry_id_opt = self.__blog_to_doc_mapping.find_blog_entry_id(doc_id)
         if blog_entry_id_opt is None:
             self.__post_blog(doc_dateset, doc_id)
+            return
         blog_entry = self.__stored_blog_entries_accessor.load_entry(blog_entry_id_opt)
         if doc_dateset.doc_entry.updated_at > blog_entry.updated_at:
             self.__put_blog(doc_dateset, blog_entry)
