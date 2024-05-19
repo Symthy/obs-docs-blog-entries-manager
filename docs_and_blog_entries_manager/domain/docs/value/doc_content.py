@@ -3,6 +3,7 @@ from __future__ import annotations
 import re
 from typing import List, Optional
 
+from common.constants import NON_CATEGORY_NAME
 from domain.entries.values.category_path import CategoryPath
 from files import file_system
 
@@ -18,6 +19,9 @@ class DocContent:
         all_categories = self.__extract_categories()
         self.__categories = all_categories[1:] if len(all_categories) >= 2 else []
         self.__category_path = self.__categories[0] if len(all_categories) >= 1 else None
+        if self.__category_path is None:
+            self.__category_path = CategoryPath(NON_CATEGORY_NAME)
+            self.__content += f'#{self.__category_path.value}\n'
 
     def __extract_image_paths(self, doc_dir_path: str) -> List[str]:
         # 画像ファイルのパスはmdファイルからの相対パス (image/xxxx)
@@ -45,7 +49,7 @@ class DocContent:
     @property
     def image_paths(self) -> List[str]:
         return list(
-            map(lambda path: file_system.join_path(self.__category_path, path), self.__image_paths_from_doc_file))
+            map(lambda path: file_system.join_path(self.__category_path.value, path), self.__image_paths_from_doc_file))
 
     @property
     def category_path(self) -> Optional[CategoryPath]:

@@ -59,10 +59,16 @@ class DocumentFileAccessor:
 
     def insert_category_path_to_content(self, doc_file_path: str, category_path: CategoryPath):
         content = DocContent(text_file.read_file(doc_file_path), file_system.get_dir_path_from_file_path(doc_file_path))
+        text_file.write_file(doc_file_path, content.update_category(category_path, []).value)
+
+    def insert_category_to_content(self, doc_file_path: str, category: str):
+        content = DocContent(text_file.read_file(doc_file_path), file_system.get_dir_path_from_file_path(doc_file_path))
+        # Todo: refactor
         if content.not_exist_category_path:
-            text_file.add_end_line(doc_file_path, category_path.value)
+            updated_content = content.update_category(CategoryPath(category), [])
         else:
-            content.update_category(category_path, content.categories)
+            updated_content = content.update_category(content.category_path, [*content.categories, category])
+        text_file.write_file(doc_file_path, updated_content.value)
 
     def __build_file_path(self, doc_file_path: str) -> str:
         return file_system.join_path(self.__document_root_dir_path, doc_file_path)
