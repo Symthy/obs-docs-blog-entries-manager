@@ -6,6 +6,10 @@ from infrastructure.types import StoredBlogEntriesAccessor
 
 
 class BlogEntryRemoverService:
+    """
+    指定したdocumentに対応するblogの記事を削除する
+    """
+
     def __init__(self, document_file_accessor: DocumentFileAccessor, blog_entry_repository: BlogEntryRepository,
                  blog_to_doc_entry_mapping: BlogToDocEntryMapping,
                  stored_blog_entries_accessor: StoredBlogEntriesAccessor):

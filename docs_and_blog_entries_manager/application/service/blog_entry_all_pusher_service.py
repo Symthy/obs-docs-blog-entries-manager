@@ -6,6 +6,10 @@ from infrastructure.types import StoredDocEntriesAccessor
 
 
 class BlogEntryAllPusherService:
+    """
+    新たにブログマーク(#Blog)が付与されたdocumentをblogに投稿する
+    """
+
     def __init__(self, stored_doc_entries_accessor: StoredDocEntriesAccessor,
                  blog_entry_pusher: BlogEntryPusherService):
         self.__stored_doc_entries_accessor = stored_doc_entries_accessor

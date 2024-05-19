@@ -10,6 +10,10 @@ from infrastructure.types import StoredDocEntriesAccessor
 
 
 class LocalDocOrganizerService:
+    """
+    documentフォルダ内の記事を記事のカテゴリパスに応じて整理(移動)
+    """
+
     def __init__(self, category_tree_def: CategoryTreeDefinition, document_file_accessor: DocumentFileAccessor,
                  document_file_mover: DocumentFileMover, doc_entry_restorer: DocEntryRestorer,
                  stored_doc_entries_accessor: StoredDocEntriesAccessor):

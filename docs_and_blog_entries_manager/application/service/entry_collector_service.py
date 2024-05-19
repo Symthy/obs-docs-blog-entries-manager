@@ -11,7 +11,11 @@ from infrastructure.documents.document_file_accessor import DocumentFileAccessor
 from infrastructure.store.composite.stored_both_entries_accessor import StoredBothEntriesAccessor
 
 
-class BlogEntryCollectorService:
+class EntryCollectorService:
+    """
+    blogから投稿済み記事を収集し、ローカルに保存する
+    """
+
     def __init__(self,
                  posted_blog_entry_collector: PostedBlogEntryCollector,
                  blog_to_doc_entry_converter: BlogToDocEntryConverter,

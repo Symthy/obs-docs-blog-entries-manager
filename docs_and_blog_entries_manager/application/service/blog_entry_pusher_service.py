@@ -10,6 +10,10 @@ from logs.logger import Logger
 
 
 class BlogEntryPusherService:
+    """
+    指定したdocumentをブログに投稿する
+    """
+
     def __init__(self, document_file_accessor: DocumentFileAccessor,
                  doc_to_blog_entry_converter: DocToBlogEntryConverter,
                  blog_photo_entry_repository: BlogPhotoEntryRepository,

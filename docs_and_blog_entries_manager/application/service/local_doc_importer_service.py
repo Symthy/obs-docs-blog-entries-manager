@@ -9,6 +9,10 @@ from logs.logger import Logger
 
 
 class LocalDocImporterService:
+    """
+    documentフォルダに直接作成された未登録記事を認識＆登録
+    """
+
     def __init__(self, category_tree_def: CategoryTreeDefinition, document_file_accessor: DocumentFileAccessor,
                  stored_doc_entries_accessor: StoredDocEntriesAccessor):
         self.__category_tree_def = category_tree_def

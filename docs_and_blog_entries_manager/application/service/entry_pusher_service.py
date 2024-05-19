@@ -4,6 +4,10 @@ from infrastructure.documents.work.inprogress_document_file_accessor import Inpr
 
 
 class EntryPusherService:
+    """
+    workフォルダの完成記事をdocumentフォルダに格納し、blogにも投稿
+    """
+
     def __init__(self, blog_entry_pusher: BlogEntryPusherService, local_doc_pusher: LocalDocPusherService,
                  inprogress_doc_file_accessor: InprogressDocumentFileAccessor):
         self.__blog_entry_pusher = blog_entry_pusher

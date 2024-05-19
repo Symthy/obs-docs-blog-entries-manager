@@ -6,6 +6,10 @@ from infrastructure.store.composite.stored_both_entries_accessor import StoredBo
 
 
 class EntryPickupUpdaterService:
+    """
+    指定したdocument(＆対応するblog記事)のpickupフラグON/OFF
+    """
+
     def __init__(self, stored_entries_accessor: StoredBothEntriesAccessor,
                  summary_entry_pusher: SummaryEntryPusherService):
         self.__stored_entries_accessor = stored_entries_accessor
@@ -14,8 +18,8 @@ class EntryPickupUpdaterService:
     def update_bulk(self, doc_entry_ids: List[DocEntryId], pickup: bool):
         for doc_entry_id in doc_entry_ids:
             self.__stored_entries_accessor.update_pickup(doc_entry_id, pickup)
-        self.__summary_entry_pusher.push_bulk()
+        self.__summary_entry_pusher.execute()
 
     def update(self, doc_id: DocEntryId, pickup: bool):
         self.__stored_entries_accessor.update_pickup(doc_id, pickup)
-        self.__summary_entry_pusher.push_bulk()
+        self.__summary_entry_pusher.execute()
