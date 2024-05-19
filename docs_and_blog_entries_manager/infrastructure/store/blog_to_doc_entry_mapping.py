@@ -38,6 +38,9 @@ class BlogToDocEntryMapping:
             return self.__blog_id_to_doc_id[blog_entry_id]
         return None
 
+    def exist(self, blog_entry_id: BlogEntryId) -> bool:
+        return blog_entry_id in self.__blog_id_to_doc_id
+
     def push_entry_pair(self, blog_entry_id: BlogEntryId, doc_entry_id: DocEntryId):
         self.__blog_id_to_doc_id[blog_entry_id] = doc_entry_id
         self.__doc_id_to_blog_id[doc_entry_id] = blog_entry_id

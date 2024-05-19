@@ -12,7 +12,7 @@ class BlogEntryAllPusherService:
         self.__blog_entry_pusher = blog_entry_pusher
 
     def execute(self):
-        entries_has_blog_category: List[DocEntry] \
+        doc_entries_has_blog_category: List[DocEntry] \
             = self.__stored_doc_entries_accessor.load_entries().items_filtered_blog_category
-        for entry in entries_has_blog_category:
-            self.__blog_entry_pusher.execute(entry.id)
+        for doc_entry in doc_entries_has_blog_category:
+            self.__blog_entry_pusher.execute(doc_entry.id)

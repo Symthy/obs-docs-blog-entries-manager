@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import Optional
 
 from domain.docs.entity.doc_entry import DocEntry
 from domain.docs.value.doc_entry_id import DocEntryId
@@ -34,8 +34,8 @@ class DocEntryBuilder:
         self.__category_path = value
         return self
 
-    def categories(self, value: List[str]):
-        self.__categories = value
+    def categories(self, *values: str):
+        self.__categories = list(set(values))
         return self
 
     def pickup(self, value: bool):
