@@ -4,7 +4,7 @@ from files import file_system
 from infrastructure.documents.doc_entry_restorer import DocEntryRestorer
 
 
-class InprogressDocumentFileAccessor:
+class WorkingDocumentFileAccessor:
     def __init__(self, work_dir_path: str):
         self.__work_dir_path = work_dir_path
         self.__doc_entry_restorer = DocEntryRestorer(work_dir_path)

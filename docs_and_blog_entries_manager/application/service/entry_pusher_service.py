@@ -1,6 +1,6 @@
 from application.service.blog_entry_pusher_service import BlogEntryPusherService
 from application.service.local_doc_pusher_service import LocalDocPusherService
-from infrastructure.documents.work.inprogress_document_file_accessor import InprogressDocumentFileAccessor
+from infrastructure.documents.work.working_document_file_accessor import WorkingDocumentFileAccessor
 
 
 class EntryPusherService:
@@ -9,13 +9,14 @@ class EntryPusherService:
     """
 
     def __init__(self, blog_entry_pusher: BlogEntryPusherService, local_doc_pusher: LocalDocPusherService,
-                 inprogress_doc_file_accessor: InprogressDocumentFileAccessor):
+                 working_doc_file_accessor: WorkingDocumentFileAccessor):
         self.__blog_entry_pusher = blog_entry_pusher
         self.__local_doc_pusher = local_doc_pusher
-        self.__inprogress_doc_file_accessor = inprogress_doc_file_accessor
+        self.__working_doc_file_accessor = working_doc_file_accessor
 
     def execute(self):
-        completed_work_filepaths = self.__inprogress_doc_file_accessor.extract_completed_filepaths()
+        completed_work_filepaths = self.__working_doc_file_accessor.extract_completed_filepaths()
         for file_path in completed_work_filepaths:
-            doc_id = self.__local_doc_pusher.push(file_path)
-            self.__blog_entry_pusher.execute(doc_id)
+            doc_entry = self.__local_doc_pusher.execute(file_path)
+            if doc_entry.contains_blog_category():
+                self.__blog_entry_pusher.execute(doc_entry.id)
