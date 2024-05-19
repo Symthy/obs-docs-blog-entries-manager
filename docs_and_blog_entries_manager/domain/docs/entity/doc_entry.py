@@ -89,9 +89,14 @@ class DocEntry(IEntry):
     def convert_id_to_title(self) -> dict[DocEntryId, str]:
         return {self.id: self.title}
 
-    def update_category(self, category: str) -> DocEntry:
+    def insert_category(self, category: str) -> DocEntry:
         return DocEntry(self.__id, self.__title, self.__doc_file_name, self.__category_path,
                         [*self.__categories, category], self.__pickup, self.__created_at, self.__updated_at)
+
+    def remove_category(self, category_to_be_removed: str) -> DocEntry:
+        new_categories = [category for category in self.__categories if category != category_to_be_removed]
+        return DocEntry(self.__id, self.__title, self.__doc_file_name, self.__category_path,
+                        new_categories, self.__pickup, self.__created_at, self.__updated_at)
 
     def convert_md_line(self) -> str:
         blog_mark = '【B】' if self.contains_blog_category else ''

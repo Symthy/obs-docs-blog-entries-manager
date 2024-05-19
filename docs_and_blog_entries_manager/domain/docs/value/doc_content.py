@@ -13,7 +13,7 @@ class DocContent:
     __DOCUMENT_CATEGORY_REGEX = r'#(\S+)'
 
     def __init__(self, content: str, doc_entry_dir_path: str):
-        self.__content = content
+        self.__content = content if content.endswith('\n') else content + '\n'
         self.__doc_entry_dir_path = doc_entry_dir_path
         self.__image_paths_from_doc_file = self.__extract_image_paths(doc_entry_dir_path)
         all_categories = self.__extract_categories()
@@ -59,10 +59,16 @@ class DocContent:
     def not_exist_category_path(self) -> bool:
         return self.__category_path is None
 
-    def update_category(self, category_path: CategoryPath, categories: List[str]) -> DocContent:
+    def add_category(self, category_path: CategoryPath, categories: List[str]) -> DocContent:
         new_category_line = ' '.join(list(map(lambda c: f'#{c}', [category_path.value, *categories]))) + '\n'
-        updated_content = self.value_with_removed_categories + new_category_line
-        return DocContent(updated_content, self.__doc_entry_dir_path)
+        new_content = self.value_with_removed_categories + new_category_line
+        return DocContent(new_content, self.__doc_entry_dir_path)
+
+    def remove_category(self, category_to_be_removed: str):
+        new_categories = [category for category in self.__categories if category != category_to_be_removed]
+        new_category_line = ' '.join(list(map(lambda c: f'#{c}', [self.category_path.value, *new_categories]))) + '\n'
+        new_content = self.value_with_removed_categories + new_category_line
+        return DocContent(new_content, self.__doc_entry_dir_path)
 
     @property
     def categories(self) -> List[str]:

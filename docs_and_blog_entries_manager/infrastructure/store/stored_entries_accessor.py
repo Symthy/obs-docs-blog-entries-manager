@@ -58,5 +58,9 @@ class StoredEntriesAccessor(IStoredEntriesAccessor[TM, TS, TI], IStoredEntryAcce
         self.__stored_entry_list.update_pickup(entry_id, pickup)
         self.__stored_entry_accessor.update_pickup(entry_id, pickup)
 
+    def delete_entry(self, entry_id: TI):
+        self.__stored_entry_accessor.delete_entry(entry_id)
+        self.__stored_entry_list.delete_entry(entry_id)
+
     def has_entry(self, entry_id: TI) -> bool:
         return entry_id in self.__stored_entry_list.entry_ids

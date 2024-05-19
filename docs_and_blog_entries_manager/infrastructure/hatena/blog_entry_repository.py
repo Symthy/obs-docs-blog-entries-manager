@@ -67,3 +67,6 @@ class BlogEntryRepository:
         body = request_formats.build_blog_entry_xml_body(self.__hatena_id, entry, is_draft, is_title_escape)
         Logger.info(f'PUT Blog: {entry.title}')
         return self.__api_client.put(body, entry_id.value)
+
+    def delete(self, entry_id: BlogEntryId):
+        self.__api_client.delete(entry_id.value)

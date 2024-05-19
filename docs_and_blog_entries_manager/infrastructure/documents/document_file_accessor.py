@@ -59,18 +59,18 @@ class DocumentFileAccessor:
         summary_file_path = file_system.join_path(self.__document_root_dir_path, 'summary.md')
         text_file.write_file(summary_file_path, content.value)
 
-    def update_for_prepare_blog_post(self, doc_id: DocEntryId) -> DocumentDataset:
+    def update_for_blog_post(self, doc_id: DocEntryId) -> DocumentDataset:
         doc_dataset = self.find_document(doc_id)
-        updated_doc_content = self.__insert_category_to_content(doc_dataset.doc_entry.doc_file_path,
-                                                                doc_dataset.doc_content, BLOG_CATEGORY)
-        updated_doc_entry = doc_dataset.doc_entry.update_category(BLOG_CATEGORY)
-        self.__stored_doc_entries_accessor.save_entry(updated_doc_entry)
-        return DocumentDataset(updated_doc_entry, updated_doc_content)
+        new_doc_content = self.__insert_category_to_content(doc_dataset.doc_entry.doc_file_path,
+                                                            doc_dataset.doc_content, BLOG_CATEGORY)
+        new_doc_entry = doc_dataset.doc_entry.insert_category(BLOG_CATEGORY)
+        self.__stored_doc_entries_accessor.save_entry(new_doc_entry)
+        return DocumentDataset(new_doc_entry, new_doc_content)
 
     @classmethod
     def insert_category_path_to_content(cls, doc_file_path: str, category_path: CategoryPath) -> DocContent:
         content = DocContent(text_file.read_file(doc_file_path), file_system.get_dir_path_from_file_path(doc_file_path))
-        text_file.write_file(doc_file_path, content.update_category(category_path, []).value)
+        text_file.write_file(doc_file_path, content.add_category(category_path, []).value)
         return content
 
     @staticmethod
@@ -79,11 +79,18 @@ class DocumentFileAccessor:
         if BLOG_CATEGORY in content.categories:
             return content
         if content.not_exist_category_path:
-            updated_content = content.update_category(CategoryPath(category), [])
+            updated_content = content.add_category(CategoryPath(category), [])
         else:
-            updated_content = content.update_category(content.category_path, [*content.categories, category])
+            updated_content = content.add_category(content.category_path, [*content.categories, category])
         text_file.write_file(doc_file_path, updated_content.value)
         return updated_content
+
+    def remove_blog_category(self, doc_id: DocEntryId):
+        doc_dataset = self.find_document(doc_id)
+        new_doc_entry = doc_dataset.doc_entry.remove_category(BLOG_CATEGORY)
+        new_doc_content = doc_dataset.doc_content.remove_category(BLOG_CATEGORY)
+        text_file.write_file(new_doc_entry.doc_file_path, new_doc_content.value)
+        self.__stored_doc_entries_accessor.save_entry(new_doc_entry)
 
     def __build_file_path(self, doc_file_path: str) -> str:
         return file_system.join_path(self.__document_root_dir_path, doc_file_path)

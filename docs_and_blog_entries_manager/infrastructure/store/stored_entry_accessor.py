@@ -33,3 +33,6 @@ class _StoredEntryAccessor(IStoredEntryAccessor[TS, TI]):
         entry = self.load_entry(entry_id)
         updated_entry = entry.update_pickup(pickup)
         self.save_entry(updated_entry)
+
+    def delete_entry(self, entry_id: TI):
+        file_system.remove_file(self.__build_stored_json_path(entry_id))

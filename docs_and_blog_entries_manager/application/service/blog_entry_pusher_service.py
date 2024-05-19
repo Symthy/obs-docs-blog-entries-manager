@@ -25,7 +25,7 @@ class BlogEntryPusherService:
         """
         Blogカテゴリをドキュメントに付与してブログ投稿
         """
-        doc_dateset = self.__document_file_accessor.update_for_prepare_blog_post(doc_id)
+        doc_dateset = self.__document_file_accessor.update_for_blog_post(doc_id)
         blog_entry_id_opt = self.__blog_to_doc_mapping.find_blog_entry_id(doc_id)
         if blog_entry_id_opt is None:
             self.__post_blog(doc_dateset, doc_id)
