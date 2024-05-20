@@ -18,7 +18,7 @@ class BlogEntry(IEntry):
     FIELD_CATEGORY_PATH = 'category_path'
     FIELD_CATEGORIES = 'categories'
     FIELD_UPDATED_AT = 'updated_at'
-    FIELD_DOC_IMAGES = 'doc_images'
+    FIELD_IMAGES = 'images'
 
     def __init__(self, entry_id: BlogEntryId, title: str, page_url: str, last_updated: EntryDateTime,
                  category_path: CategoryPath, categories: List[str], images: PhotoEntries = PhotoEntries(),

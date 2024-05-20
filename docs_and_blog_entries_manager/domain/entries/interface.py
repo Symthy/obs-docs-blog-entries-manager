@@ -58,10 +58,6 @@ class IEntry(ISerializableObject, IConvertibleMarkdownLine, ABC):
     def serialize(self) -> object:
         pass
 
-    @abstractmethod
-    def deserialize(self, json_data: Dict[str, any]):
-        pass
-
 
 class IEntries(IConvertibleMarkdownLines, ABC):
     @property
