@@ -1,7 +1,8 @@
-import configparser
 from configparser import ConfigParser
 
-CONF_SECTION_HATENA = 'HATENA'
+from libs.config_loader import ConfigLoader
+
+CONF_SECTION_DEFAULT = 'DEFAULT'
 CONF_KEY_HATENA_ID = 'HATENA_ID'
 CONF_KEY_BLOG_ID = 'BLOG_ID'
 CONF_KEY_API_KEY = 'API_KEY'
@@ -13,18 +14,19 @@ CONF_OAUTH_CONSUMER_SECRET_KEY = 'OAUTH_CONSUMER_SECRET_KEY'
 
 class BlogConfig:
     def __init__(self, conf: ConfigParser):
-        self.__hatena_id = conf.get(CONF_SECTION_HATENA, CONF_KEY_HATENA_ID)
-        self.__blog_id = conf.get(CONF_SECTION_HATENA, CONF_KEY_BLOG_ID)
-        self.__api_key = conf.get(CONF_SECTION_HATENA, CONF_KEY_API_KEY)
-        self.__summary_entry_id = conf.get(CONF_SECTION_HATENA, CONF_SUMMARY_ENTRY_ID_KEY)
-        self.__summary_entry_title = conf.get(CONF_SECTION_HATENA, CONF_SUMMARY_ENTRY_TITLE_KEY)
-        self.__oauth_client_id = conf.get(CONF_SECTION_HATENA, CONF_OAUTH_CONSUMER_KEY)
-        self.__oauth_client_secret_id = conf.get(CONF_SECTION_HATENA, CONF_OAUTH_CONSUMER_SECRET_KEY)
+        self.__hatena_id = conf.get(CONF_SECTION_DEFAULT, CONF_KEY_HATENA_ID)
+        self.__blog_id = conf.get(CONF_SECTION_DEFAULT, CONF_KEY_BLOG_ID)
+        self.__api_key = conf.get(CONF_SECTION_DEFAULT, CONF_KEY_API_KEY)
+        self.__summary_entry_id = conf.get(CONF_SECTION_DEFAULT, CONF_SUMMARY_ENTRY_ID_KEY)
+        self.__summary_entry_title = conf.get(CONF_SECTION_DEFAULT, CONF_SUMMARY_ENTRY_TITLE_KEY)
+        # self.__oauth_client_id = conf.get(CONF_SECTION_HATENA, CONF_OAUTH_CONSUMER_KEY)
+        # self.__oauth_client_secret_id = conf.get(CONF_SECTION_HATENA, CONF_OAUTH_CONSUMER_SECRET_KEY)
 
     @staticmethod
     def load(config_path):
-        conf_parser = configparser.ConfigParser()
-        conf_parser.read(config_path)
+        conf_parser = ConfigLoader()
+        with open(config_path, 'r', encoding='utf-8') as file:
+            conf_parser.read_file(file)
         return BlogConfig(conf_parser)
 
     @property
@@ -47,10 +49,10 @@ class BlogConfig:
     def summary_entry_title(self):
         return self.__summary_entry_title
 
-    @property
-    def oauth_api_key(self):
-        return self.__oauth_client_id
-
-    @property
-    def oauth_client_secret_key(self):
-        return self.__oauth_client_secret_id
+    # @property
+    # def oauth_api_key(self):
+    #     return self.__oauth_client_id
+    #
+    # @property
+    # def oauth_client_secret_key(self):
+    #     return self.__oauth_client_secret_id
