@@ -86,6 +86,10 @@ class DocEntry(IEntry):
     def contains_blog_category(self) -> bool:
         return BLOG_CATEGORY in self.__categories
 
+    def update_pickup(self, pickup: bool) -> IEntry:
+        return DocEntry(self.id, self.title, self.doc_file_name, self.category_path,
+                        self.categories, pickup, self.created_at, self.updated_at)
+
     def convert_id_to_title(self) -> dict[DocEntryId, str]:
         return {self.id: self.title}
 
