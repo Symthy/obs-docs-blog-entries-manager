@@ -17,7 +17,10 @@ class BlogEntryRepository:
         self.__hatena_id = hatena_id
         self.__summary_entry_id = summary_entry_id
 
-    # Blog
+    # public for Debug
+    def get_entry_xml_by_id(self, entry_id: IEntryId) -> str:
+        return self.__api_client.get(path=entry_id.value)
+
     # GET Blog
     def find_id(self, entry_id: IEntryId) -> Optional[PostedBlogEntry]:
         xml_string_opt = self.__api_client.get(path=entry_id.value)

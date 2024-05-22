@@ -1,3 +1,4 @@
+import os
 from configparser import ConfigParser
 
 from libs.config_loader import ConfigLoader
@@ -19,11 +20,9 @@ class BlogConfig:
         self.__api_key = conf.get(CONF_SECTION_DEFAULT, CONF_KEY_API_KEY)
         self.__summary_entry_id = conf.get(CONF_SECTION_DEFAULT, CONF_SUMMARY_ENTRY_ID_KEY)
         self.__summary_entry_title = conf.get(CONF_SECTION_DEFAULT, CONF_SUMMARY_ENTRY_TITLE_KEY)
-        # self.__oauth_client_id = conf.get(CONF_SECTION_HATENA, CONF_OAUTH_CONSUMER_KEY)
-        # self.__oauth_client_secret_id = conf.get(CONF_SECTION_HATENA, CONF_OAUTH_CONSUMER_SECRET_KEY)
 
     @staticmethod
-    def load(config_path):
+    def load(config_path='./conf/blog.conf'.replace('/', os.sep)):
         conf_parser = ConfigLoader()
         with open(config_path, 'r', encoding='utf-8') as file:
             conf_parser.read_file(file)
@@ -48,11 +47,3 @@ class BlogConfig:
     @property
     def summary_entry_title(self):
         return self.__summary_entry_title
-
-    # @property
-    # def oauth_api_key(self):
-    #     return self.__oauth_client_id
-    #
-    # @property
-    # def oauth_client_secret_key(self):
-    #     return self.__oauth_client_secret_id

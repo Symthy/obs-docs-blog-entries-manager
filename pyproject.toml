@@ -13,6 +13,7 @@ et = "^0.0.2"
 pytest = "^8.2.0"
 mock = "^5.1.0"
 pytest-mock = "^3.14.0"
+assertpy = "^1.1"
 
 
 [build-system]

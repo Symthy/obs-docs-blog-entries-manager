@@ -6,8 +6,8 @@ from datetime import datetime
 from config.blog_config import BlogConfig
 from docs_and_blog_entries_manager.api.api_client import ApiClient
 
-HATENA_BLOG_ENTRY_API = 'https://blog.hatena.ne.jp/{HATENA_ID}/{BLOG_ID}/atom/entry'
-HATENA_PHOTO_ENTRY_API = 'https://f.hatena.ne.jp/atom'
+HATENA_BLOG_ENTRY_API = 'https://blog.hatena.ne.jp/{HATENA_ID}/{BLOG_ID}/atom/entry/'
+HATENA_PHOTO_ENTRY_API = 'https://f.hatena.ne.jp/atom/'
 
 
 class ApiClientFactory:
