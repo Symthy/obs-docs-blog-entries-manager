@@ -8,7 +8,6 @@ from docs_and_blog_entries_manager.api.api_client import ApiClient
 
 HATENA_BLOG_ENTRY_API = 'https://blog.hatena.ne.jp/{HATENA_ID}/{BLOG_ID}/atom/entry'
 HATENA_PHOTO_ENTRY_API = 'https://f.hatena.ne.jp/atom'
-HATENA_PHOTO_ENTRY_EDIT_API = 'https://f.hatena.ne.jp/atom/edit'
 
 
 class ApiClientFactory:
@@ -39,8 +38,8 @@ class ApiClientFactory:
                    .replace('{BLOG_ID}', self.__blog_conf.blog_id))
         return api_url
 
-    def build_blog_api_client(self):
-        ApiClient(self.__build_hatena_blog_api_base_url(), self.__build_request_header())
+    def build_blog_api_client(self) -> ApiClient:
+        return ApiClient(self.__build_hatena_blog_api_base_url(), self.__build_request_header())
 
-    def build_photo_api_client(self):
-        ApiClient(HATENA_PHOTO_ENTRY_API, self.__build_request_header())
+    def build_photo_api_client(self) -> ApiClient:
+        return ApiClient(HATENA_PHOTO_ENTRY_API, self.__build_request_header())

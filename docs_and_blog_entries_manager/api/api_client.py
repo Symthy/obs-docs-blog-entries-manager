@@ -42,3 +42,11 @@ class ApiClient:
             return response.text  # format: xml
         else:
             raise ApiException(http_method, url, response.text, response.status_code, response.reason, response.text)
+
+    @property  # for Testing
+    def base_url(self) -> str:
+        return self.__base_url
+
+    @property  # for Testing
+    def base_headers(self) -> dict:
+        return self.__base_headers
