@@ -26,3 +26,14 @@ class ISubCommand(ABC):
     def execute(self, args):
         """コマンドの実行"""
         pass
+
+
+class ISubCommandOption(ABC):
+    def add_option(self, subparser: argparse.ArgumentParser):
+        pass
+
+    def equals(self, args) -> bool:
+        pass
+
+    def execute(self, args):
+        pass
