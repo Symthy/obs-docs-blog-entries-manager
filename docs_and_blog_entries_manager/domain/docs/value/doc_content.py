@@ -9,8 +9,8 @@ from files import file_system
 
 
 class DocContent:
-    __DOCUMENT_IMAGE_LINK_REGEX = r'!\[.*\]\((.+)\)'
-    __DOCUMENT_CATEGORY_REGEX = r'#(\S+)'
+    __DOCUMENT_IMAGE_LINK_REGEX = r'\!\[.*\]\((.+)\)'
+    __DOCUMENT_CATEGORY_REGEX = r'\s#([a-zA-Z]+[/a-zA-Z]+)'
 
     def __init__(self, content: str, doc_entry_dir_path: str):
         self.__content = content if content.endswith('\n') else content + '\n'
@@ -18,7 +18,7 @@ class DocContent:
         self.__image_paths_from_doc_file = self.__extract_image_paths(doc_entry_dir_path)
         all_categories = self.__extract_categories()
         self.__categories = all_categories[1:] if len(all_categories) >= 2 else []
-        self.__category_path = self.__categories[0] if len(all_categories) >= 1 else None
+        self.__category_path = CategoryPath(all_categories[0]) if len(all_categories) >= 1 else None
         if self.__category_path is None:
             self.__category_path = CategoryPath(NON_CATEGORY_NAME)
             self.__content += f'#{self.__category_path.value}\n'
