@@ -1,7 +1,10 @@
 NON_CATEGORY_NAME = 'Others'
 SUMMARY_PAGE_TITLE = "Knowledge Stack & Index (全記事一覧)"
 
-LOCAL_STORAGE_DIR_PATH = './storage/'
+LOCAL_STORE_DIR_PATH = './store/'
+BLOG_ENTRY_LIST_PATH = LOCAL_STORE_DIR_PATH + 'blog_entry_list.json'
+DOC_ENTRY_LIST_PATH = LOCAL_STORE_DIR_PATH + 'doc_entry_list.json'
+
 CONF_DIR_PATH = './conf/'
 DOCS_DIR_PATH = './docs/document/'
 WORK_DOCS_DIR_PATH = './docs/work/'

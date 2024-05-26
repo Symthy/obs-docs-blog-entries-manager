@@ -1,6 +1,6 @@
 from typing import Dict, Optional
 
-from common.constants import LOCAL_STORAGE_DIR_PATH
+from common.constants import LOCAL_STORE_DIR_PATH
 from domain.blogs.value.blog_entry_id import BlogEntryId
 from domain.docs.value.doc_entry_id import DocEntryId
 from files import json_file
@@ -8,7 +8,7 @@ from files import json_file
 
 class BlogToDocEntryMapping:
     __HATENA_BLOG_TO_DOC_ENTRY_FILE = 'blog_to_doc_mapping.json'  # rename from hatena_blog_to_doc_dict.json
-    __HATENA_BLOG_TO_DOC_ENTRY_PATH = LOCAL_STORAGE_DIR_PATH + __HATENA_BLOG_TO_DOC_ENTRY_FILE
+    __HATENA_BLOG_TO_DOC_ENTRY_PATH = LOCAL_STORE_DIR_PATH + __HATENA_BLOG_TO_DOC_ENTRY_FILE
 
     def __init__(self, stored_json_file_path: str = None):
         blog_to_docs: Dict[str, str] = json_file.load(

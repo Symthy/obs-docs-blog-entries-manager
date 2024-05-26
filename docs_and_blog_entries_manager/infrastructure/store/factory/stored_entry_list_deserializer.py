@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Generic, Callable
 
-from common.constants import LOCAL_STORAGE_DIR_PATH
+from common.constants import BLOG_ENTRY_LIST_PATH, DOC_ENTRY_LIST_PATH
 from domain.blogs.entity.blog_entries import BlogEntries
 from domain.blogs.entity.blog_entry import BlogEntry
 from domain.blogs.value.blog_entry_id import BlogEntryId
@@ -20,23 +20,23 @@ class IStoredEntryListDeserializer(ABC):
 
 
 class StoredBlogEntryListDeserializer(IStoredEntryListDeserializer):
-    def __init__(self):
-        self.__delegator = StoredEntryListDeserializer(BlogEntryId.new_instance)
+    def __init__(self, entry_list_file_path: str = BLOG_ENTRY_LIST_PATH):
+        self.__delegator = StoredEntryListDeserializer(BlogEntryId.new_instance, entry_list_file_path)
 
     def deserialize(self) -> StoredEntryListHolder[BlogEntries, BlogEntry, BlogEntryId]:
         return self.__delegator.deserialize()
 
 
 class StoredDocEntryListDeserializer(IStoredEntryListDeserializer):
-    def __init__(self):
-        self.__delegator = StoredEntryListDeserializer(DocEntryId.new_instance)
+    def __init__(self, entry_list_file_path: str = DOC_ENTRY_LIST_PATH):
+        self.__delegator = StoredEntryListDeserializer(DocEntryId.new_instance, entry_list_file_path)
 
     def deserialize(self) -> StoredEntryListHolder[DocEntries, DocEntry, DocEntryId]:
         return self.__delegator.deserialize()
 
 
 class StoredEntryListDeserializer(IStoredEntryListDeserializer, Generic[TI]):
-    def __init__(self, entry_id_builder: Callable[[str], TI], entry_list_file_path: str = LOCAL_STORAGE_DIR_PATH):
+    def __init__(self, entry_id_builder: Callable[[str], TI], entry_list_file_path: str = None):
         self.__entry_id_builder = entry_id_builder
         self.__entry_list_file_path = entry_list_file_path
 

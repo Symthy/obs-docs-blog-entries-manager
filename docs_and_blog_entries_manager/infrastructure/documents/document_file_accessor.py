@@ -24,7 +24,8 @@ class DocumentFileAccessor:
         self.__doc_entry_restorer = DocEntryRestorer(document_root_dir_path)
 
     def __load_document(self, doc_file_path: str) -> DocContent:
-        content: str = text_file.read_file(file_system.join_path(doc_file_path))
+        doc_file_full_path = file_system.join_path(self.__document_root_dir_path, doc_file_path)
+        content: str = text_file.read_file(doc_file_full_path)
         doc_dir_path = file_system.get_dir_path_from_file_path(doc_file_path)
         return DocContent(content, doc_dir_path)
 

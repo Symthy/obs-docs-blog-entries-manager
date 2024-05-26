@@ -45,6 +45,11 @@ class StoredEntryListHolder(Generic[TM, TS, TI]):
     def exist_id(self, entry_id: TI) -> bool:
         return entry_id in self.__entry_id_to_pickup
 
+    def is_pickup(self, entry_id: TI) -> bool:
+        if not self.exist_id:
+            return False
+        return self.__entry_id_to_pickup[entry_id]
+
     def serialize(self) -> Dict[str, Dict[str, bool]]:
         return {
             StoredEntryListHolder.FIELD_UPDATED_AT: datetime_functions.current_datetime(),

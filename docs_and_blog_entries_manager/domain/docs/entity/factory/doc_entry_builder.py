@@ -64,5 +64,5 @@ class DocEntryBuilder:
             self.__categories,
             self.__pickup,
             self.__created_at if self.__created_at is not None else current_date_time,
-            self.__updated_at if self.__created_at is not None else current_date_time
+            self.__updated_at if self.__updated_at is not None else current_date_time
         )

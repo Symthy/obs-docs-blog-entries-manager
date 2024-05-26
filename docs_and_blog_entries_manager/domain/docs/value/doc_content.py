@@ -15,7 +15,7 @@ class DocContent:
     def __init__(self, content: str, doc_entry_dir_path: str):
         self.__content = content if content.endswith('\n') else content + '\n'
         self.__doc_entry_dir_path = doc_entry_dir_path
-        self.__image_paths_from_doc_file = self.__extract_image_paths(doc_entry_dir_path)
+        self.__image_paths_from_doc_file = self.__extract_image_paths()
         all_categories = self.__extract_categories()
         self.__categories = all_categories[1:] if len(all_categories) >= 2 else []
         self.__category_path = CategoryPath(all_categories[0]) if len(all_categories) >= 1 else None
@@ -23,10 +23,10 @@ class DocContent:
             self.__category_path = CategoryPath(NON_CATEGORY_NAME)
             self.__content += f'#{self.__category_path.value}\n'
 
-    def __extract_image_paths(self, doc_dir_path: str) -> List[str]:
+    def __extract_image_paths(self) -> List[str]:
         # 画像ファイルのパスはmdファイルからの相対パス (image/xxxx)
         image_paths = re.findall(self.__DOCUMENT_IMAGE_LINK_REGEX, self.__content)
-        return list(map(lambda path: file_system.join_path(doc_dir_path, path), image_paths))
+        return image_paths
 
     def __extract_categories(self) -> List[str]:
         categories = re.findall(self.__DOCUMENT_CATEGORY_REGEX, self.__content)
