@@ -3,11 +3,11 @@ from typing import List
 from application.service.converter.blog_to_doc_entry_converter import BlogToDocEntryConverter
 from application.service.converter.photo_entries_to_doc_images_converter import PhotoEntriesToDocImagesConverter
 from domain.blogs.datasource.model.posted_blog_entry import PostedBlogEntry
-from domain.blogs.services.posted_blog_entry_collector import PostedBlogEntryCollector
 from domain.docs.entity.doc_entry import DocEntry
 from domain.docs.value.doc_content import DocContent
 from domain.docs.value.doc_entry_id import DocEntryId
 from infrastructure.documents.document_file_accessor import DocumentFileAccessor
+from infrastructure.hatena.blog_photo_entry_repository import BlogPhotoEntryRepository
 from infrastructure.store.composite.stored_both_entries_accessor import StoredBothEntriesAccessor
 
 
@@ -17,19 +17,19 @@ class EntryCollectorService:
     """
 
     def __init__(self,
-                 posted_blog_entry_collector: PostedBlogEntryCollector,
+                 posted_blog_entry_repository: BlogPhotoEntryRepository,
                  blog_to_doc_entry_converter: BlogToDocEntryConverter,
                  photo_entries_to_doc_images_converter: PhotoEntriesToDocImagesConverter,
                  stored_both_entries_accessor: StoredBothEntriesAccessor,
                  document_file_accessor: DocumentFileAccessor):
-        self.__posted_blog_entry_collector = posted_blog_entry_collector
+        self.__posted_blog_entry_repository = posted_blog_entry_repository
         self.__blog_to_doc_entry_converter = blog_to_doc_entry_converter
         self.__photo_entries_to_doc_images_converter = photo_entries_to_doc_images_converter
         self.__stored_both_entries_accessor = stored_both_entries_accessor
         self.__document_file_accessor = document_file_accessor
 
     def execute(self):
-        posted_blog_entries: List[PostedBlogEntry] = self.__posted_blog_entry_collector.execute()
+        posted_blog_entries: List[PostedBlogEntry] = self.__posted_blog_entry_repository.find_all()
         self.__save_all(posted_blog_entries)
 
     def __save_all(self, posted_blog_entries: List[PostedBlogEntry]):

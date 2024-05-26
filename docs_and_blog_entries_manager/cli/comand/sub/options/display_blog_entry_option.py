@@ -1,13 +1,14 @@
 import argparse
 
 from cli.comand.interface import ISubCommandOption
+from config.blog_config import BlogConfig
 from domain.blogs.value.blog_entry_id import BlogEntryId
 from infrastructure.hatena.api.api_client_factory import ApiClientFactory
 from infrastructure.hatena.blog_entry_repository import BlogEntryRepository
 
 
 class DisplayBlogEntryOption(ISubCommandOption):
-    def __init__(self, blog_config):
+    def __init__(self, blog_config: BlogConfig):
         self.__blog_config = blog_config
 
     def add_option(self, subparser: argparse.ArgumentParser):

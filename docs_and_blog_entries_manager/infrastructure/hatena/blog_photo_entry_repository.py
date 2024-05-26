@@ -1,5 +1,10 @@
 from domain.blogs.datasource.model.post_blog_entry import PostBlogEntry
+from domain.blogs.datasource.model.posted_blog_entry import PostedBlogEntry
 from domain.blogs.entity.blog_entry import BlogEntry
+from domain.blogs.entity.photo.photo_entries import PhotoEntries
+from domain.blogs.entity.photo.photo_entry import PhotoEntry
+from domain.blogs.value.blog_entry_id import BlogEntryId
+from domain.blogs.value.photo_entry_id import PhotoEntryId
 from files import file_system
 from infrastructure.hatena.blog_entry_repository import BlogEntryRepository
 from infrastructure.hatena.photo_entry_repository import PhotoEntryRepository
@@ -9,6 +14,30 @@ class BlogPhotoEntryRepository:
     def __init__(self, blog_entry_repository: BlogEntryRepository, photo_entry_repository: PhotoEntryRepository):
         self.__blog_entry_repository = blog_entry_repository
         self.__photo_entry_repository = photo_entry_repository
+
+    def find_id(self, blog_entry_id: BlogEntryId):
+        posted_blog_entry = self.__blog_entry_repository.find_id(blog_entry_id)
+        photo_entry_ids: list[PhotoEntryId] = posted_blog_entry.content.photo_entry_ids
+        posted_blog_entry_has_photo = self.__insert_photo_entries(posted_blog_entry, photo_entry_ids)
+        return posted_blog_entry_has_photo
+
+    def find_all(self):
+        posted_blog_entries: list[PostedBlogEntry] = []
+        for posted_blog_entry in self.__blog_entry_repository.find_all():
+            photo_entry_ids: list[PhotoEntryId] = posted_blog_entry.content.photo_entry_ids
+            posted_blog_entry_has_photo = self.__insert_photo_entries(posted_blog_entry, photo_entry_ids)
+            posted_blog_entries.append(posted_blog_entry_has_photo)
+        return posted_blog_entries
+
+    def __insert_photo_entries(self, posted_blog_entry: PostedBlogEntry,
+                               photo_entry_ids: list[PhotoEntryId]) -> PostedBlogEntry:
+        photo_entries: list[PhotoEntry] = []
+        for photo_entry_id in photo_entry_ids:
+            photo_entry = self.__photo_entry_repository.find_id(photo_entry_id)
+            if photo_entry is not None:
+                photo_entries.append(photo_entry)
+        new_posted_blog_entry = posted_blog_entry.merge_photo_entries(PhotoEntries(photo_entries))
+        return new_posted_blog_entry
 
     def save(self, post_blog_entry: PostBlogEntry) -> BlogEntry | None:
         posted_blog_entry_opt = self.__blog_entry_repository.post(post_blog_entry)
