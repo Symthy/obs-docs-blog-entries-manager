@@ -11,7 +11,7 @@ from domain.blogs.value.blog_entry_id import BlogEntryId
 class IBlogEntryRepository(ABC):
 
     @abstractmethod
-    def find_id(self, blog_entry_id: BlogEntryId) -> PostedBlogEntry:
+    def find(self, blog_entry_id: BlogEntryId) -> PostedBlogEntry:
         pass
 
     @abstractmethod

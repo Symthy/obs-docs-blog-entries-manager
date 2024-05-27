@@ -1,6 +1,7 @@
 from typing import List
 
 from common.constants import BLOG_CATEGORY
+from domain.docs.datasources.interface import IDocumentRepository
 from domain.docs.datasources.model.document_dataset import DocumentDataset
 from domain.docs.entity.doc_entries import DocEntries
 from domain.docs.entity.doc_entry import DocEntry
@@ -15,7 +16,7 @@ from infrastructure.store.stored_entry_list_holder import StoredEntryListHolder
 from infrastructure.types import StoredDocEntriesAccessor
 
 
-class DocumentFileAccessor:
+class DocumentFileAccessor(IDocumentRepository):
     def __init__(self, document_root_dir_path, stored_entry_list: StoredEntryListHolder,
                  stored_doc_entries_accessor: StoredDocEntriesAccessor):
         self.__document_root_dir_path = document_root_dir_path
@@ -29,16 +30,12 @@ class DocumentFileAccessor:
         doc_dir_path = file_system.get_dir_path_from_file_path(doc_file_path)
         return DocContent(content, doc_dir_path)
 
-    def get_file_paths(self, category_path: CategoryPath) -> List[str]:
-        target_dir_path = file_system.join_path(self.__document_root_dir_path, category_path.value)
-        return file_system.get_file_paths_in_target_dir(target_dir_path)
-
-    def find_document(self, doc_id: DocEntryId) -> DocumentDataset:
+    def find(self, doc_id: DocEntryId) -> DocumentDataset:
         doc_entry = self.__stored_doc_entries_accessor.load_entry(doc_id)
         content = self.__load_document(doc_entry.doc_file_path)
         return DocumentDataset(doc_entry, content)
 
-    def find_non_register_doc_entries(self, doc_entry_paths: List[str]) -> DocEntries:
+    def extract_non_register_entries(self, doc_entry_paths: List[str]) -> DocEntries:
         doc_id_to_path = self.__all_doc_id_to_file_path(doc_entry_paths)
         doc_entries: List[DocEntry] = []
         for doc_id, doc_entry_path in doc_id_to_path:
@@ -47,8 +44,8 @@ class DocumentFileAccessor:
         return DocEntries(doc_entries)
 
     @classmethod
-    def save_document_set(cls, doc_entry_dir_path: str, title: str, content: DocContent,
-                          images: DocImages) -> DocEntryId:
+    def save(cls, doc_entry_dir_path: str, title: str, content: DocContent,
+             images: DocImages) -> DocEntryId:
         doc_file_path = file_system.join_path(doc_entry_dir_path, f'{title}.md')
         text_file.write_file(doc_file_path, content.value)
         for image in images.items:
@@ -56,20 +53,20 @@ class DocumentFileAccessor:
         created_date_time = EntryDateTime(file_system.get_created_file_time(doc_file_path))
         return DocEntryId(created_date_time.to_str_with_num_sequence())
 
-    def save_summary_file(self, content: DocContent):
+    def save_summary(self, content: DocContent):
         summary_file_path = file_system.join_path(self.__document_root_dir_path, 'summary.md')
         text_file.write_file(summary_file_path, content.value)
 
-    def update_for_blog_post(self, doc_id: DocEntryId) -> DocumentDataset:
-        doc_dataset = self.find_document(doc_id)
+    def insert_category(self, doc_id: DocEntryId, category_to_be_added) -> DocumentDataset:
+        doc_dataset = self.find(doc_id)
         new_doc_content = self.__insert_category_to_content(doc_dataset.doc_entry.doc_file_path,
-                                                            doc_dataset.doc_content, BLOG_CATEGORY)
-        new_doc_entry = doc_dataset.doc_entry.insert_category(BLOG_CATEGORY)
+                                                            doc_dataset.doc_content, category_to_be_added)
+        new_doc_entry = doc_dataset.doc_entry.insert_category(category_to_be_added)
         self.__stored_doc_entries_accessor.save_entry(new_doc_entry)
         return DocumentDataset(new_doc_entry, new_doc_content)
 
     @classmethod
-    def insert_category_path_to_content(cls, doc_file_path: str, category_path: CategoryPath) -> DocContent:
+    def insert_category_path(cls, doc_file_path: str, category_path: CategoryPath) -> DocContent:
         content = DocContent(text_file.read_file(doc_file_path), file_system.get_dir_path_from_file_path(doc_file_path))
         text_file.write_file(doc_file_path, content.add_category(category_path, []).value)
         return content
@@ -86,10 +83,10 @@ class DocumentFileAccessor:
         text_file.write_file(doc_file_path, updated_content.value)
         return updated_content
 
-    def remove_blog_category(self, doc_id: DocEntryId):
-        doc_dataset = self.find_document(doc_id)
-        new_doc_entry = doc_dataset.doc_entry.remove_category(BLOG_CATEGORY)
-        new_doc_content = doc_dataset.doc_content.remove_category(BLOG_CATEGORY)
+    def delete_category(self, doc_id: DocEntryId, category_to_be_removed: str):
+        doc_dataset = self.find(doc_id)
+        new_doc_entry = doc_dataset.doc_entry.remove_category(category_to_be_removed)
+        new_doc_content = doc_dataset.doc_content.remove_category(category_to_be_removed)
         text_file.write_file(new_doc_entry.doc_file_path, new_doc_content.value)
         self.__stored_doc_entries_accessor.save_entry(new_doc_entry)
 
@@ -97,7 +94,7 @@ class DocumentFileAccessor:
         return file_system.join_path(self.__document_root_dir_path, doc_file_path)
 
     @staticmethod
-    def __all_doc_id_to_file_path(doc_entry_paths: List[str]) -> dict[DocEntryId, str]:
+    def __all_doc_id_to_file_path(doc_file_paths: List[str]) -> dict[DocEntryId, str]:
         doc_id_to_path: dict[DocEntryId, str] = dict(
-            map(lambda path: (DocEntryId(file_system.get_created_file_time(path)), path), doc_entry_paths))
+            map(lambda path: (DocEntryId(file_system.get_created_file_time(path)), path), doc_file_paths))
         return doc_id_to_path

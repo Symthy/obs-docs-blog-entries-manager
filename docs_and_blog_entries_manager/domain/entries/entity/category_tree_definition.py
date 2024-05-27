@@ -50,6 +50,10 @@ class CategoryTreeDefinition:
             return self.__category_name_to_categories[category_path.top].find_category_path(category_path)
         return False
 
+    def get_file_paths(self, category_path: CategoryPath) -> List[str]:
+        target_dir_path = file_system.join_path(self.__LOCAL_DOCUMENT_ROOT_DIR_PATH, category_path.value)
+        return file_system.get_file_paths_in_target_dir(target_dir_path)
+
     def __build_category_group(self, dir_path: str, target_dir_name: str,
                                parent_category_path: CategoryPath = None) -> CategoryGroup:
         sub_dir_names = file_system.get_dir_names_in_target_dir(dir_path)

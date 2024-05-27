@@ -21,7 +21,7 @@ def blog_entry_repository() -> BlogEntryRepository:
 
 
 def test_find_id(blog_entry_repository):
-    blog_entry: PostedBlogEntry = blog_entry_repository.find_id(BlogEntryId('13574176438055686757'))
+    blog_entry: PostedBlogEntry = blog_entry_repository.find(BlogEntryId('13574176438055686757'))
     assert_that(blog_entry.title).is_equal_to('Github プロフィールのカスタマイズ')
     assert_that(blog_entry.category_path.value).is_equal_to('Github')
     assert_that(blog_entry.content.value).starts_with('[:contents]\n\n# Github プロフィールのカスタマイズ')

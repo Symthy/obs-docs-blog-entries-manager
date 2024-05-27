@@ -45,6 +45,6 @@ class EntryCollectorService:
         doc_content = DocContent(posted_blog_entry.content.value_with_inserted_categories, doc_entry_path)
         doc_images = self.__photo_entries_to_doc_images_converter.execute(posted_blog_entry.photo_entries,
                                                                           doc_entry_path)
-        doc_entry_id = self.__document_file_accessor.save_document_set(doc_entry_path, posted_blog_entry.title,
-                                                                       doc_content, doc_images)
+        doc_entry_id = self.__document_file_accessor.save(doc_entry_path, posted_blog_entry.title,
+                                                          doc_content, doc_images)
         return doc_entry_id

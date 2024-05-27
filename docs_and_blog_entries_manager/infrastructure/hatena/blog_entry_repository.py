@@ -23,7 +23,7 @@ class BlogEntryRepository(IBlogEntryRepository):
         return self.__api_client.get(path=entry_id.value)
 
     # GET Blog
-    def find_id(self, entry_id: IEntryId) -> Optional[PostedBlogEntry]:
+    def find(self, entry_id: IEntryId) -> Optional[PostedBlogEntry]:
         xml_string_opt = self.__api_client.get(path=entry_id.value)
         return BlogEntryResponseBody(self.__hatena_id, xml_string_opt).parse()
 

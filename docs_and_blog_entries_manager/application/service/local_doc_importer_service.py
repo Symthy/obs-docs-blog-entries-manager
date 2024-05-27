@@ -24,12 +24,12 @@ class LocalDocImporterService:
         内部保持のEntry一覧にあるか確認して、ないものは登録。記事にカテゴリ付与も行う
         """
         all_category_paths: List[CategoryPath] = self.__category_tree_def.all_category_paths
-        non_exist_doc_entries: DocEntries = self.__document_file_accessor.find_non_register_doc_entries(
+        non_exist_doc_entries: DocEntries = self.__document_file_accessor.extract_non_register_entries(
             list(map(lambda path: path.value, all_category_paths)))
         if non_exist_doc_entries.is_empty():
             Logger.info('Nothing new document.')
             return
         self.__stored_doc_entries_accessor.save_entries(non_exist_doc_entries)
         for doc_entry in non_exist_doc_entries.items:
-            self.__document_file_accessor.insert_category_path_to_content(doc_entry.doc_file_path,
-                                                                          doc_entry.category_path)
+            self.__document_file_accessor.insert_category_path(doc_entry.doc_file_path,
+                                                               doc_entry.category_path)

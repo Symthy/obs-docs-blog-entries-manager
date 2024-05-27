@@ -24,7 +24,7 @@ class LocalDocPusherService:
     def execute(self, title: str) -> DocEntry:
         work_doc_file_path = self.__build_file_path(title)
         doc_entry = self.__doc_entry_restorer.execute(work_doc_file_path)
-        self.__document_file_accessor.insert_category_path_to_content(work_doc_file_path, NON_CATEGORY_NAME)
+        self.__document_file_accessor.insert_category_path(work_doc_file_path, NON_CATEGORY_NAME)
         self.__document_file_mover.move(work_doc_file_path, doc_entry)
         self.__stored_doc_entries_accessor.save_entry(doc_entry)
         return doc_entry

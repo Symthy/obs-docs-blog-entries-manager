@@ -33,7 +33,7 @@ def document_file_accessor():
 
 
 def test_find_document(document_file_accessor):
-    doc_dataset = document_file_accessor.find_document(DocEntryId('20240501000000'))
+    doc_dataset = document_file_accessor.find(DocEntryId('20240501000000'))
     assert_that(doc_dataset.doc_entry.id.value).is_equal_to('20240501000000')
     assert_that(doc_dataset.doc_content.category_path.value).is_equal_to('Github')
     assert_that(doc_dataset.doc_content.image_paths_from_doc_file).contains_only('images/github-profile-summary.png')

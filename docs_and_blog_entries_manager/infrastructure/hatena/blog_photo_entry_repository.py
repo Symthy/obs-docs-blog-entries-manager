@@ -18,8 +18,8 @@ class BlogPhotoEntryRepository(IBlogEntryRepository):
         self.__blog_entry_repository = blog_entry_repository
         self.__photo_entry_repository = photo_entry_repository
 
-    def find_id(self, blog_entry_id: BlogEntryId) -> PostedBlogEntry:
-        posted_blog_entry = self.__blog_entry_repository.find_id(blog_entry_id)
+    def find(self, blog_entry_id: BlogEntryId) -> PostedBlogEntry:
+        posted_blog_entry = self.__blog_entry_repository.find(blog_entry_id)
         photo_entry_ids: list[PhotoEntryId] = posted_blog_entry.content.photo_entry_ids
         posted_blog_entry_has_photo = self.__insert_photo_entries(posted_blog_entry, photo_entry_ids)
         return posted_blog_entry_has_photo

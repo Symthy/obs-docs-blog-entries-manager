@@ -1,4 +1,5 @@
 from application.service.converter.doc_to_blog_entry_converter import DocToBlogEntryConverter
+from common.constants import BLOG_CATEGORY
 from common.result import Result
 from domain.blogs.datasource.interface import IBlogEntryRepository
 from domain.blogs.entity.blog_entry import BlogEntry
@@ -29,7 +30,7 @@ class BlogEntryPusherService:
         """
         Blogカテゴリをドキュメントに付与してブログ投稿
         """
-        doc_dateset = self.__document_file_accessor.update_for_blog_post(doc_id)
+        doc_dateset = self.__document_file_accessor.insert_category(doc_id, BLOG_CATEGORY)
         blog_entry_id_opt = self.__blog_to_doc_mapping.find_blog_entry_id(doc_id)
         if blog_entry_id_opt is None:
             return self.__post_blog(doc_dateset, doc_id)

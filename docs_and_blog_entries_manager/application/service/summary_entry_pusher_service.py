@@ -24,7 +24,7 @@ class SummaryEntryPusherService:
 
     def __push_doc_summary(self):
         summary = self.__entries_summary_factory.build()
-        self.__document_file_accessor.save_summary_file(summary.content)
+        self.__document_file_accessor.save_summary(summary.content)
 
     def __push_blog_summary(self):
         summary = self.__entries_summary_factory.build()
