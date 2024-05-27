@@ -2,7 +2,7 @@ from typing import List
 from xml.sax.saxutils import escape
 
 from common.constants import SUMMARY_PAGE_TITLE
-from domain.blogs.datasource.model.post_blog_entry import PostBlogEntry
+from domain.blogs.datasource.model.not_posted_blog_entry import PrePostBlogEntry
 
 
 def summary_page_title() -> str:
@@ -37,7 +37,7 @@ def __build_categories_xml_strs(categories: List[str]) -> str:
     return "\n".join([__BLOG_ENTRY_CATEGORY_TEMPLATE.format(category) for category in categories])
 
 
-def build_blog_entry_xml_body(hatena_id: str, entry: PostBlogEntry,
+def build_blog_entry_xml_body(hatena_id: str, entry: PrePostBlogEntry,
                               is_draft: bool = False, is_title_escape: bool = True) -> str:
     # title の escape も行わないと xml parse error が起きて投稿できない時が低確率である
     entry_xml = __BLOG_ENTRY_TEMPLATE.format(

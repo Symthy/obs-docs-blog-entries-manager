@@ -5,9 +5,9 @@ from domain.entries.values.entry_date_time import EntryDateTime
 from files import file_system
 
 
-class PostBlogEntry:
+class PrePostBlogEntry:
     """
-    これからブログに登録するデータを保持するためのクラス
+    (これからブログに登録する)投稿前のデータを保持するためのクラス
     """
 
     def __init__(self, title: str, content: str, category_path: CategoryPath, categories: List[str],

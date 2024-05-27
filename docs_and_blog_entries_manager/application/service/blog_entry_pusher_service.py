@@ -1,10 +1,10 @@
 from application.service.converter.doc_to_blog_entry_converter import DocToBlogEntryConverter
 from common.result import Result
+from domain.blogs.datasource.interface import IBlogEntryRepository
 from domain.blogs.entity.blog_entry import BlogEntry
 from domain.docs.datasources.model.document_dataset import DocumentDataset
 from domain.docs.value.doc_entry_id import DocEntryId
 from infrastructure.documents.document_file_accessor import DocumentFileAccessor
-from infrastructure.hatena.blog_photo_entry_repository import BlogPhotoEntryRepository
 from infrastructure.store.blog_to_doc_entry_mapping import BlogToDocEntryMapping
 from infrastructure.types import StoredBlogEntriesAccessor
 
@@ -16,7 +16,7 @@ class BlogEntryPusherService:
 
     def __init__(self, document_file_accessor: DocumentFileAccessor,
                  doc_to_blog_entry_converter: DocToBlogEntryConverter,
-                 blog_photo_entry_repository: BlogPhotoEntryRepository,
+                 blog_photo_entry_repository: IBlogEntryRepository,
                  blog_to_doc_mapping: BlogToDocEntryMapping,
                  stored_blog_entries_accessor: StoredBlogEntriesAccessor):
         self.__document_file_accessor = document_file_accessor
@@ -38,8 +38,8 @@ class BlogEntryPusherService:
             return self.__put_blog(doc_dateset, blog_entry)
 
     def __post_blog(self, doc_dateset: DocumentDataset, doc_id: DocEntryId) -> Result[str, str]:
-        post_blog_entry = self.__doc_to_blog_entry_converter.convert_to_post(doc_dateset)
-        blog_entry_opt = self.__blog_photo_entry_repository.save(post_blog_entry)
+        pre_post_blog_entry = self.__doc_to_blog_entry_converter.convert_to_prepost(doc_dateset)
+        blog_entry_opt = self.__blog_photo_entry_repository.create(pre_post_blog_entry)
         if blog_entry_opt is None:
             return Result(error=f'Failed to post to blog: {doc_dateset.doc_entry.doc_file_path}')
         self.__stored_blog_entries_accessor.save_entry(blog_entry_opt)
@@ -47,8 +47,8 @@ class BlogEntryPusherService:
         return Result(value=f'Success to post to blog: {doc_dateset.doc_entry.doc_file_path}')
 
     def __put_blog(self, doc_dateset: DocumentDataset, blog_entry: BlogEntry):
-        post_blog_entry = self.__doc_to_blog_entry_converter.convert_to_post(doc_dateset)
-        blog_entry_opt = self.__blog_photo_entry_repository.update(post_blog_entry, blog_entry)
+        pre_post_blog_entry = self.__doc_to_blog_entry_converter.convert_to_prepost(doc_dateset)
+        blog_entry_opt = self.__blog_photo_entry_repository.update(pre_post_blog_entry, blog_entry)
         if blog_entry_opt is None:
             return Result(error=f'Failed to put to blog: {doc_dateset.doc_entry.doc_file_path}')
         self.__stored_blog_entries_accessor.save_entry(blog_entry_opt)

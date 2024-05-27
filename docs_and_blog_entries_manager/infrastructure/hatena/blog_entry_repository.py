@@ -2,7 +2,8 @@ from typing import Optional, List
 from urllib.parse import urlparse, parse_qsl
 
 from docs_and_blog_entries_manager.api.api_client import ApiClient
-from domain.blogs.datasource.model.post_blog_entry import PostBlogEntry
+from domain.blogs.datasource.interface import IBlogEntryRepository
+from domain.blogs.datasource.model.not_posted_blog_entry import PrePostBlogEntry
 from domain.blogs.datasource.model.posted_blog_entry import PostedBlogEntry
 from domain.blogs.value.blog_entry_id import BlogEntryId
 from domain.entries.interface import IEntryId
@@ -11,7 +12,7 @@ from infrastructure.hatena.templates import request_formats
 from logs.logger import Logger
 
 
-class BlogEntryRepository:
+class BlogEntryRepository(IBlogEntryRepository):
     def __init__(self, blog_api_client: ApiClient, hatena_id: str, summary_entry_id: IEntryId):
         self.__api_client = blog_api_client
         self.__hatena_id = hatena_id
@@ -42,7 +43,7 @@ class BlogEntryRepository:
         return blog_entries
 
     # POST blog
-    def post(self, entry: PostBlogEntry, is_draft: bool = False, is_title_escape: bool = True) \
+    def create(self, entry: PrePostBlogEntry, is_draft: bool = False, is_title_escape: bool = True) \
             -> Optional[PostedBlogEntry]:
         body = request_formats.build_blog_entry_xml_body(self.__hatena_id, entry, is_draft, is_title_escape)
         Logger.info(f'POST Blog: {entry.title}')
@@ -50,23 +51,24 @@ class BlogEntryRepository:
         return BlogEntryResponseBody(self.__hatena_id, blog_entry_xml).parse()
 
     # PUT blog
-    def put(self, entry_id: BlogEntryId, entry: PostBlogEntry, is_draft: bool = False, is_title_escape: bool = True) \
+    def update(self, entry_id: BlogEntryId, entry: PrePostBlogEntry, is_draft: bool = False,
+               is_title_escape: bool = True) \
             -> Optional[PostedBlogEntry]:
-        blog_entry_xml = self.__put_entry(entry_id, entry, is_draft, is_title_escape)
+        blog_entry_xml = self.__update_entry(entry_id, entry, is_draft, is_title_escape)
         return BlogEntryResponseBody(self.__hatena_id, blog_entry_xml).parse()
 
-    def put_summary_page(self, entry_id: BlogEntryId, blog_summary_entry: PostBlogEntry) -> bool:
-        # Todo: argument is blog entry object
+    def update_summary(self, entry_id: BlogEntryId, blog_summary_entry: PrePostBlogEntry) -> bool:
+        # Todo: blog entry をここで生成に寄せる
         # category = 'Summary'
         # title = request_formats.summary_page_title()
         # content = request_formats.build_blog_summary_entry_content(content)
-        entry_xml = self.__put_entry(entry_id, blog_summary_entry)
+        entry_xml = self.__update_entry(entry_id, blog_summary_entry)
         if entry_xml is None:
             return False
         return True
 
-    def __put_entry(self, entry_id: BlogEntryId, entry: PostBlogEntry, is_draft: bool = False,
-                    is_title_escape: bool = True) -> Optional[str]:
+    def __update_entry(self, entry_id: BlogEntryId, entry: PrePostBlogEntry, is_draft: bool = False,
+                       is_title_escape: bool = True) -> Optional[str]:
         body = request_formats.build_blog_entry_xml_body(self.__hatena_id, entry, is_draft, is_title_escape)
         Logger.info(f'PUT Blog: {entry.title}')
         return self.__api_client.put(body, entry_id.value)

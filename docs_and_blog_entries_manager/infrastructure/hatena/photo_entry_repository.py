@@ -22,15 +22,15 @@ class PhotoEntryRepository:
         return PhotoEntryResponseBody(xml_string_opt).parse('')
 
     # POST photo
-    def post_all(self, image_file_paths: List[str]) -> PhotoEntries:
+    def create_all(self, image_file_paths: List[str]) -> PhotoEntries:
         photo_entries: List[PhotoEntry] = []
         for image_path in image_file_paths:
-            entry_opt = self.post(image_path)
+            entry_opt = self.create(image_path)
             if entry_opt is not None:
                 photo_entries.append(entry_opt)
         return PhotoEntries(photo_entries)
 
-    def post(self, image_file_path: str) -> Optional[PhotoEntry]:
+    def create(self, image_file_path: str) -> Optional[PhotoEntry]:
         def __build_hatena_photo_entry_body() -> Optional[str]:
             # Todo: refactor use library
             __PIC_EXTENSION_TO_CONTENT_TYPE = {
@@ -62,10 +62,10 @@ class PhotoEntryRepository:
 
     # UPDATE(DELETE+POST) photo
     # because PUT can change title only
-    def put(self, image_file_path: str, photo_entry: PhotoEntry) -> Optional[PhotoEntry]:
+    def update(self, image_file_path: str, photo_entry: PhotoEntry) -> Optional[PhotoEntry]:
         # Todo: error
         self.__delete(photo_entry)
-        return self.post(image_file_path)
+        return self.create(image_file_path)
 
     # DELETE
     def delete_all(self, photo_entries: PhotoEntries):

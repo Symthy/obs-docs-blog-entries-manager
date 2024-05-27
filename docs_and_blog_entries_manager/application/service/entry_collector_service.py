@@ -2,12 +2,12 @@ from typing import List
 
 from application.service.converter.blog_to_doc_entry_converter import BlogToDocEntryConverter
 from application.service.converter.photo_entries_to_doc_images_converter import PhotoEntriesToDocImagesConverter
+from domain.blogs.datasource.interface import IBlogEntryRepository
 from domain.blogs.datasource.model.posted_blog_entry import PostedBlogEntry
 from domain.docs.entity.doc_entry import DocEntry
 from domain.docs.value.doc_content import DocContent
 from domain.docs.value.doc_entry_id import DocEntryId
 from infrastructure.documents.document_file_accessor import DocumentFileAccessor
-from infrastructure.hatena.blog_photo_entry_repository import BlogPhotoEntryRepository
 from infrastructure.store.composite.stored_both_entries_accessor import StoredBothEntriesAccessor
 
 
@@ -17,7 +17,7 @@ class EntryCollectorService:
     """
 
     def __init__(self,
-                 posted_blog_entry_repository: BlogPhotoEntryRepository,
+                 posted_blog_entry_repository: IBlogEntryRepository,
                  blog_to_doc_entry_converter: BlogToDocEntryConverter,
                  photo_entries_to_doc_images_converter: PhotoEntriesToDocImagesConverter,
                  stored_both_entries_accessor: StoredBothEntriesAccessor,
