@@ -1,7 +1,7 @@
 from typing import List
 
 from common.constants import BLOG_CATEGORY
-from domain.docs.datasources.interface import IDocumentRepository
+from domain.docs.datasources.interface import IDocumentRepository, IDocEntryRestorer
 from domain.docs.datasources.model.document_dataset import DocumentDataset
 from domain.docs.entity.doc_entries import DocEntries
 from domain.docs.entity.doc_entry import DocEntry
@@ -16,31 +16,24 @@ from infrastructure.store.stored_entry_list_holder import StoredEntryListHolder
 from infrastructure.types import StoredDocEntriesAccessor
 
 
-class DocumentFileAccessor(IDocumentRepository):
+class DocumentFileAccessor(IDocumentRepository, IDocEntryRestorer):
+
     def __init__(self, document_root_dir_path, stored_entry_list: StoredEntryListHolder,
                  stored_doc_entries_accessor: StoredDocEntriesAccessor):
         self.__document_root_dir_path = document_root_dir_path
         self.__stored_entry_list = stored_entry_list
         self.__stored_doc_entries_accessor = stored_doc_entries_accessor
-        self.__doc_entry_restorer = DocEntryRestorer(document_root_dir_path)
+        self.__doc_entry_restorer = DocEntryRestorer(document_root_dir_path, stored_doc_entries_accessor)
 
-    def __load_document(self, doc_file_path: str) -> DocContent:
-        doc_file_full_path = file_system.join_path(self.__document_root_dir_path, doc_file_path)
-        content: str = text_file.read_file(doc_file_full_path)
-        doc_dir_path = file_system.get_dir_path_from_file_path(doc_file_path)
-        return DocContent(content, doc_dir_path)
-
-    def find(self, doc_id: DocEntryId) -> DocumentDataset:
-        doc_entry = self.__stored_doc_entries_accessor.load_entry(doc_id)
-        content = self.__load_document(doc_entry.doc_file_path)
-        return DocumentDataset(doc_entry, content)
+    def get_entry(self, doc_entry_file_path: str) -> DocEntry:
+        return self.__doc_entry_restorer.get_entry(doc_entry_file_path)
 
     def extract_non_register_entries(self, doc_entry_paths: List[str]) -> DocEntries:
         doc_id_to_path = self.__all_doc_id_to_file_path(doc_entry_paths)
         doc_entries: List[DocEntry] = []
         for doc_id, doc_entry_path in doc_id_to_path:
             if not self.__stored_entry_list.exist_id(doc_id):
-                doc_entries.append(self.__doc_entry_restorer.execute(doc_entry_path))
+                doc_entries.append(self.__doc_entry_restorer.get_entry(doc_entry_path))
         return DocEntries(doc_entries)
 
     @classmethod
@@ -58,7 +51,7 @@ class DocumentFileAccessor(IDocumentRepository):
         text_file.write_file(summary_file_path, content.value)
 
     def insert_category(self, doc_id: DocEntryId, category_to_be_added) -> DocumentDataset:
-        doc_dataset = self.find(doc_id)
+        doc_dataset = self.__doc_entry_restorer.find(doc_id)
         new_doc_content = self.__insert_category_to_content(doc_dataset.doc_entry.doc_file_path,
                                                             doc_dataset.doc_content, category_to_be_added)
         new_doc_entry = doc_dataset.doc_entry.insert_category(category_to_be_added)

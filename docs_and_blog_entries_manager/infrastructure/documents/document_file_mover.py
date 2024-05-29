@@ -1,9 +1,10 @@
 from common.constants import DOCS_DIR_PATH
+from domain.docs.datasources.interface import IDocumentMover
 from domain.docs.entity.doc_entry import DocEntry
 from files import file_system
 
 
-class DocumentFileMover:
+class DocumentFileMover(IDocumentMover):
     def __init__(self):
         self.__document_root_path = DOCS_DIR_PATH
 

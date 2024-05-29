@@ -15,7 +15,7 @@ def doc_entry_restorer():
 def test_execute(doc_entry_restorer):
     doc_file_path = file_system.join_path(resolve_test_data_dir_path(), 'docs', 'Github',
                                           'Github プロフィールのカスタマイズ.md')
-    doc_entry = doc_entry_restorer.execute(doc_file_path)
+    doc_entry = doc_entry_restorer.get_entry(doc_file_path)
     assert_that(doc_entry.title).is_equal_to('Github プロフィールのカスタマイズ')
     assert_that(doc_entry.category_path.value).is_equal_to('Github')
     assert_that(doc_entry.categories).contains_only('profile')

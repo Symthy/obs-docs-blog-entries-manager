@@ -12,5 +12,5 @@ class WorkingDocumentFileAccessor:
     def extract_completed_filepaths(self) -> List[str]:
         work_file_paths = file_system.get_file_paths_in_target_dir(self.__work_dir_path)
         completed_file_path = list(
-            filter(lambda path: self.__doc_entry_restorer.execute(path).is_completed, work_file_paths))
+            filter(lambda path: self.__doc_entry_restorer.get_entry(path).is_completed, work_file_paths))
         return completed_file_path

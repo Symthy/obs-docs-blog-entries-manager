@@ -1,9 +1,8 @@
 from common.constants import NON_CATEGORY_NAME, WORK_DOCS_DIR_PATH
+from domain.docs.datasources.interface import IDocumentRepository, IDocumentMover
 from domain.docs.entity.doc_entry import DocEntry
 from files import file_system
 from infrastructure.documents.doc_entry_restorer import DocEntryRestorer
-from infrastructure.documents.document_file_accessor import DocumentFileAccessor
-from infrastructure.documents.document_file_mover import DocumentFileMover
 from infrastructure.types import StoredDocEntriesAccessor
 
 
@@ -13,7 +12,7 @@ class LocalDocPusherService:
     """
 
     def __init__(self, stored_doc_entries_accessor: StoredDocEntriesAccessor, doc_entry_restorer: DocEntryRestorer,
-                 document_file_accessor: DocumentFileAccessor, document_file_mover: DocumentFileMover,
+                 document_file_accessor: IDocumentRepository, document_file_mover: IDocumentMover,
                  work_doc_dir_path: str = WORK_DOCS_DIR_PATH):
         self.__stored_doc_entries_accessor = stored_doc_entries_accessor
         self.__doc_entry_restorer = doc_entry_restorer
@@ -23,7 +22,7 @@ class LocalDocPusherService:
 
     def execute(self, title: str) -> DocEntry:
         work_doc_file_path = self.__build_file_path(title)
-        doc_entry = self.__doc_entry_restorer.execute(work_doc_file_path)
+        doc_entry = self.__doc_entry_restorer.get_entry(work_doc_file_path)
         self.__document_file_accessor.insert_category_path(work_doc_file_path, NON_CATEGORY_NAME)
         self.__document_file_mover.move(work_doc_file_path, doc_entry)
         self.__stored_doc_entries_accessor.save_entry(doc_entry)
