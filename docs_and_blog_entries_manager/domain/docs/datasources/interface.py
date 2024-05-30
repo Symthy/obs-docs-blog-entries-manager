@@ -42,6 +42,8 @@ class IDocEntryRestorer(ABC):
     def get_entry(self, doc_entry_file_path: str) -> DocEntry:
         pass
 
+
 class IDocumentMover(ABC):
     @abstractmethod
-    def move(self,from_file_path: str, doc_entry: DocEntry):
+    def move(self, from_file_path: str, doc_entry: DocEntry):
+        pass
