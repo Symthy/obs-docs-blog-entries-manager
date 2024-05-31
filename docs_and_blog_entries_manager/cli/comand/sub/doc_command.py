@@ -3,16 +3,16 @@ import argparse
 from cli.comand.interface import ISubCommand, ISubCommandOption
 
 
-class BlogCommand(ISubCommand):
+class DocCommand(ISubCommand):
     def __init__(self, blog_config, *options: ISubCommandOption):
         self.__blog_config = blog_config
         self.__options = options
 
     def name(self) -> str:
-        return 'blog'
+        return 'doc'
 
     def description(self) -> str:
-        return 'operate your hatena blog.'
+        return 'operate your local documents.'
 
     def help(self) -> str:
         return 'test'
