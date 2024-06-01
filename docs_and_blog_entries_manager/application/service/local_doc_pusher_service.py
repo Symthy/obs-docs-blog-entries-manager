@@ -1,9 +1,10 @@
-from common.constants import NON_CATEGORY_NAME, WORK_DOCS_DIR_PATH
+from common.constants import NON_CATEGORY_NAME
 from common.result import Result
+from common.results import Results
 from domain.docs.datasources.interface import IDocumentRepository, IDocumentMover
 from domain.docs.entity.doc_entry import DocEntry
-from files import file_system
 from infrastructure.documents.doc_entry_restorer import DocEntryRestorer
+from infrastructure.documents.work.working_document_file_accessor import WorkingDocumentFileAccessor
 from infrastructure.types import StoredDocEntriesAccessor
 
 
@@ -14,20 +15,25 @@ class LocalDocPusherService:
 
     def __init__(self, stored_doc_entries_accessor: StoredDocEntriesAccessor, doc_entry_restorer: DocEntryRestorer,
                  document_file_accessor: IDocumentRepository, document_file_mover: IDocumentMover,
-                 work_doc_dir_path: str = WORK_DOCS_DIR_PATH):
+                 working_doc_file_accessor: WorkingDocumentFileAccessor):
         self.__stored_doc_entries_accessor = stored_doc_entries_accessor
         self.__doc_entry_restorer = doc_entry_restorer
         self.__document_file_accessor = document_file_accessor
         self.__document_file_mover = document_file_mover
-        self.__work_doc_dir_path = work_doc_dir_path
+        self.__working_doc_file_accessor = working_doc_file_accessor
 
-    def execute(self, title: str) -> Result[DocEntry, str]:
-        work_doc_file_path = self.__build_file_path(title)
+    def push(self, title: str) -> Result[DocEntry, str]:
+        work_doc_file_path = self.__working_doc_file_accessor.build_file_path(title)
         doc_entry = self.__doc_entry_restorer.get_entry(work_doc_file_path)
         self.__document_file_accessor.insert_category_path(work_doc_file_path, NON_CATEGORY_NAME)
         self.__document_file_mover.move(work_doc_file_path, doc_entry)
         self.__stored_doc_entries_accessor.save_entry(doc_entry)
         return Result(doc_entry)
 
-    def __build_file_path(self, title: str) -> str:
-        return file_system.join_path(self.__work_doc_dir_path, f'{title}.md')
+    def push_all(self):
+        completed_work_filepaths = self.__working_doc_file_accessor.extract_completed_filepaths()
+        results = []
+        for file_path in completed_work_filepaths:
+            result = self.push(file_path)
+            results.append(result)
+        return Results(*results)
