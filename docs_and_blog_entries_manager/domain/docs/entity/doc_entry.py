@@ -86,13 +86,6 @@ class DocEntry(IEntry):
     def contains_blog_category(self) -> bool:
         return BLOG_CATEGORY in self.__categories
 
-    def update_pickup(self, pickup: bool) -> IEntry:
-        return DocEntry(self.id, self.title, self.doc_file_name, self.category_path,
-                        self.categories, pickup, self.created_at, self.updated_at)
-
-    def convert_id_to_title(self) -> dict[DocEntryId, str]:
-        return {self.id: self.title}
-
     def insert_category(self, category: str) -> DocEntry:
         return DocEntry(self.__id, self.__title, self.__doc_file_name, self.__category_path,
                         [*self.__categories, category], self.__pickup, self.__created_at, self.__updated_at)
@@ -101,6 +94,13 @@ class DocEntry(IEntry):
         new_categories = [category for category in self.__categories if category != category_to_be_removed]
         return DocEntry(self.__id, self.__title, self.__doc_file_name, self.__category_path,
                         new_categories, self.__pickup, self.__created_at, self.__updated_at)
+
+    def update_pickup(self, pickup: bool) -> IEntry:
+        return DocEntry(self.id, self.title, self.doc_file_name, self.category_path,
+                        self.categories, pickup, self.created_at, self.updated_at)
+
+    def equals_updated_at(self, other: DocEntry):
+        return self.updated_at == other.updated_at
 
     def convert_md_line(self) -> str:
         blog_mark = '【B】' if self.contains_blog_category else ''

@@ -14,12 +14,14 @@ class DocEntries(IEntries):
             self.__entries = {entry.id: entry for entry in entries}
 
     @property
-    def items(self) -> List[DocEntry]:
+    def items(self) -> list[DocEntry]:
         return list(self.__entries.values())
 
-    @property
-    def items_filtered_blog_category(self):
+    def items_filtered_blog_category(self) -> list[DocEntry]:
         return list(filter(lambda entry: entry.contains_blog_category(), self.__entries.values()))
+
+    def items_filtered_non_blog_category(self) -> list[DocEntry]:
+        return list(filter(lambda entry: not entry.contains_blog_category(), self.__entries.values()))
 
     def size(self) -> int:
         return len(self.__entries)

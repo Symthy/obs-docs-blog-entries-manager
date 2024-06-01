@@ -9,10 +9,10 @@ from domain.docs.value.doc_entry_id import DocEntryId
 from domain.entries.values.category_path import CategoryPath
 
 
-class IDocumentRepository(ABC):
+class IDocumentAccessor(ABC):
 
     @abstractmethod
-    def extract_non_register_entries(self, doc_entry_paths: list[str]) -> DocEntries:
+    def extract_entries_with_non_register(self, doc_entry_paths: list[str]) -> DocEntries:
         pass
 
     @abstractmethod
@@ -37,9 +37,13 @@ class IDocumentRepository(ABC):
         pass
 
 
-class IDocEntryRestorer(ABC):
+class IDocumentReader(ABC):
     @abstractmethod
-    def get_entry(self, doc_entry_file_path: str) -> DocEntry:
+    def restore(self, doc_entry_file_path: str) -> DocEntry:
+        pass
+
+    @abstractmethod
+    def extract_entries_with_added_blog_category(self) -> DocEntries:
         pass
 
 

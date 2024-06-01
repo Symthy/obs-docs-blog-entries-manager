@@ -1,5 +1,6 @@
-from domain.docs.datasources.interface import IDocEntryRestorer
+from domain.docs.datasources.interface import IDocumentReader
 from domain.docs.datasources.model.document_dataset import DocumentDataset
+from domain.docs.entity.doc_entries import DocEntries
 from domain.docs.entity.doc_entry import DocEntry
 from domain.docs.entity.factory.doc_entry_builder import DocEntryBuilder
 from domain.docs.value.doc_content import DocContent
@@ -9,12 +10,12 @@ from files import file_system, text_file
 from infrastructure.types import StoredDocEntriesAccessor
 
 
-class DocEntryRestorer(IDocEntryRestorer):
+class DocumentReader(IDocumentReader):
     def __init__(self, doc_root_dir_path: str, stored_doc_entries_accessor: StoredDocEntriesAccessor):
         self.__doc_root_dir_path = doc_root_dir_path
         self.__stored_doc_entries_accessor = stored_doc_entries_accessor
 
-    def get_entry(self, doc_entry_file_path: str) -> DocEntry:
+    def restore(self, doc_entry_file_path: str) -> DocEntry:
         doc_file_path = self.__build_file_path(doc_entry_file_path)
         content = self.load_content(doc_file_path)
         created_at = file_system.get_created_file_time(doc_file_path)
@@ -29,6 +30,15 @@ class DocEntryRestorer(IDocEntryRestorer):
                 .created_at(EntryDateTime(created_at))
                 .updated_at(EntryDateTime(updated_at))
                 .build())
+
+    def extract_entries_with_added_blog_category(self) -> DocEntries:
+        added_blog_category_entries = []
+        doc_entries = self.__stored_doc_entries_accessor.load_entries()
+        for old_doc_entry in doc_entries.items_filtered_non_blog_category():
+            current_doc_entry = self.restore(old_doc_entry.doc_file_path)
+            current_doc_entry.contains_blog_category()
+            added_blog_category_entries.append(current_doc_entry)
+        return DocEntries(added_blog_category_entries)
 
     def find(self, doc_id: DocEntryId) -> DocumentDataset:
         doc_entry = self.__stored_doc_entries_accessor.load_entry(doc_id)
