@@ -45,7 +45,7 @@ class BlogEntryPusherService:
             return Result(error=f'Failed to post to blog: {doc_dateset.doc_entry.doc_file_path}')
         self.__stored_blog_entries_accessor.save_entry(blog_entry_opt)
         self.__blog_to_doc_mapping.push_entry_pair(blog_entry_opt.id, doc_id)
-        return Result(value=f'Success to post to blog: {doc_dateset.doc_entry.doc_file_path}')
+        return Result(value=doc_dateset.doc_entry.doc_file_path)
 
     def __put_blog(self, doc_dateset: DocumentDataset, blog_entry: BlogEntry):
         pre_post_blog_entry = self.__doc_to_blog_entry_converter.convert_to_prepost(doc_dateset)
@@ -53,4 +53,4 @@ class BlogEntryPusherService:
         if blog_entry_opt is None:
             return Result(error=f'Failed to put to blog: {doc_dateset.doc_entry.doc_file_path}')
         self.__stored_blog_entries_accessor.save_entry(blog_entry_opt)
-        return Result(value=f'Success to put to blog: {doc_dateset.doc_entry.doc_file_path}')
+        return Result(value=doc_dateset.doc_entry.doc_file_path)
