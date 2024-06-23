@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Generic
 
 from common.result import Result, T, E
@@ -18,6 +20,9 @@ class Results(Generic[T, E]):
     @property
     def success_values(self) -> list[T]:
         return list(filter(lambda result: result.success, self.__results))
+
+    def merge(self, other: Results) -> Results:
+        return Results(*self.__results, *other.__results)
 
     def print_error(self):
         for result in self.__filtered_error_results():
