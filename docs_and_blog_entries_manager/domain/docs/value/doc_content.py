@@ -3,28 +3,28 @@ from __future__ import annotations
 import re
 from typing import List, Optional
 
-from common.constants import NON_CATEGORY_NAME
 from domain.entries.values.category_path import CategoryPath
-from files import file_system
 
 
 class DocContent:
-    __DOCUMENT_IMAGE_LINK_REGEX = r'\!\[.*\]\((.+)\)'
+    __DOCUMENT_IMAGE_LINK_REGEX = r'\!\[.*\]\((images/.+)\)'
     __DOCUMENT_CATEGORY_REGEX = r'\s#([a-zA-Z]+[/a-zA-Z]+)'
+    __DOCUMENT_INTERNAL_LINK_REGEX = r'\[\[(.+)\]\]'
 
     def __init__(self, content: str, doc_entry_dir_path: str):
         self.__content = content if content.endswith('\n') else content + '\n'
         self.__doc_entry_dir_path = doc_entry_dir_path
-        self.__image_paths_from_doc_file = self.__extract_image_paths()
+        self.__image_paths_from_doc_files = self.__extract_image_paths()
         all_categories = self.__extract_categories()
         self.__categories = all_categories[1:] if len(all_categories) >= 2 else []
         self.__category_path = CategoryPath(all_categories[0]) if len(all_categories) >= 1 else None
         if self.__category_path is None:
-            self.__category_path = CategoryPath(NON_CATEGORY_NAME)
+            self.__category_path = CategoryPath.non_category()
             self.__content += f'#{self.__category_path.value}\n'
+        self.__internal_links = self.__extract_entry_links()
 
     def __extract_image_paths(self) -> List[str]:
-        # 画像ファイルのパスはmdファイルからの相対パス (image/xxxx)
+        # 画像ファイルのパスはmdファイルからの相対パス (images/xxxx)
         image_paths = re.findall(self.__DOCUMENT_IMAGE_LINK_REGEX, self.__content)
         return image_paths
 
@@ -32,24 +32,27 @@ class DocContent:
         categories = re.findall(self.__DOCUMENT_CATEGORY_REGEX, self.__content)
         return categories
 
+    def __extract_entry_links(self) -> list[str]:
+        internal_links = re.findall(self.__DOCUMENT_INTERNAL_LINK_REGEX, self.__content)
+        return internal_links
+
     @property
     def value(self) -> str:
         return self.__content
 
     @property
-    def value_with_removed_categories(self):
+    def value_with_removed_categories(self) -> str:
         # BlogContent変換用。タグが付いている行は削除する。はてブ上ではタグはセクションとして扱われてしまう
-        content = re.sub(r'^[ \t]*#\S+[[ \t]+#\S+]*(\r\n|\n)$', '', self.__content, flags=re.MULTILINE)
+        content = re.sub(r'^(\n|\r\n)(\s*#\S+)+\s*$', r'\1', self.__content, flags=re.MULTILINE)
         return content
 
     @property
-    def image_paths_from_doc_file(self) -> List[str]:
-        return self.__image_paths_from_doc_file
+    def image_paths_from_doc_files(self) -> List[str]:
+        return self.__image_paths_from_doc_files
 
     @property
     def image_paths(self) -> List[str]:
-        return list(
-            map(lambda path: file_system.join_path(self.__category_path.value, path), self.__image_paths_from_doc_file))
+        return list(map(lambda path: f'{self.__category_path.value}/{path}', self.__image_paths_from_doc_files))
 
     @property
     def category_path(self) -> Optional[CategoryPath]:
@@ -73,3 +76,7 @@ class DocContent:
     @property
     def categories(self) -> List[str]:
         return self.__categories
+
+    @property
+    def internal_links(self) -> List[str]:
+        return self.__internal_links

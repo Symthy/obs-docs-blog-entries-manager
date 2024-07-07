@@ -26,10 +26,10 @@ class BlogEntry(IEntry):
         self.__id = entry_id
         self.__title = title
         self.__page_url = page_url
-        self.__pickup = pickup
         self.__updated_at: EntryDateTime = last_updated
         self.__category_path = category_path
         self.__categories = categories
+        self.__pickup = pickup
         self.__images: PhotoEntries = images
 
     @property

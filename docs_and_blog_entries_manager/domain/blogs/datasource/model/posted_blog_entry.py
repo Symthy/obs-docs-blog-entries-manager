@@ -3,7 +3,6 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Optional, List
 
-from common.constants import NON_CATEGORY_NAME
 from domain.blogs.entity.blog_entry import BlogEntry
 from domain.blogs.entity.photo.photo_entries import PhotoEntries
 from domain.blogs.value.blog_content import BlogContent
@@ -25,8 +24,7 @@ class PostedBlogEntry:
         self.__title = title
         self.__page_url = page_url
         self.__updated_at: EntryDateTime = EntryDateTime(last_updated)
-        top_category = categories[0] if len(categories) >= 1 else NON_CATEGORY_NAME
-        self.__category_path = CategoryPath(top_category)
+        self.__category_path = CategoryPath(categories[0]) if len(categories) >= 1 else CategoryPath.non_category()
         self.__categories = categories if len(categories) >= 2 else []
         self.__original_doc_id = doc_id
         self.__photo_entries: PhotoEntries = photo_entries

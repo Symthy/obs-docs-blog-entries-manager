@@ -21,14 +21,14 @@ class DocEntry(IEntry):
     FIELD_UPDATED_AT = 'updated_at'
 
     def __init__(self, doc_id: DocEntryId, title: str, doc_file_name: str, category_path: CategoryPath,
-                 categories: List[str], is_pickup: bool = False, created_at: EntryDateTime = None,
+                 categories: List[str], pickup: bool = False, created_at: EntryDateTime = None,
                  updated_at: EntryDateTime = None):
         self.__id = doc_id
         self.__title = title
         self.__doc_file_name = doc_file_name
         self.__category_path = category_path
         self.__categories = categories
-        self.__pickup = is_pickup
+        self.__pickup = pickup
         self.__created_at = created_at if created_at is not None else EntryDateTime()
         self.__updated_at = updated_at if updated_at is not None else self.__created_at
 

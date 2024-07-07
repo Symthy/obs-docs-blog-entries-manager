@@ -2,12 +2,18 @@ from __future__ import annotations
 
 from typing import List
 
+from common.constants import NON_CATEGORY_NAME
+
 
 class CategoryPath:
     def __init__(self, category_path: str):
         if category_path == '':
             raise ValueError(f'Invalid category path: {category_path}')
         self.__values: List[str] = category_path.split('/')
+
+    @staticmethod
+    def non_category() -> CategoryPath:
+        return CategoryPath(NON_CATEGORY_NAME)
 
     @property
     def value(self) -> str:
