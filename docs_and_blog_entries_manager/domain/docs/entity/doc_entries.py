@@ -52,6 +52,11 @@ class DocEntries(IEntries):
         # existed entry is overwritten
         self.__entries |= docs_entries.items
 
+    def find_by_title(self, title) -> DocEntry:
+        for entry in self.items:
+            if entry.title == title:
+                return entry
+
     def convert_md_lines(self) -> List[str]:
         return [entry.convert_md_line() for entry in self.items]
 

@@ -48,3 +48,7 @@ class EntryCollectorService:
         doc_entry_id = self.__document_file_accessor.save(doc_entry_path, posted_blog_entry.title,
                                                           doc_content, doc_images)
         return doc_entry_id
+
+    def __replace_entry_links(self):
+        # Todo: 最後に、記事へのリンクをまとめて置換する
+        pass

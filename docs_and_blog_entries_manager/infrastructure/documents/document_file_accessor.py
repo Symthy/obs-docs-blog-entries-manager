@@ -1,5 +1,5 @@
 from common.constants import BLOG_CATEGORY
-from domain.docs.datasources.interface import IDocumentAccessor, IDocumentReader
+from domain.docs.datasources.interface import IDocumentAccessor, IDocumentFileReader
 from domain.docs.datasources.model.document_dataset import DocumentDataset
 from domain.docs.entity.doc_entries import DocEntries
 from domain.docs.entity.doc_entry import DocEntry
@@ -9,19 +9,19 @@ from domain.docs.value.doc_entry_id import DocEntryId
 from domain.entries.values.category_path import CategoryPath
 from domain.entries.values.entry_date_time import EntryDateTime
 from files import text_file, file_system, image_file
-from infrastructure.documents.doc_entry_restorer import DocumentReader
+from infrastructure.documents.document_file_reader import DocumentFileReader
 from infrastructure.store.stored_entry_list_holder import StoredEntryListHolder
 from infrastructure.types import StoredDocEntriesAccessor
 
 
-class DocumentFileAccessor(IDocumentAccessor, IDocumentReader):
+class DocumentFileAccessor(IDocumentAccessor, IDocumentFileReader):
 
     def __init__(self, document_root_dir_path, stored_entry_list: StoredEntryListHolder,
                  stored_doc_entries_accessor: StoredDocEntriesAccessor):
         self.__document_root_dir_path = document_root_dir_path
         self.__stored_entry_list = stored_entry_list
         self.__stored_doc_entries_accessor = stored_doc_entries_accessor
-        self.__doc_entry_reader = DocumentReader(document_root_dir_path, stored_doc_entries_accessor)
+        self.__doc_entry_reader = DocumentFileReader(document_root_dir_path, stored_doc_entries_accessor)
 
     def restore(self, doc_entry_file_path: str) -> DocEntry:
         return self.__doc_entry_reader.restore(doc_entry_file_path)
@@ -65,7 +65,7 @@ class DocumentFileAccessor(IDocumentAccessor, IDocumentReader):
     @staticmethod
     def __insert_category_to_content(doc_file_path: str, content: DocContent, category: str) -> DocContent:
         # Todo: refactor
-        if BLOG_CATEGORY in content.categories:
+        if content.contains_category(BLOG_CATEGORY):
             return content
         if content.not_exist_category_path:
             updated_content = content.add_category(CategoryPath(category), [])

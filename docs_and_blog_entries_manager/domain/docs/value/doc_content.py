@@ -77,6 +77,9 @@ class DocContent:
     def categories(self) -> List[str]:
         return self.__categories
 
+    def contains_category(self, category: str) -> bool:
+        return category in self.__categories
+
     @property
-    def internal_links(self) -> List[str]:
+    def internal_link_titles(self) -> List[str]:
         return self.__internal_links

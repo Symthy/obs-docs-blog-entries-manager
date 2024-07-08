@@ -44,8 +44,7 @@ class CategoryTreeDefinition:
             category_paths += category_group.all_category_paths()
         return category_paths
 
-    def exist_category_path(self, category_path_str: str) -> bool:
-        category_path = CategoryPath(category_path_str)
+    def exist_category_path(self, category_path: CategoryPath) -> bool:
         if category_path.top in self.__category_name_to_categories.keys():
             return self.__category_name_to_categories[category_path.top].find_category_path(category_path)
         return False

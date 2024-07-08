@@ -78,6 +78,10 @@ class IEntries(IConvertibleMarkdownLines, ABC):
         pass
 
     @abstractmethod
+    def find_by_title(self, title) -> IEntry:
+        pass
+
+    @abstractmethod
     def new_instance(self, entry_list: List[IEntry]) -> IEntries:
         pass
 

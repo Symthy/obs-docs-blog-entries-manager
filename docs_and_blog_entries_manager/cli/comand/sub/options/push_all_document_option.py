@@ -27,3 +27,4 @@ class PushDocumentOption(ISubCommandOption):
             if args.blog:
                 result = self.__blog_entry_pusher_service.execute(doc_entry.id)
                 result.print_log('Successfully posted entry to blog.', 'DocumentPath')
+            # Todo: オプション指定が無いときは、タグによってblog投稿も行うか制御する

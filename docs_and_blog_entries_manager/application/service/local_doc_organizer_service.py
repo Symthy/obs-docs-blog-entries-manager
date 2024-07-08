@@ -1,6 +1,6 @@
 from typing import List
 
-from domain.docs.datasources.interface import IDocumentReader, IDocumentMover
+from domain.docs.datasources.interface import IDocumentFileReader, IDocumentMover
 from domain.docs.entity.doc_entry import DocEntry
 from domain.entries.entity.category_tree_definition import CategoryTreeDefinition
 from domain.entries.values.category_path import CategoryPath
@@ -13,7 +13,7 @@ class LocalDocOrganizerService:
     """
 
     def __init__(self, category_tree_def: CategoryTreeDefinition, document_file_mover: IDocumentMover,
-                 doc_entry_restorer: IDocumentReader, stored_doc_entries_accessor: StoredDocEntriesAccessor):
+                 doc_entry_restorer: IDocumentFileReader, stored_doc_entries_accessor: StoredDocEntriesAccessor):
         self.__category_tree_def = category_tree_def
         self.__document_file_mover = document_file_mover
         self.__doc_entry_restorer = doc_entry_restorer

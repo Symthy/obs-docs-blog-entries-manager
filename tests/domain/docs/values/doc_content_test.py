@@ -34,7 +34,7 @@ def test_doc_content():
     assert_that(doc_content.category_path).is_equal_to(CategoryPath('Github/GithubActions/README'))
     assert_that(doc_content.categories).contains_only('dummy', 'profile')
     assert_that(doc_content.image_paths).contains_only('Github/GithubActions/README/images/github-profile-summary.png')
-    assert_that(doc_content.internal_links).contains_only('Github Actions')
+    assert_that(doc_content.internal_link_titles).contains_only('Github Actions')
     content_with_removed_category = DocContent(doc_content.value_with_removed_categories, 'dummy')
     assert_that(content_with_removed_category.category_path).is_equal_to(CategoryPath.non_category())
 

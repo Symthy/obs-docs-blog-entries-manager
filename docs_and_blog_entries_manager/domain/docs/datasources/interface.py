@@ -37,13 +37,13 @@ class IDocumentAccessor(ABC):
         pass
 
 
-class IDocumentReader(ABC):
+class IDocumentFileReader(ABC):
     @abstractmethod
     def restore(self, doc_entry_file_path: str) -> DocEntry:
         pass
 
     @abstractmethod
-    def extract_entries_with_added_blog_category(self) -> DocEntries:
+    def extract_entries_with_blog_category(self) -> DocEntries:
         pass
 
 

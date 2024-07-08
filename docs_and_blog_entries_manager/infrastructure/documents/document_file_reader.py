@@ -1,4 +1,4 @@
-from domain.docs.datasources.interface import IDocumentReader
+from domain.docs.datasources.interface import IDocumentFileReader
 from domain.docs.datasources.model.document_dataset import DocumentDataset
 from domain.docs.entity.doc_entries import DocEntries
 from domain.docs.entity.doc_entry import DocEntry
@@ -10,7 +10,7 @@ from files import file_system, text_file
 from infrastructure.types import StoredDocEntriesAccessor
 
 
-class DocumentReader(IDocumentReader):
+class DocumentFileReader(IDocumentFileReader):
     def __init__(self, doc_root_dir_path: str, stored_doc_entries_accessor: StoredDocEntriesAccessor):
         self.__doc_root_dir_path = doc_root_dir_path
         self.__stored_doc_entries_accessor = stored_doc_entries_accessor
@@ -31,7 +31,7 @@ class DocumentReader(IDocumentReader):
                 .updated_at(EntryDateTime(updated_at))
                 .build())
 
-    def extract_entries_with_added_blog_category(self) -> DocEntries:
+    def extract_entries_with_blog_category(self) -> DocEntries:
         added_blog_category_entries = []
         doc_entries = self.__stored_doc_entries_accessor.load_entries()
         for old_doc_entry in doc_entries.items_filtered_non_blog_category():

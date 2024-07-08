@@ -29,6 +29,11 @@ class BlogEntries(IEntries):
     def add_entry(self, blog_entry: BlogEntry):
         self.__entries[blog_entry.id] = blog_entry
 
+    def find_by_title(self, title) -> BlogEntry:
+        for entry in self.items:
+            if entry.title == title:
+                return entry
+
     def merge(self, blog_entries: BlogEntries):
         if blog_entries.is_empty():
             return
