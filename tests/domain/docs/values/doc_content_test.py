@@ -51,3 +51,24 @@ def test_value_with_removed_categories(content, expected):
     doc_content = DocContent(content, 'dummy')
     print(doc_content.value_with_removed_categories)
     assert_that(doc_content.value_with_removed_categories).is_equal_to(expected)
+
+
+def test_update_category_path():
+    doc_content = DocContent(CONTENT_FOR_TESTING, 'dummy')
+    actual = doc_content.update_category_path(CategoryPath('Git/Github/Actions'))
+    assert_that(actual.category_path).is_equal_to(CategoryPath('Git/Github/Actions'))
+    assert_that(actual.categories).contains_only('dummy', 'profile')
+
+
+def test_add_category():
+    doc_content = DocContent(CONTENT_FOR_TESTING, 'dummy')
+    actual = doc_content.add_category('test')
+    assert_that(actual.category_path).is_equal_to(CategoryPath('Github/GithubActions/README'))
+    assert_that(actual.categories).contains_only('dummy', 'profile', 'test')
+
+
+def test_remove_category():
+    doc_content = DocContent(CONTENT_FOR_TESTING, 'dummy')
+    actual = doc_content.remove_category('dummy')
+    assert_that(actual.category_path).is_equal_to(CategoryPath('Github/GithubActions/README'))
+    assert_that(actual.categories).contains_only('profile')

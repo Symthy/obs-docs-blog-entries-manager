@@ -59,27 +59,27 @@ class DocContent:
         return self.__category_path
 
     @property
-    def not_exist_category_path(self) -> bool:
-        return self.__category_path is None
-
-    def add_category(self, category_path: CategoryPath, categories: List[str]) -> DocContent:
-        new_category_line = ' '.join(list(map(lambda c: f'#{c}', [category_path.value, *categories]))) + '\n'
-        new_content = self.value_with_removed_categories + new_category_line
-        return DocContent(new_content, self.__doc_entry_dir_path)
-
-    def remove_category(self, category_to_be_removed: str):
-        new_categories = [category for category in self.__categories if category != category_to_be_removed]
-        new_category_line = ' '.join(list(map(lambda c: f'#{c}', [self.category_path.value, *new_categories]))) + '\n'
-        new_content = self.value_with_removed_categories + new_category_line
-        return DocContent(new_content, self.__doc_entry_dir_path)
-
-    @property
     def categories(self) -> List[str]:
         return self.__categories
-
-    def contains_category(self, category: str) -> bool:
-        return category in self.__categories
 
     @property
     def internal_link_titles(self) -> List[str]:
         return self.__internal_links
+
+    def update_category_path(self, category_path: CategoryPath) -> DocContent:
+        return self.__update_categories_line(category_path, *self.__categories)
+
+    def add_category(self, *categories: str) -> DocContent:
+        return self.__update_categories_line(self.__category_path, *self.__categories, *categories)
+
+    def remove_category(self, category_to_be_removed: str) -> DocContent:
+        new_categories = [category for category in self.__categories if category != category_to_be_removed]
+        return self.__update_categories_line(self.__category_path, *new_categories)
+
+    def contains_category(self, category: str) -> bool:
+        return category in self.__categories
+
+    def __update_categories_line(self, category_path: CategoryPath, *categories: str) -> DocContent:
+        new_category_line = ' '.join(list(map(lambda c: f'#{c}', [category_path.value, *categories]))) + '\n'
+        new_content = self.value_with_removed_categories + new_category_line
+        return DocContent(new_content, self.__doc_entry_dir_path)

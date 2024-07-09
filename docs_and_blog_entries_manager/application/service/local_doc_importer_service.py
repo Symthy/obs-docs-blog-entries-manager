@@ -31,4 +31,5 @@ class LocalDocImporterService:
             return
         self.__stored_doc_entries_accessor.save_entries(non_register_doc_entries)
         for doc_entry in non_register_doc_entries.items:
+            # Todo: 既に書かれていたら上書きする
             self.__document_file_accessor.insert_category_path(doc_entry.doc_file_path, doc_entry.category_path)

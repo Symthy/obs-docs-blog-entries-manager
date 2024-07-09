@@ -21,17 +21,17 @@ class DocumentFileAccessor(IDocumentAccessor, IDocumentFileReader):
         self.__document_root_dir_path = document_root_dir_path
         self.__stored_entry_list = stored_entry_list
         self.__stored_doc_entries_accessor = stored_doc_entries_accessor
-        self.__doc_entry_reader = DocumentFileReader(document_root_dir_path, stored_doc_entries_accessor)
+        self.__document_reader = DocumentFileReader(document_root_dir_path, stored_doc_entries_accessor)
 
     def restore(self, doc_entry_file_path: str) -> DocEntry:
-        return self.__doc_entry_reader.restore(doc_entry_file_path)
+        return self.__document_reader.restore(doc_entry_file_path)
 
     def extract_entries_with_non_register(self, category_paths: list[CategoryPath]) -> DocEntries:
         doc_id_to_path = self.__all_doc_id_to_file_path(category_paths)
         doc_entries: list[DocEntry] = []
         for doc_id, doc_entry_path in doc_id_to_path:
             if not self.__stored_entry_list.exist_id(doc_id):
-                doc_entries.append(self.__doc_entry_reader.restore(doc_entry_path))
+                doc_entries.append(self.__document_reader.restore(doc_entry_path))
         return DocEntries(doc_entries)
 
     @classmethod
@@ -48,8 +48,8 @@ class DocumentFileAccessor(IDocumentAccessor, IDocumentFileReader):
         summary_file_path = file_system.join_path(self.__document_root_dir_path, 'summary.md')
         text_file.write_file(summary_file_path, content.value)
 
-    def insert_category(self, doc_id: DocEntryId, category_to_be_added) -> DocumentDataset:
-        doc_dataset = self.__doc_entry_reader.find(doc_id)
+    def insert_category(self, doc_id: DocEntryId, category_to_be_added: str) -> DocumentDataset:
+        doc_dataset = self.__document_reader.find(doc_id)
         new_doc_content = self.__insert_category_to_content(doc_dataset.doc_entry.doc_file_path,
                                                             doc_dataset.doc_content, category_to_be_added)
         new_doc_entry = doc_dataset.doc_entry.insert_category(category_to_be_added)
@@ -59,23 +59,20 @@ class DocumentFileAccessor(IDocumentAccessor, IDocumentFileReader):
     @classmethod
     def insert_category_path(cls, doc_file_path: str, category_path: CategoryPath) -> DocContent:
         content = DocContent(text_file.read_file(doc_file_path), file_system.get_dir_path_from_file_path(doc_file_path))
-        text_file.write_file(doc_file_path, content.add_category(category_path, []).value)
+        text_file.write_file(doc_file_path, content.update_category_path(category_path).value)
         return content
 
     @staticmethod
     def __insert_category_to_content(doc_file_path: str, content: DocContent, category: str) -> DocContent:
-        # Todo: refactor
-        if content.contains_category(BLOG_CATEGORY):
+        if category == BLOG_CATEGORY and content.contains_category(BLOG_CATEGORY):
             return content
-        if content.not_exist_category_path:
-            updated_content = content.add_category(CategoryPath(category), [])
         else:
-            updated_content = content.add_category(content.category_path, [*content.categories, category])
+            updated_content = content.add_category(category)
         text_file.write_file(doc_file_path, updated_content.value)
         return updated_content
 
     def delete_category(self, doc_id: DocEntryId, category_to_be_removed: str):
-        doc_dataset = self.__doc_entry_reader.find(doc_id)
+        doc_dataset = self.__document_reader.find(doc_id)
         new_doc_entry = doc_dataset.doc_entry.remove_category(category_to_be_removed)
         new_doc_content = doc_dataset.doc_content.remove_category(category_to_be_removed)
         text_file.write_file(new_doc_entry.doc_file_path, new_doc_content.value)

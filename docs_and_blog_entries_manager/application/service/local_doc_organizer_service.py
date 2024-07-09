@@ -13,20 +13,20 @@ class LocalDocOrganizerService:
     """
 
     def __init__(self, category_tree_def: CategoryTreeDefinition, document_file_mover: IDocumentMover,
-                 doc_entry_restorer: IDocumentFileReader, stored_doc_entries_accessor: StoredDocEntriesAccessor):
+                 document_reader: IDocumentFileReader, stored_doc_entries_accessor: StoredDocEntriesAccessor):
         self.__category_tree_def = category_tree_def
         self.__document_file_mover = document_file_mover
-        self.__doc_entry_restorer = doc_entry_restorer
+        self.__document_reader = document_reader
         self.__stored_doc_entries_accessor = stored_doc_entries_accessor
 
-
-def organize(self):
-    category_paths: List[CategoryPath] = self.__category_tree_def.all_category_paths
-    for category_path in category_paths:
-        doc_file_paths = self.__category_tree_def.get_file_paths(category_path)
-        for doc_file_path in doc_file_paths:
-            current_doc_entry: DocEntry = self.__doc_entry_reader.restore(doc_file_path)
-            old_doc_entry: DocEntry = self.__stored_doc_entries_accessor.load_entry(current_doc_entry.id)
-            if not current_doc_entry.equals_path(old_doc_entry):
-                self.__document_file_mover.move(doc_file_path, current_doc_entry)
-                self.__stored_doc_entries_accessor.save_entry(current_doc_entry)
+    def organize(self):
+        category_paths: List[CategoryPath] = self.__category_tree_def.all_category_paths
+        # Todo: refactor
+        for category_path in category_paths:
+            doc_file_paths = self.__category_tree_def.get_file_paths(category_path)
+            for doc_file_path in doc_file_paths:
+                current_doc_entry: DocEntry = self.__document_reader.restore(doc_file_path)
+                old_doc_entry: DocEntry = self.__stored_doc_entries_accessor.load_entry(current_doc_entry.id)
+                if not current_doc_entry.equals_path(old_doc_entry):
+                    self.__document_file_mover.move(doc_file_path, current_doc_entry)
+                    self.__stored_doc_entries_accessor.save_entry(current_doc_entry)
