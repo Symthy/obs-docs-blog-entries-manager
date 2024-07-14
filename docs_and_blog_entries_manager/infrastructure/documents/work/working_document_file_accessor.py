@@ -24,17 +24,11 @@ class WorkingDocumentFileAccessor:
             filter(lambda path: self.__work_document_file_reader.restore(path).is_completed, work_file_paths))
         return completed_file_path
 
-    def move_to_store(self, title: str):
-        doc_entry = self.__restore(title)
-        self.__document_file_mover.move(self.__work_doc_dir_path, doc_entry)
-        self.__stored_doc_entries_accessor.save_entry(doc_entry)
-
-    def __restore(self, title: str):
-        work_doc_file_path = self.__build_file_path(title)
+    def restore(self, title: str):
+        work_doc_file_path = self.build_file_path(title)
         doc_entry = self.__work_document_file_reader.restore(work_doc_file_path)
         self.__document_file_accessor.insert_category_path(work_doc_file_path, NON_CATEGORY_NAME)
         return doc_entry
 
-    def __build_file_path(self, title: str) -> str:
-        # Todo: error case
+    def build_file_path(self, title: str) -> str:
         return file_system.join_path(self.__work_doc_dir_path, f'{title}.md')

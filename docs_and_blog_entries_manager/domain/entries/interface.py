@@ -1,8 +1,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import Dict
-from typing import List, TypeVar, Generic
+from typing import List, TypeVar, Generic, Optional
 
 from domain.entries.values.category_path import CategoryPath
 
@@ -51,10 +50,6 @@ class IEntry(ISerializableObject, IConvertibleMarkdownLine, ABC):
         pass
 
     @abstractmethod
-    def convert_id_to_title(self) -> Dict[str, str]:
-        pass
-
-    @abstractmethod
     def serialize(self) -> object:
         pass
 
@@ -78,11 +73,11 @@ class IEntries(IConvertibleMarkdownLines, ABC):
         pass
 
     @abstractmethod
-    def find_by_title(self, title) -> IEntry:
+    def find_by_title(self, title) -> Optional[IEntry]:
         pass
 
     @abstractmethod
-    def new_instance(self, entry_list: List[IEntry]) -> IEntries:
+    def new_instance(self, entry_list: list[IEntry]) -> IEntries:
         pass
 
 

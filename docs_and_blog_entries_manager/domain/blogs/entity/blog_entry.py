@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import List, Optional, Dict
+from typing import List, Optional
 
 from domain.blogs.entity.photo.photo_entries import PhotoEntries
 from domain.blogs.value.blog_entry_id import BlogEntryId
@@ -74,9 +74,6 @@ class BlogEntry(IEntry):
 
     def is_images_empty(self) -> bool:
         return self.__images.is_empty()
-
-    def convert_id_to_title(self) -> Dict[str, str]:
-        return {self.id.value: self.title}
 
     def convert_md_line(self) -> str:
         return f'- [{self.title}]({self.page_url}) ({self.updated_at_month_day})'

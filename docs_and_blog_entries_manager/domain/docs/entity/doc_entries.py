@@ -41,8 +41,8 @@ class DocEntries(IEntries):
                 return entry
         return None
 
-    def pickup_entries(self) -> List[DocEntry]:
-        pickup_entries: List[DocEntry] = []
+    def pickup_entries(self) -> list[DocEntry]:
+        pickup_entries: list[DocEntry] = []
         for entry in self.items:
             if entry.pickup:
                 pickup_entries.append(entry)
@@ -52,16 +52,17 @@ class DocEntries(IEntries):
         # existed entry is overwritten
         self.__entries |= docs_entries.items
 
-    def find_by_title(self, title) -> DocEntry:
+    def find_by_title(self, title) -> Optional[DocEntry]:
         for entry in self.items:
             if entry.title == title:
                 return entry
+        return None
 
-    def convert_md_lines(self) -> List[str]:
+    def convert_md_lines(self) -> list[str]:
         return [entry.convert_md_line() for entry in self.items]
 
     @classmethod
-    def new_instance(cls, entry_list: List[DocEntry]) -> DocEntries:
+    def new_instance(cls, entry_list: list[DocEntry]) -> DocEntries:
         return DocEntries(entry_list)
 
     def __eq__(self, other) -> bool:

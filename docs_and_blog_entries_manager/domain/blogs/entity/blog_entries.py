@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import List
+from typing import List, Optional
 
 from domain.blogs.entity.blog_entry import BlogEntry
 from domain.blogs.value.blog_entry_id import BlogEntryId
@@ -29,10 +29,11 @@ class BlogEntries(IEntries):
     def add_entry(self, blog_entry: BlogEntry):
         self.__entries[blog_entry.id] = blog_entry
 
-    def find_by_title(self, title) -> BlogEntry:
+    def find_by_title(self, title) -> Optional[BlogEntry]:
         for entry in self.items:
             if entry.title == title:
                 return entry
+        return None
 
     def merge(self, blog_entries: BlogEntries):
         if blog_entries.is_empty():

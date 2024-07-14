@@ -29,4 +29,3 @@ class LocalDocOrganizerService:
                 old_doc_entry: DocEntry = self.__stored_doc_entries_accessor.load_entry(current_doc_entry.id)
                 if not current_doc_entry.equals_path(old_doc_entry):
                     self.__document_file_mover.move(doc_file_path, current_doc_entry)
-                    self.__stored_doc_entries_accessor.save_entry(current_doc_entry)

@@ -14,7 +14,8 @@ class DocEntryId(IEntryId):
         self.__value = eid
         # example: 20240505010203000
 
-    def new_instance(self, entry_id: str) -> DocEntryId:
+    @classmethod
+    def new_instance(cls, entry_id: str) -> DocEntryId:
         return DocEntryId(entry_id)
 
     @property
