@@ -1,4 +1,5 @@
 from application.service.converter.doc_to_blog_entry_converter import DocToBlogEntryConverter
+from application.service.validator.entry_link_validator import EntryLinkValidator
 from common.constants import BLOG_CATEGORY
 from common.result import Result
 from domain.blogs.datasource.interface import IBlogEntryRepository
@@ -19,17 +20,21 @@ class BlogEntryPusherService:
                  doc_to_blog_entry_converter: DocToBlogEntryConverter,
                  blog_photo_entry_repository: IBlogEntryRepository,
                  blog_to_doc_mapping: BlogToDocEntryMapping,
-                 stored_blog_entries_accessor: StoredBlogEntriesAccessor):
+                 stored_blog_entries_accessor: StoredBlogEntriesAccessor,
+                 entry_link_validator: EntryLinkValidator):
         self.__document_file_accessor = document_file_accessor
         self.__doc_to_blog_entry_converter = doc_to_blog_entry_converter
         self.__blog_photo_entry_repository = blog_photo_entry_repository
         self.__blog_to_doc_mapping = blog_to_doc_mapping
         self.__stored_blog_entries_accessor = stored_blog_entries_accessor
+        self.__entry_link_validator = entry_link_validator
 
     def execute(self, doc_id: DocEntryId) -> Result[str, str]:
         """
         Blogカテゴリをドキュメントに付与してブログ投稿
         """
+        if not self.__entry_link_validator.validate(doc_id):
+            return Result(error=f'Not posted document is linked to the blog. (id: {doc_id})')
         doc_dateset = self.__document_file_accessor.insert_category(doc_id, BLOG_CATEGORY)
         blog_entry_id_opt = self.__blog_to_doc_mapping.find_blog_entry_id(doc_id)
         if blog_entry_id_opt is None:

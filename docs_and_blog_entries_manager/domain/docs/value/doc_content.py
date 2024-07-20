@@ -83,3 +83,9 @@ class DocContent:
         new_category_line = ' '.join(list(map(lambda c: f'#{c}', [category_path.value, *categories]))) + '\n'
         new_content = self.value_with_removed_categories + new_category_line
         return DocContent(new_content, self.__doc_entry_dir_path)
+
+    def replace_internal_link_titles(self, title_to_url: dict[str, str]) -> str:
+        content = self.__content
+        for title, url in title_to_url.items():
+            content = content.replace(f'[[{title}]]', f'[{title}]({url})')
+        return content

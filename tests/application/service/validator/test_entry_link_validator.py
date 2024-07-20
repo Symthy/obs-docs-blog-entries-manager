@@ -18,17 +18,17 @@ class TestEntryLinkValidator:
         blog_to_doc_mapping = BlogToDocEntryMapping(join_path(store_dir, 'blog_to_doc_mapping.json'))
         stored_doc_entries_accessor = StoredEntriesAccessorFactory(store_dir).build_for_doc()
         document_reader = DocumentFileReader(docs_dir, stored_doc_entries_accessor)
-        self.__entry_title_finder = EntryLinkValidator(StoredEntryTitleFinder(stored_doc_entries_accessor),
-                                                       blog_to_doc_mapping, document_reader)
+        self.__entry_title_validator = EntryLinkValidator(StoredEntryTitleFinder(stored_doc_entries_accessor),
+                                                          blog_to_doc_mapping, document_reader)
 
     def test_validate_when_nothing_doc_return_false(self):
-        actual = self.__entry_title_finder.validate(DocEntryId('20240701120000111111'))
+        actual = self.__entry_title_validator.validate(DocEntryId('20240701120000111111'))
         assert_that(actual).is_false()
 
     def test_validate_return_true(self):
-        actual = self.__entry_title_finder.validate(DocEntryId('20240701120000222222'))
+        actual = self.__entry_title_validator.validate(DocEntryId('20240701120000222222'))
         assert_that(actual).is_true()
 
     def test_validate_when_nothing_blog_return_false(self):
-        actual = self.__entry_title_finder.validate(DocEntryId('20240701120000333333'))
+        actual = self.__entry_title_validator.validate(DocEntryId('20240701120000333333'))
         assert_that(actual).is_false()
