@@ -23,12 +23,12 @@ class DocContent:
             self.__content += f'#{self.__category_path.value}\n'
         self.__internal_links = self.__extract_entry_links()
 
-    def __extract_image_paths(self) -> List[str]:
+    def __extract_image_paths(self) -> list[str]:
         # 画像ファイルのパスはmdファイルからの相対パス (images/xxxx)
         image_paths = re.findall(self.__DOCUMENT_IMAGE_LINK_REGEX, self.__content)
         return image_paths
 
-    def __extract_categories(self) -> List[str]:
+    def __extract_categories(self) -> list[str]:
         categories = re.findall(self.__DOCUMENT_CATEGORY_REGEX, self.__content)
         return categories
 
@@ -40,7 +40,6 @@ class DocContent:
     def value(self) -> str:
         return self.__content
 
-    @property
     def value_with_removed_categories(self) -> str:
         # BlogContent変換用。タグが付いている行は削除する。はてブ上ではタグはセクションとして扱われてしまう
         content = re.sub(r'^(\n|\r\n)(\s*#\S+)+\s*$', r'\1', self.__content, flags=re.MULTILINE)
@@ -81,10 +80,11 @@ class DocContent:
 
     def __update_categories_line(self, category_path: CategoryPath, *categories: str) -> DocContent:
         new_category_line = ' '.join(list(map(lambda c: f'#{c}', [category_path.value, *categories]))) + '\n'
-        new_content = self.value_with_removed_categories + new_category_line
+        new_content = self.value_with_removed_categories() + new_category_line
         return DocContent(new_content, self.__doc_entry_dir_path)
 
     def replace_internal_link_titles(self, title_to_url: dict[str, str]) -> str:
+        # blogContentへの変換用
         content = self.__content
         for title, url in title_to_url.items():
             content = content.replace(f'[[{title}]]', f'[{title}]({url})')

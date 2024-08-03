@@ -104,15 +104,24 @@ TS = TypeVar('TS', bound=IEntry)
 TI = TypeVar('TI', bound=IEntryId)
 
 
-class IStoredEntryAccessor(ABC, Generic[TS, TI]):
+class IStoredEntryLoader(ABC, Generic[TS, TI]):
     def load_entry(self, entry_id: TI) -> TS:
         pass
 
+
+class IStoredEntryModifier(ABC, Generic[TS, TI]):
     def save_entry(self, entry: TS):
         pass
 
 
-class IStoredEntriesAccessor(ABC, Generic[TM, TS, TI]):
+class IStoredEntryAccessor(ABC, Generic[TS, TI], IStoredEntryLoader[TS, TI], IStoredEntryModifier[TS, TI]):
+    pass
+
+
+class IStoredEntriesLoader(ABC, Generic[TM, TS, TI], IStoredEntryLoader[TS, TI]):
+    def load_entry(self, entry_id: TI) -> TS:
+        pass
+
     def load_entries(self) -> TM:
         pass
 
@@ -125,11 +134,22 @@ class IStoredEntriesAccessor(ABC, Generic[TM, TS, TI]):
     def load_pickup_entries(self) -> TM:
         pass
 
+
+class IStoredEntriesModifier(ABC, Generic[TM, TS, TI], IStoredEntryModifier[TS, TI]):
+    def save_entry(self, entry: TS):
+        pass
+
     def save_entries(self, entries: TM):
         pass
 
-    def search_entry_ids(self, keyword: str) -> List[TI]:
+    def update_pickup(self, entry_id: TI, pickup: bool):
         pass
 
-    def has_entry(self, entry_id: TI) -> bool:
+    def delete_entry(self, entry_id: TI):
         pass
+
+
+class IStoredEntriesAccessor(ABC, Generic[TM, TS, TI],
+                             IStoredEntriesLoader[TM, TS, TI],
+                             IStoredEntriesModifier[TM, TS, TI]):
+    pass

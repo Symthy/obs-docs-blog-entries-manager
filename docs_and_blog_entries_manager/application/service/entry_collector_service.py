@@ -1,7 +1,6 @@
 from typing import List
 
 from application.service.converter.blog_to_doc_entry_converter import BlogToDocEntryConverter
-from application.service.converter.photo_entries_to_doc_images_converter import PhotoEntriesToDocImagesConverter
 from domain.blogs.datasource.interface import IBlogEntryRepository
 from domain.blogs.datasource.model.posted_blog_entry import PostedBlogEntry
 from domain.docs.entity.doc_entry import DocEntry
@@ -19,12 +18,11 @@ class EntryCollectorService:
     def __init__(self,
                  posted_blog_entry_repository: IBlogEntryRepository,
                  blog_to_doc_entry_converter: BlogToDocEntryConverter,
-                 photo_entries_to_doc_images_converter: PhotoEntriesToDocImagesConverter,
                  stored_both_entries_accessor: StoredBothEntriesAccessor,
                  document_file_accessor: DocumentFileAccessor):
         self.__posted_blog_entry_repository = posted_blog_entry_repository
         self.__blog_to_doc_entry_converter = blog_to_doc_entry_converter
-        self.__photo_entries_to_doc_images_converter = photo_entries_to_doc_images_converter
+
         self.__stored_both_entries_accessor = stored_both_entries_accessor
         self.__document_file_accessor = document_file_accessor
 

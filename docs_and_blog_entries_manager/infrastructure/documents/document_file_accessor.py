@@ -26,6 +26,9 @@ class DocumentFileAccessor(IDocumentAccessor, IDocumentFileReader):
     def restore(self, doc_entry_file_path: str) -> DocEntry:
         return self.__document_reader.restore(doc_entry_file_path)
 
+    def extract_entries_with_blog_category(self) -> DocEntries:
+        return self.__document_reader.extract_entries_with_blog_category()
+
     def extract_entries_with_non_register(self, category_paths: list[CategoryPath]) -> DocEntries:
         doc_id_to_path = self.__all_doc_id_to_file_path(category_paths)
         doc_entries: list[DocEntry] = []

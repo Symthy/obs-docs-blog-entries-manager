@@ -5,7 +5,7 @@ from domain.docs.entity.image.doc_image import DocImage
 from infrastructure.hatena.image.image_downloader import ImageDownLoader
 
 
-class PhotoEntriesToDocImagesConverter:
+class BlogPhotosToDocImagesConverter:
     def __init__(self, image_downloader: ImageDownLoader):
         self.__image_downloader = image_downloader
 

@@ -19,12 +19,14 @@ class StoredEntriesAccessorFactory:
         entry_list_file_path = file_system.join_path(self.__store_dir_path, 'blog_entry_list.json')
         stored_blog_entry_dir_path = files.file_system.join_path(self.__store_dir_path, 'blog')
         stored_blog_entry_accessor = _StoredEntryAccessor(stored_blog_entry_dir_path, BlogEntryDeserializer())
+        deserializer = StoredBlogEntryListDeserializer(entry_list_file_path)
         return StoredEntriesAccessor(entry_list_file_path, stored_blog_entry_accessor,
-                                     StoredBlogEntryListDeserializer(entry_list_file_path), BlogEntries.new_instance)
+                                     deserializer.deserialize(), BlogEntries.new_instance)
 
     def build_for_doc(self) -> StoredDocEntriesAccessor:
         entry_list_file_path = file_system.join_path(self.__store_dir_path, 'doc_entry_list.json')
         stored_doc_entry_dir_path = files.file_system.join_path(self.__store_dir_path, 'doc')
         stored_doc_entry_accessor = _StoredEntryAccessor(stored_doc_entry_dir_path, DocEntryDeserializer())
+        deserializer = StoredDocEntryListDeserializer(entry_list_file_path)
         return StoredEntriesAccessor(entry_list_file_path, stored_doc_entry_accessor,
-                                     StoredDocEntryListDeserializer(entry_list_file_path), DocEntries.new_instance)
+                                     deserializer.deserialize(), DocEntries.new_instance)
