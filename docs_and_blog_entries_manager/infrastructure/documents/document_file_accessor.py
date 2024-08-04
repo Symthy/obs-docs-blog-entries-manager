@@ -39,13 +39,16 @@ class DocumentFileAccessor(IDocumentAccessor, IDocumentFileReader):
 
     @classmethod
     def save(cls, doc_entry_dir_path: str, title: str, content: DocContent,
-             images: DocImages) -> DocEntryId:
+             images: DocImages | None = None) -> DocEntryId:
         doc_file_path = file_system.join_path(doc_entry_dir_path, f'{title}.md')
         text_file.write_file(doc_file_path, content.value)
+        created_date_time = EntryDateTime(file_system.get_created_file_time(doc_file_path))
+        doc_entry_id = DocEntryId(created_date_time.to_str_with_num_sequence())
+        if images is None:
+            return doc_entry_id
         for image in images.items:
             image_file.write(image.file_path, image.image_data)
-        created_date_time = EntryDateTime(file_system.get_created_file_time(doc_file_path))
-        return DocEntryId(created_date_time.to_str_with_num_sequence())
+        return doc_entry_id
 
     def save_summary(self, content: DocContent):
         summary_file_path = file_system.join_path(self.__document_root_dir_path, 'summary.md')

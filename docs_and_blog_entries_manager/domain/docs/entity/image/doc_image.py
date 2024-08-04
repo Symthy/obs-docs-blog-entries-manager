@@ -16,6 +16,10 @@ class DocImage:
         return file_system.join_path(self.__doc_entry_dir_path, self.__file_name)
 
     @property
+    def file_link(self) -> str:
+        return f'![]({self.file_path})'
+
+    @property
     def image_data(self) -> bytes:
         return self.__image_data
 

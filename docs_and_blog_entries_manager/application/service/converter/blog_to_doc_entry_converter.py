@@ -27,7 +27,7 @@ class BlogToDocEntryConverter:
         doc_entry_path = posted_blog_entry.category_path.value
         blog_entry = posted_blog_entry.convert_to_blog_entry()
         doc_entry_id = self.__blog_to_doc_entry_mapping.find_doc_entry_id(blog_entry.id)
-        doc_content = self.__blog_to_doc_content_converter.execute(posted_blog_entry.content, doc_entry_path)
+        doc_content = self.__blog_to_doc_content_converter.convert(posted_blog_entry.content, doc_entry_path)
         doc_entry = self.convert_to_doc_entry(blog_entry, doc_entry_id)
         return DocumentDataset(doc_entry, doc_content)
 

@@ -16,8 +16,8 @@ class PostedBlogEntry:
     ブログに投稿済みのデータを取得して保持するためのクラス
     """
 
-    def __init__(self, hatena_id: str, entry_id: str, title: str, content: str, page_url: str, last_updated: datetime,
-                 categories: List[str], doc_id: Optional[str] = None,
+    def __init__(self, hatena_id: str, entry_id: BlogEntryId, title: str, content: str, page_url: str,
+                 last_updated: datetime, categories: List[str], doc_id: Optional[str] = None,
                  photo_entries: PhotoEntries = PhotoEntries()):
         self.__hatena_id = hatena_id
         self.__id = entry_id
@@ -28,7 +28,7 @@ class PostedBlogEntry:
         self.__categories = categories if len(categories) >= 2 else []
         self.__original_doc_id = doc_id
         self.__photo_entries: PhotoEntries = photo_entries
-        self.__content = BlogContent(content, self.__category_path, self.__categories, hatena_id)
+        self.__content = BlogContent(entry_id, content, self.__category_path, self.__categories, hatena_id)
 
     @property
     def category_path(self) -> CategoryPath:

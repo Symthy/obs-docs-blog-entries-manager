@@ -1,10 +1,13 @@
 import re
-from typing import Optional
 
+from application.service.converter.Intermediate_blog_content import IntermediateBlogContent
 from application.service.converter.blog_photos_to_doc_images_converter import BlogPhotosToDocImagesConverter
 from config.blog_config import BlogConfig
+from domain.blogs.datasource.model.posted_blog_entry import PostedBlogEntry
 from domain.blogs.entity.blog_entry import BlogEntry
+from domain.blogs.entity.photo.photo_entry import PhotoEntry
 from domain.blogs.value.blog_content import BlogContent
+from domain.docs.entity.image.doc_image import DocImage
 from domain.docs.types import StoredDocEntriesLoader
 from domain.docs.value.doc_content import DocContent
 from infrastructure.store.blog_to_doc_entry_mapping import BlogToDocEntryMapping
@@ -25,7 +28,12 @@ class BlogToDocContentConverter:
         self.__blog_to_doc_mapping = blog_to_doc_mapping
         self.__doc_entries_loader = doc_entries_loader
 
-    def execute(self, blog_content: BlogContent, doc_entry_path: str) -> Optional[DocContent]:
+    def convert(self, posted_blog_entry: PostedBlogEntry, doc_entry_path: str,
+                photo_entry_to_doc_image: dict[PhotoEntry, DocImage]) -> DocContent:
+        blog_content = self.__convert_only_category_and_photo(posted_blog_entry, photo_entry_to_doc_image)
+        return self.convert_link(blog_content, doc_entry_path)
+
+    def convert_link(self, blog_content: IntermediateBlogContent, doc_entry_path: str) -> DocContent:
         blog_entry_title_to_url = self.__extract_linked_entry_title_to_url(blog_content)
         blog_entry_link_to_doc_internal_link = {}
         for title, url in blog_entry_title_to_url.items():
@@ -37,17 +45,36 @@ class BlogToDocContentConverter:
             blog_entry_link_to_doc_internal_link[blog_entry_link] = doc_internal_entry
         return self.__convert_content(blog_content, doc_entry_path, blog_entry_link_to_doc_internal_link)
 
-    def __extract_linked_entry_title_to_url(self, blog_content: BlogContent) -> dict[str, str]:
-        matches = re.findall(self.__blog_entry_title_regex, blog_content.value)
-        title_to_url = {}
-        for blog_entry_title, blog_entry_url in matches:
-            title_to_url[blog_entry_title] = blog_entry_url
-        return title_to_url
+    @classmethod
+    def convert_for_register(cls, posted_blog_entry: PostedBlogEntry,
+                             photo_entry_to_doc_image: dict[PhotoEntry, DocImage]) \
+            -> tuple[DocContent, IntermediateBlogContent]:
+        blog_content: IntermediateBlogContent = cls.__convert_only_category_and_photo(
+            posted_blog_entry, photo_entry_to_doc_image)
+        doc_content = DocContent(blog_content.value, posted_blog_entry.category_path.value)
+        return doc_content, blog_content
 
     @staticmethod
-    def __convert_content(blog_content: BlogContent, doc_entry_path: str,
+    def __convert_content(blog_content: BlogContent | IntermediateBlogContent, doc_entry_path: str,
                           blog_entry_link_to_doc_internal_link: dict[str, str]) -> DocContent:
         content = blog_content.value
         for blog_entry_link, doc_internal_link in blog_entry_link_to_doc_internal_link:
             content.replace(blog_entry_link, doc_internal_link)
         return DocContent(content, doc_entry_path)
+
+    @staticmethod
+    def __convert_only_category_and_photo(
+            posted_blog_entry: PostedBlogEntry, photo_entry_to_doc_image: dict[PhotoEntry, DocImage]) \
+            -> IntermediateBlogContent:
+        blog_content = posted_blog_entry.content.value_with_inserted_categories
+        for photo_entry, doc_image in photo_entry_to_doc_image.items():
+            blog_content.replace_photo_link(photo_entry.id, doc_image.file_link)
+        return IntermediateBlogContent(blog_content)
+
+    def __extract_linked_entry_title_to_url(self, blog_content: BlogContent | IntermediateBlogContent) \
+            -> dict[str, str]:
+        matches = re.findall(self.__blog_entry_title_regex, blog_content.value)
+        title_to_url = {}
+        for blog_entry_title, blog_entry_url in matches:
+            title_to_url[blog_entry_title] = blog_entry_url
+        return title_to_url
