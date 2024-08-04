@@ -32,7 +32,6 @@ class EntryCollectorService:
         self.__blog_photos_to_doc_images_converter = blog_photos_to_doc_images_converter
         self.__blog_to_doc_content_converter = blog_to_doc_content_converter
         self.__stored_both_entries_accessor = stored_both_entries_accessor
-
         self.__document_file_accessor = document_file_accessor
 
     def execute(self):
@@ -79,6 +78,7 @@ class EntryCollectorService:
             blog_entry = posted_blog_entry.convert_to_blog_entry()
             self.__save_entry(blog_entry, doc_content)
 
+    # Todo: 外だしした方が良いかも
     def __save_entry(self, blog_entry: BlogEntry, doc_content: DocContent, doc_images: DocImages | None = None) \
             -> DocEntry:
         doc_entry_id = self.__document_file_accessor.save(

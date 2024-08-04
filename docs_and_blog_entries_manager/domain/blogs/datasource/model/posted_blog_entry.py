@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Optional, List
+from typing import List
 
 from domain.blogs.entity.blog_entry import BlogEntry
 from domain.blogs.entity.photo.photo_entries import PhotoEntries
@@ -17,16 +17,14 @@ class PostedBlogEntry:
     """
 
     def __init__(self, hatena_id: str, entry_id: BlogEntryId, title: str, content: str, page_url: str,
-                 last_updated: datetime, categories: List[str], doc_id: Optional[str] = None,
-                 photo_entries: PhotoEntries = PhotoEntries()):
+                 last_updated: datetime, categories: List[str], photo_entries: PhotoEntries = PhotoEntries()):
         self.__hatena_id = hatena_id
         self.__id = entry_id
         self.__title = title
         self.__page_url = page_url
         self.__updated_at: EntryDateTime = EntryDateTime(last_updated)
         self.__category_path = CategoryPath(categories[0]) if len(categories) >= 1 else CategoryPath.non_category()
-        self.__categories = categories if len(categories) >= 2 else []
-        self.__original_doc_id = doc_id
+        self.__categories = categories[1:] if len(categories) >= 2 else []
         self.__photo_entries: PhotoEntries = photo_entries
         self.__content = BlogContent(entry_id, content, self.__category_path, self.__categories, hatena_id)
 
@@ -47,11 +45,11 @@ class PostedBlogEntry:
         return self.__photo_entries
 
     def convert_to_blog_entry(self) -> BlogEntry:
-        return BlogEntry(BlogEntryId(self.__id), self.__title, self.__page_url, self.__updated_at,
+        return BlogEntry(self.__id, self.__title, self.__page_url, self.__updated_at,
                          self.__category_path, self.__categories, self.__photo_entries)
 
     def merge_photo_entries(self, images: PhotoEntries) -> PostedBlogEntry:
         new_photo_entries = self.__photo_entries.merge(images)
         return PostedBlogEntry(self.__hatena_id, self.__id, self.__title, self.__content.value, self.__page_url,
                                self.__updated_at.to_datetime(), [self.__category_path.value, self.__categories],
-                               self.__original_doc_id, new_photo_entries)
+                               new_photo_entries)

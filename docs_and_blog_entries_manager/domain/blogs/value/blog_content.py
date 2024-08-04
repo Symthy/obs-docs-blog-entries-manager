@@ -41,7 +41,8 @@ class BlogContent:
     @property
     def value_with_inserted_categories(self) -> BlogContent:
         # DocContent変換用。末尾にタグとして追加
-        content = self.__content + '\n' + self.__categories_line + '\n'
+        content = self.__content + '' if self.__content.endswith('\n') else '\n'
+        content = content + self.__categories_line + '\n'
         return self.__rebuild(content)
 
     @property
@@ -49,6 +50,7 @@ class BlogContent:
         return self.__photo_entry_ids
 
     def replace_photo_link(self, photo_entry_id: PhotoEntryId, link: str) -> BlogContent:
+        # DocContent変換用。画像のリンクを置換
         if photo_entry_id in self.__photo_entry_ids:
             Logger.warn(
                 f'Not exist photo entry (id: {photo_entry_id}) in blog content (blog entry id: {self.__entry_id}).')

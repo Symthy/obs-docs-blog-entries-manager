@@ -105,20 +105,28 @@ TI = TypeVar('TI', bound=IEntryId)
 
 
 class IStoredEntryLoader(ABC, Generic[TS, TI]):
+    @abstractmethod
     def load_entry(self, entry_id: TI) -> TS:
         pass
 
 
 class IStoredEntryModifier(ABC, Generic[TS, TI]):
+    @abstractmethod
     def save_entry(self, entry: TS):
         pass
 
 
-class IStoredEntryAccessor(ABC, Generic[TS, TI], IStoredEntryLoader[TS, TI], IStoredEntryModifier[TS, TI]):
-    pass
+class IStoredEntryAccessor(IStoredEntryLoader[TS, TI], IStoredEntryModifier[TS, TI]):
+    @abstractmethod
+    def save_entry(self, entry: TS):
+        pass
+
+    @abstractmethod
+    def load_entry(self, entry_id: TI) -> TS:
+        pass
 
 
-class IStoredEntriesLoader(ABC, Generic[TM, TS, TI], IStoredEntryLoader[TS, TI]):
+class IStoredEntriesLoader(Generic[TM, TS, TI], IStoredEntryLoader[TS, TI]):
     def load_entry(self, entry_id: TI) -> TS:
         pass
 
@@ -135,7 +143,7 @@ class IStoredEntriesLoader(ABC, Generic[TM, TS, TI], IStoredEntryLoader[TS, TI])
         pass
 
 
-class IStoredEntriesModifier(ABC, Generic[TM, TS, TI], IStoredEntryModifier[TS, TI]):
+class IStoredEntriesModifier(Generic[TM, TS, TI], IStoredEntryModifier[TS, TI]):
     def save_entry(self, entry: TS):
         pass
 
@@ -149,7 +157,30 @@ class IStoredEntriesModifier(ABC, Generic[TM, TS, TI], IStoredEntryModifier[TS, 
         pass
 
 
-class IStoredEntriesAccessor(ABC, Generic[TM, TS, TI],
-                             IStoredEntriesLoader[TM, TS, TI],
-                             IStoredEntriesModifier[TM, TS, TI]):
-    pass
+class IStoredEntriesAccessor(IStoredEntriesLoader[TM, TS, TI], IStoredEntriesModifier[TM, TS, TI]):
+    def load_entry(self, entry_id: TI) -> TS:
+        pass
+
+    def load_entries(self) -> TM:
+        pass
+
+    def load_entries_by_id(self, entry_ids: List[TI] = None) -> TM:
+        pass
+
+    def load_entries_by_category_path(self, category_path: CategoryPath) -> TM:
+        pass
+
+    def load_pickup_entries(self) -> TM:
+        pass
+
+    def save_entry(self, entry: TS):
+        pass
+
+    def save_entries(self, entries: TM):
+        pass
+
+    def update_pickup(self, entry_id: TI, pickup: bool):
+        pass
+
+    def delete_entry(self, entry_id: TI):
+        pass
