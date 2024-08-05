@@ -5,7 +5,7 @@ from domain.docs.value.doc_entry_id import DocEntryId
 from infrastructure.store.composite.stored_both_entries_accessor import StoredBothEntriesAccessor
 
 
-class EntryPickupUpdaterService:
+class DocEntryPickupSwitcherService:
     """
     指定したdocument(＆対応するblog記事)のpickupフラグON/OFF
     """

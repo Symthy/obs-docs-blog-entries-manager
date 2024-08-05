@@ -13,7 +13,7 @@ from infrastructure.store.blog_to_doc_entry_mapping import BlogToDocEntryMapping
 from infrastructure.store.composite.stored_both_entries_accessor import StoredBothEntriesAccessor
 
 
-class EntryCollectorService:
+class BlogEntryCollectorService:
     """
     blogから投稿済み記事を収集し、ローカルに保存する
     """

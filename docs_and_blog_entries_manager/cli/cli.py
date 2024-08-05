@@ -1,6 +1,6 @@
+from cli.comand.blog.blog_command import BlogCommand
+from cli.comand.blog.options.display_blog_entry_option import DisplayBlogEntryOption
 from cli.comand.main_command import MainCommand
-from cli.comand.sub.blog_command import BlogCommand
-from cli.comand.sub.options.display_blog_entry_option import DisplayBlogEntryOption
 from config.blog_config import BlogConfig
 
 

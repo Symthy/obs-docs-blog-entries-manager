@@ -14,12 +14,16 @@ class PushDocumentOption(ISubCommandOption):
 
     def add_option(self, subparser: argparse.ArgumentParser):
         subparser.add_argument('--push', '-p', action='store', nargs=1, type=str, required=True)
+        subparser.add_argument('--push-all', '-pa', action='store', nargs=0, required=False)
         subparser.add_argument('--blog' '-b', action='store', nargs=0, required=False)
 
     def equals(self, args):
         return args.push
 
     def execute(self, args):
+        if args.push_all:
+            self.__local_doc_pusher_service.push_all()
+            return
         title: str = args.push
         if title is None or title == '':
             Logger.error('No specified document title.')

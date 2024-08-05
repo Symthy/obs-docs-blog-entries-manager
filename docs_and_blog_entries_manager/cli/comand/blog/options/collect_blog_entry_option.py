@@ -1,11 +1,11 @@
 import argparse
 
-from application.service.entry_collector_service import EntryCollectorService
+from application.service.blog_entry_collector_service import BlogEntryCollectorService
 from cli.comand.interface import ISubCommandOption
 
 
 class CollectBlogEntryOption(ISubCommandOption):
-    def __init__(self, entry_collector_service: EntryCollectorService):
+    def __init__(self, entry_collector_service: BlogEntryCollectorService):
         self.__entry_collector_service = entry_collector_service
 
     def add_option(self, subparser: argparse.ArgumentParser):

@@ -6,7 +6,7 @@ from domain.docs.entity.doc_entry import DocEntry
 from infrastructure.types import StoredDocEntriesAccessor
 
 
-class BlogEntryAllPusherService:
+class BlogEntryAllUpdaterService:
     """
     新たにブログマーク(#Blog)が付与されたdocumentをblogに投稿する
     ブログマーク(#Blog)が消えたdocumentをblogから削除する

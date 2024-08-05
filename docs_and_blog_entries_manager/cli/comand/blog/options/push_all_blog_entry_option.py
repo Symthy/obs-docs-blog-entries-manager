@@ -1,11 +1,15 @@
 import argparse
 
-from application.service.blog_entry_all_pusher_service import BlogEntryAllPusherService
+from application.service.blog_entry_all_updater_service import BlogEntryAllUpdaterService
 from cli.comand.interface import ISubCommandOption
 
 
 class PushBlogEntryOption(ISubCommandOption):
-    def __init__(self, blog_entry_all_pusher_service: BlogEntryAllPusherService):
+    """
+    ローカルのドキュメントを一括でblogに反映する（新しい物は投稿し、無い物は削除する）
+    """
+
+    def __init__(self, blog_entry_all_pusher_service: BlogEntryAllUpdaterService):
         self.__blog_entry_all_pusher_service = blog_entry_all_pusher_service
 
     def add_option(self, subparser: argparse.ArgumentParser):
