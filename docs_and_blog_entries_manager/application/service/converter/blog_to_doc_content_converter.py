@@ -26,7 +26,7 @@ class BlogToDocContentConverter:
 
     def convert(self, posted_blog_entry: PostedBlogEntry, doc_entry_path: str,
                 photo_entry_to_doc_image: dict[PhotoEntry, DocImage]) -> DocContent:
-        blog_content = self.__convert_only_category_and_photo(posted_blog_entry, photo_entry_to_doc_image)
+        blog_content = self.convert_only_category_and_photo(posted_blog_entry, photo_entry_to_doc_image)
         return self.convert_link(blog_content, doc_entry_path)
 
     def convert_link(self, blog_content: IntermediateBlogContent, doc_entry_path: str) -> DocContent:
@@ -41,15 +41,6 @@ class BlogToDocContentConverter:
             blog_entry_link_to_doc_internal_link[blog_entry_link] = doc_internal_entry
         return self.__convert_content(blog_content, doc_entry_path, blog_entry_link_to_doc_internal_link)
 
-    @classmethod
-    def convert_for_register(cls, posted_blog_entry: PostedBlogEntry,
-                             photo_entry_to_doc_image: dict[PhotoEntry, DocImage]) \
-            -> tuple[DocContent, IntermediateBlogContent]:
-        blog_content: IntermediateBlogContent = cls.__convert_only_category_and_photo(
-            posted_blog_entry, photo_entry_to_doc_image)
-        doc_content = DocContent(blog_content.value, posted_blog_entry.category_path.value)
-        return doc_content, blog_content
-
     @staticmethod
     def __convert_content(blog_content: BlogContent | IntermediateBlogContent, doc_entry_path: str,
                           blog_entry_link_to_doc_internal_link: dict[str, str]) -> DocContent:
@@ -58,10 +49,10 @@ class BlogToDocContentConverter:
             content = content.replace(blog_entry_link, doc_internal_link)
         return DocContent(content, doc_entry_path)
 
-    @staticmethod
-    def __convert_only_category_and_photo(
-            posted_blog_entry: PostedBlogEntry, photo_entry_to_doc_image: dict[PhotoEntry, DocImage]) \
-            -> IntermediateBlogContent:
+    @classmethod
+    def convert_only_category_and_photo(
+            cls, posted_blog_entry: PostedBlogEntry,
+            photo_entry_to_doc_image: dict[PhotoEntry, DocImage]) -> IntermediateBlogContent:
         blog_content = posted_blog_entry.content.value_with_inserted_categories
         for photo_entry, doc_image in photo_entry_to_doc_image.items():
             blog_content.replace_photo_link(photo_entry.id, doc_image.file_link)
