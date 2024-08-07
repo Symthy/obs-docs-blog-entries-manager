@@ -1,6 +1,6 @@
 import argparse
 
-from application.service.blog_entry_collector_service import BlogEntryCollectorService
+from application.service.collector.blog_entry_collector_service import BlogEntryCollectorService
 from cli.comand.interface import ISubCommandOption
 
 

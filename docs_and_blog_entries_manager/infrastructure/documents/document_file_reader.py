@@ -1,3 +1,4 @@
+from common.constants import DOCS_DIR_PATH
 from domain.docs.datasources.interface import IDocumentFileReader
 from domain.docs.datasources.model.document_dataset import DocumentDataset
 from domain.docs.entity.doc_entries import DocEntries
@@ -11,7 +12,7 @@ from infrastructure.types import StoredDocEntriesAccessor
 
 
 class DocumentFileReader(IDocumentFileReader):
-    def __init__(self, doc_root_dir_path: str, stored_doc_entries_accessor: StoredDocEntriesAccessor):
+    def __init__(self, stored_doc_entries_accessor: StoredDocEntriesAccessor, doc_root_dir_path: str = DOCS_DIR_PATH):
         self.__doc_root_dir_path = doc_root_dir_path
         self.__stored_doc_entries_accessor = stored_doc_entries_accessor
 
