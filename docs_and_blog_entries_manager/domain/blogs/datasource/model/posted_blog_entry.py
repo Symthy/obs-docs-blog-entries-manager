@@ -44,6 +44,10 @@ class PostedBlogEntry:
     def photo_entries(self) -> PhotoEntries:
         return self.__photo_entries
 
+    @property
+    def updated_at(self) -> EntryDateTime:
+        return self.__updated_at
+
     def convert_to_blog_entry(self) -> BlogEntry:
         return BlogEntry(self.__id, self.__title, self.__page_url, self.__updated_at,
                          self.__category_path, self.__categories, self.__photo_entries)

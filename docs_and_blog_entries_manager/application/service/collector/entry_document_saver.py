@@ -8,7 +8,7 @@ from infrastructure.store.blog_to_doc_entry_mapping import BlogToDocEntryMapping
 from infrastructure.types import StoredBlogEntriesAccessor, StoredDocEntriesAccessor
 
 
-class EntryAndDocumentSaver:
+class EntryDocumentSaver:
     def __init__(self, blog_to_doc_entry_mapping: BlogToDocEntryMapping,
                  stored_blog_entries_accessor: StoredBlogEntriesAccessor,
                  stored_doc_entries_accessor: StoredDocEntriesAccessor,
