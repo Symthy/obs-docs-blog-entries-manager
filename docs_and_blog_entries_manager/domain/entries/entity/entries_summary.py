@@ -12,6 +12,7 @@ class EntriesSummary:
         self.__title = title
         self.__pickup_entries = pickup_entries
         self.__entries_tree_roots = entries_tree_roots
+        self.__category = 'Summary'
 
     @property
     def __pickup_entry_lines(self) -> List[str]:
@@ -26,6 +27,10 @@ class EntriesSummary:
         return self.__title
 
     @property
+    def category(self):
+        return self.__category
+
+    @property
     def all_entry_lines(self) -> List[str]:
         lines: List[str] = []
         if not self.__pickup_entries.is_empty():
@@ -37,9 +42,9 @@ class EntriesSummary:
         return lines
 
     @property
-    def list_text(self) -> str:
+    def text(self) -> str:
         return '\n'.join(self.all_entry_lines)
 
     @property
     def content(self) -> str:
-        return f'{self.__title}\n\n{self.list_text}'
+        return f'{self.__title}\n\n{self.text}'

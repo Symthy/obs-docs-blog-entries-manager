@@ -5,7 +5,7 @@ from domain.blogs.entity.photo.photo_entries import PhotoEntries
 from domain.blogs.entity.photo.photo_entry import PhotoEntry
 from domain.blogs.value.photo_entry_id import PhotoEntryId
 from files import image_file, file_path
-from infrastructure.hatena.api.photo_response_parser import PhotoEntryResponseBody
+from infrastructure.hatena.api.photo_entry_response_body import PhotoEntryResponseBody
 from infrastructure.hatena.templates import request_formats
 from logs.logger import Logger
 

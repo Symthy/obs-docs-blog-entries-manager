@@ -1,15 +1,20 @@
 from abc import ABC, abstractmethod
 from typing import Optional
 
-from domain.blogs.datasource.model.not_posted_blog_entry import PrePostBlogEntry
 from domain.blogs.datasource.model.posted_blog_entry import PostedBlogEntry
+from domain.blogs.datasource.model.pre_post_blog_entry import PrePostBlogEntry
 from domain.blogs.entity.blog_entry import BlogEntry
 from domain.blogs.value.blog_entry_id import BlogEntryId
 
 
 # Todo: 戻り値をResultに変更
-class IBlogEntryRepository(ABC):
+class IBlogSummaryEntryUpdater(ABC):
+    @abstractmethod
+    def update_summary(self, entry_id: BlogEntryId, blog_summary_entry: PrePostBlogEntry) -> bool:
+        pass
 
+
+class IBlogEntryFinder(ABC):
     @abstractmethod
     def find(self, blog_entry_id: BlogEntryId) -> PostedBlogEntry:
         pass
@@ -18,6 +23,8 @@ class IBlogEntryRepository(ABC):
     def find_all(self) -> list[PostedBlogEntry]:
         pass
 
+
+class IBlogEntryModifier(ABC):
     @abstractmethod
     def create(self, pre_post_blog_entry: PrePostBlogEntry) -> Optional[BlogEntry]:
         pass
@@ -27,9 +34,9 @@ class IBlogEntryRepository(ABC):
         pass
 
     @abstractmethod
-    def update_summary(self, entry_id: BlogEntryId, blog_summary_entry: PrePostBlogEntry) -> bool:
-        pass
-
-    @abstractmethod
     def delete(self, blog_entry_id: BlogEntryId) -> BlogEntry:
         pass
+
+
+class IBlogEntryRepository(IBlogSummaryEntryUpdater, IBlogEntryFinder, IBlogEntryModifier, ABC):
+    pass

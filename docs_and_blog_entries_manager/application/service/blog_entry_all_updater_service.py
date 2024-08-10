@@ -1,7 +1,7 @@
 from application.service.blog_entry_pusher_service import BlogEntryPusherService
 from application.service.blog_entry_remover_service import BlogEntryRemoverService
 from common.results import Results
-from domain.docs.datasources.interface import IDocumentFileReader
+from domain.docs.datasources.interface import IDocumentReader
 from domain.docs.entity.doc_entry import DocEntry
 from infrastructure.types import StoredDocEntriesAccessor
 
@@ -14,7 +14,7 @@ class BlogEntryAllUpdaterService:
 
     def __init__(self, stored_doc_entries_accessor: StoredDocEntriesAccessor,
                  blog_entry_pusher: BlogEntryPusherService, blog_entry_remover: BlogEntryRemoverService,
-                 document_reader: IDocumentFileReader):
+                 document_reader: IDocumentReader):
         self.__stored_doc_entries_accessor = stored_doc_entries_accessor
         self.__blog_entry_pusher = blog_entry_pusher
         self.__blog_entry_remover = blog_entry_remover

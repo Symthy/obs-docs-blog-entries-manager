@@ -7,7 +7,7 @@ from files import file_system
 
 class PrePostBlogEntry:
     """
-    (これからブログに登録する)投稿前のデータを保持するためのクラス
+    (これからブログに投稿する)投稿前のデータを保持するためのクラス
     """
 
     def __init__(self, title: str, content: str, category_path: CategoryPath, categories: List[str],

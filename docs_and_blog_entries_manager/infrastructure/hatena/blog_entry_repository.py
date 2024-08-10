@@ -3,11 +3,11 @@ from urllib.parse import urlparse, parse_qsl
 
 from docs_and_blog_entries_manager.api.api_client import ApiClient
 from domain.blogs.datasource.interface import IBlogEntryRepository
-from domain.blogs.datasource.model.not_posted_blog_entry import PrePostBlogEntry
 from domain.blogs.datasource.model.posted_blog_entry import PostedBlogEntry
+from domain.blogs.datasource.model.pre_post_blog_entry import PrePostBlogEntry
 from domain.blogs.value.blog_entry_id import BlogEntryId
 from domain.entries.interface import IEntryId
-from infrastructure.hatena.api.blog_response_parser import BlogEntryResponseBody, BlogEntriesResponseBody
+from infrastructure.hatena.api.blog_entry_response_body import BlogEntryResponseBody, BlogEntriesResponseBody
 from infrastructure.hatena.templates import request_formats
 from logs.logger import Logger
 

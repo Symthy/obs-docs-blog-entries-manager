@@ -1,8 +1,8 @@
 from typing import Optional
 
 from domain.blogs.datasource.interface import IBlogEntryRepository
-from domain.blogs.datasource.model.not_posted_blog_entry import PrePostBlogEntry
 from domain.blogs.datasource.model.posted_blog_entry import PostedBlogEntry
+from domain.blogs.datasource.model.pre_post_blog_entry import PrePostBlogEntry
 from domain.blogs.entity.blog_entry import BlogEntry
 from domain.blogs.entity.photo.photo_entries import PhotoEntries
 from domain.blogs.entity.photo.photo_entry import PhotoEntry

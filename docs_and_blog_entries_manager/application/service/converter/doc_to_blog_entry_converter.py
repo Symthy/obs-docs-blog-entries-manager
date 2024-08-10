@@ -1,5 +1,5 @@
 from common.constants import BLOG_CATEGORY
-from domain.blogs.datasource.model.not_posted_blog_entry import PrePostBlogEntry
+from domain.blogs.datasource.model.pre_post_blog_entry import PrePostBlogEntry
 from domain.docs.datasources.model.document_dataset import DocumentDataset
 from domain.docs.entity.doc_entry import DocEntry
 from domain.docs.value.doc_content import DocContent

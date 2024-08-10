@@ -3,8 +3,8 @@ from typing import Optional, List
 from docs_and_blog_entries_manager.common.constants import EXCLUDE_ENTRY_IDS_TXT_PATH
 from docs_and_blog_entries_manager.files import config
 from domain.blogs.datasource.model.posted_blog_entry import PostedBlogEntry
-from infrastructure.hatena.api.xml import blog_entry_xml
 from infrastructure.hatena.api.xml import entry_xml
+from infrastructure.hatena.api.xml.blog_entry_xml_parser import BlogEntryXmlParser
 
 
 # def __print_xml_children(root: ET.Element):
@@ -20,7 +20,7 @@ class BlogEntriesResponseBody:
         self.__hatena_id = hatena_id
         self.__response_xml = response_xml
         self.__exclude_entry_ids = config.read_lines(EXCLUDE_ENTRY_IDS_TXT_PATH)
-        self.__exclude_entry_ids.append(summary_entry_id)  # exclude summary entry index page
+        self.__exclude_entry_ids.append(summary_entry_id)  # exclude summary entry index page]
 
     def next_page_url(self) -> Optional[str]:
         url = None
@@ -54,10 +54,11 @@ class BlogEntryResponseBody:
         self.__hatena_id = hatena_id
         self.__response_xml = response_xml
         self.__exclude_entry_ids = config.read_lines(EXCLUDE_ENTRY_IDS_TXT_PATH)
+        self.__blog_entry_xml_parser = BlogEntryXmlParser(hatena_id)
 
     def parse(self) -> Optional[PostedBlogEntry]:
         if self.__response_xml is None:
             return None
         root_node = entry_xml.convert_root_node(self.__response_xml)
         tag_head = entry_xml.extract_tag_head(root_node, 'entry')
-        return blog_entry_xml.parse(self.__hatena_id, root_node, tag_head, [])
+        return self.__blog_entry_xml_parser.parse(root_node, tag_head, [])

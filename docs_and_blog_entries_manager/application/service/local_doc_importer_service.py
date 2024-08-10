@@ -1,9 +1,5 @@
-from typing import List
-
+from domain.docs.datasources.interface import IDocumentAccessor
 from domain.docs.entity.doc_entries import DocEntries
-from domain.entries.entity.category_tree_definition import CategoryTreeDefinition
-from domain.entries.values.category_path import CategoryPath
-from infrastructure.documents.document_file_accessor import DocumentFileAccessor
 from infrastructure.types import StoredDocEntriesAccessor
 from logs.logger import Logger
 
@@ -13,9 +9,8 @@ class LocalDocImporterService:
     documentフォルダに直接作成された未登録記事を認識＆登録
     """
 
-    def __init__(self, category_tree_def: CategoryTreeDefinition, document_file_accessor: DocumentFileAccessor,
+    def __init__(self, document_file_accessor: IDocumentAccessor,
                  stored_doc_entries_accessor: StoredDocEntriesAccessor):
-        self.__category_tree_def = category_tree_def
         self.__document_file_accessor = document_file_accessor
         self.__stored_doc_entries_accessor = stored_doc_entries_accessor
 
@@ -23,9 +18,7 @@ class LocalDocImporterService:
         """
         内部保持のEntry一覧にあるか確認して、ないものは登録。記事にカテゴリ付与も行う
         """
-        all_category_paths: List[CategoryPath] = self.__category_tree_def.all_category_paths
-        non_register_doc_entries: DocEntries = self.__document_file_accessor.extract_entries_with_non_register(
-            all_category_paths)
+        non_register_doc_entries: DocEntries = self.__document_file_accessor.extract_entries_with_non_register()
         if non_register_doc_entries.is_empty():
             Logger.info('Nothing new document.')
             return
