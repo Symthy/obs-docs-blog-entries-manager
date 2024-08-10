@@ -1,6 +1,6 @@
 from common.result import Result
 from common.results import Results
-from domain.docs.datasources.interface import IDocumentMover, IWorkingDocumentReader
+from domain.docs.datasource.interface import IDocumentMover, IWorkingDocumentReader
 from domain.docs.entity.doc_entry import DocEntry
 
 

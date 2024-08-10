@@ -5,8 +5,8 @@ from assertpy import assert_that
 from application.service.converter.blog_to_doc_content_converter import BlogToDocContentConverter
 from domain.blogs.datasource.model.posted_blog_entry import PostedBlogEntry
 from domain.blogs.value.blog_entry_id import BlogEntryId
+from domain.mappings.blog_to_doc_entry_mapping import BlogToDocEntryMapping
 from files.file_system import join_path
-from infrastructure.store.blog_to_doc_entry_mapping import BlogToDocEntryMapping
 from infrastructure.store.factory.stored_entries_accessor_factory import StoredEntriesAccessorFactory
 from infrastructure.store.stored_entry_title_finder import StoredEntryTitleFinder
 from tests.application.service.converter._data.path_resolver import resolve_test_data_dir_path

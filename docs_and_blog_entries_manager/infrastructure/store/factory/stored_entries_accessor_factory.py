@@ -1,6 +1,8 @@
 import files.file_system
+from domain.blogs.datasource.interface import StoredBlogEntriesAccessor
 from domain.blogs.entity.blog_entries import BlogEntries
 from domain.blogs.entity.factory.blog_entry_deserializer import BlogEntryDeserializer
+from domain.docs.datasource.interface import StoredDocEntriesAccessor
 from domain.docs.entity.doc_entries import DocEntries
 from domain.docs.entity.factory.doc_entry_deserializer import DocEntryDeserializer
 from files import file_system
@@ -8,7 +10,6 @@ from infrastructure.store.factory.stored_entry_list_deserializer import StoredBl
     StoredDocEntryListDeserializer
 from infrastructure.store.stored_entries_accessor import StoredEntriesAccessor
 from infrastructure.store.stored_entry_accessor import _StoredEntryAccessor
-from infrastructure.types import StoredBlogEntriesAccessor, StoredDocEntriesAccessor
 
 
 class StoredEntriesAccessorFactory:

@@ -2,8 +2,8 @@ from assertpy import assert_that
 
 from domain.blogs.value.blog_entry_id import BlogEntryId
 from domain.docs.value.doc_entry_id import DocEntryId
+from domain.mappings.blog_to_doc_entry_mapping import BlogToDocEntryMapping
 from files import file_system
-from infrastructure.store.blog_to_doc_entry_mapping import BlogToDocEntryMapping
 from tests.infrastructure.store._data.path_resolver import resolve_test_data_dir_path
 
 

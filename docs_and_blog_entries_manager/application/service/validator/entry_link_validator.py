@@ -1,7 +1,7 @@
 from domain.docs.entity.doc_entry import DocEntry
 from domain.docs.value.doc_entry_id import DocEntryId
+from domain.mappings.blog_to_doc_entry_mapping import BlogToDocEntryMapping
 from infrastructure.documents.document_file_reader import DocumentFileReader
-from infrastructure.store.blog_to_doc_entry_mapping import BlogToDocEntryMapping
 from infrastructure.store.stored_entry_title_finder import StoredEntryTitleFinder
 
 

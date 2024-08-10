@@ -2,13 +2,12 @@ from application.service.converter.doc_to_blog_entry_converter import DocToBlogE
 from application.service.validator.entry_link_validator import EntryLinkValidator
 from common.constants import BLOG_CATEGORY
 from common.result import Result
-from domain.blogs.datasource.interface import IBlogEntryModifier
+from domain.blogs.datasource.interface import IBlogEntryModifier, StoredBlogEntriesAccessor
 from domain.blogs.value.blog_entry_id import BlogEntryId
-from domain.docs.datasources.interface import IDocumentModifier
-from domain.docs.datasources.model.document_dataset import DocumentDataset
+from domain.docs.datasource.interface import IDocumentModifier
+from domain.docs.datasource.model.document_dataset import DocumentDataset
 from domain.docs.value.doc_entry_id import DocEntryId
-from infrastructure.store.blog_to_doc_entry_mapping import BlogToDocEntryMapping
-from infrastructure.types import StoredBlogEntriesAccessor
+from domain.mappings.blog_to_doc_entry_mapping import BlogToDocEntryMapping
 
 
 class BlogEntryPusherService:

@@ -1,6 +1,6 @@
 from common.constants import BLOG_CATEGORY, DOCS_DIR_PATH
-from domain.docs.datasources.interface import IDocumentAccessor
-from domain.docs.datasources.model.document_dataset import DocumentDataset
+from domain.docs.datasource.interface import IDocumentAccessor, StoredDocEntriesAccessor
+from domain.docs.datasource.model.document_dataset import DocumentDataset
 from domain.docs.entity.doc_entries import DocEntries
 from domain.docs.entity.doc_entry import DocEntry
 from domain.docs.entity.image.doc_images import DocImages
@@ -10,23 +10,16 @@ from domain.entries.values.category_path import CategoryPath
 from domain.entries.values.entry_date_time import EntryDateTime
 from files import text_file, file_system, image_file
 from infrastructure.documents.document_file_reader import DocumentFileReader
-from infrastructure.store.stored_entry_list_holder import StoredEntryListHolder
-from infrastructure.types import StoredDocEntriesAccessor
 
 
 class DocumentFileAccessor(IDocumentAccessor):
 
     def __init__(self, stored_doc_entries_accessor: StoredDocEntriesAccessor,
-                 stored_entry_list: StoredEntryListHolder,
-                 document_root_dir_path: str = DOCS_DIR_PATH,
-                 document_file_reader: DocumentFileReader = None):
+                 document_file_reader: DocumentFileReader,
+                 document_root_dir_path: str = DOCS_DIR_PATH):
         self.__document_root_dir_path = document_root_dir_path
         self.__stored_doc_entries_accessor = stored_doc_entries_accessor
-        if document_file_reader is None:
-            self.__document_reader = DocumentFileReader(stored_doc_entries_accessor, stored_entry_list,
-                                                        document_root_dir_path)
-        else:
-            self.__document_reader = document_file_reader
+        self.__document_reader = document_file_reader
 
     def find(self, doc_id: DocEntryId) -> DocumentDataset:
         return self.__document_reader.find(doc_id)

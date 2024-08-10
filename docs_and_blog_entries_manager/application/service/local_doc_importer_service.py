@@ -1,6 +1,5 @@
-from domain.docs.datasources.interface import IDocumentAccessor
+from domain.docs.datasource.interface import IDocumentAccessor, StoredDocEntriesAccessor
 from domain.docs.entity.doc_entries import DocEntries
-from infrastructure.types import StoredDocEntriesAccessor
 from logs.logger import Logger
 
 

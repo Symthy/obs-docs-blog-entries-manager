@@ -3,7 +3,7 @@ from application.service.converter.Intermediate_blog_content import Intermediate
 from application.service.converter.blog_photos_to_doc_images_converter import BlogPhotosToDocImagesConverter
 from application.service.converter.blog_to_doc_content_converter import BlogToDocContentConverter
 from domain.blogs.datasource.model.posted_blog_entry import PostedBlogEntry
-from domain.docs.datasources.interface import IDocumentSaver
+from domain.docs.datasource.interface import IDocumentSaver
 from domain.docs.entity.doc_entry import DocEntry
 from domain.docs.entity.image.doc_images import DocImages
 from domain.docs.value.doc_content import DocContent

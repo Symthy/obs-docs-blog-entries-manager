@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Dict, List, Generic
+from typing import Generic
 
 from domain.entries.interface import TM, TS, TI
 from ltimes import datetime_functions
@@ -18,11 +18,11 @@ class StoredEntryListHolder(Generic[TM, TS, TI]):
         self.__updated_at = updated_at
 
     @property
-    def entry_ids(self) -> List[TI]:
+    def entry_ids(self) -> list[TI]:
         return list(self.__entry_id_to_pickup.keys())
 
     @property
-    def pickup_entry_ids(self) -> List[TI]:
+    def pickup_entry_ids(self) -> list[TI]:
         return [entry_id for entry_id, pickup in self.__entry_id_to_pickup if pickup is True]
 
     @property
@@ -50,7 +50,7 @@ class StoredEntryListHolder(Generic[TM, TS, TI]):
             return False
         return self.__entry_id_to_pickup[entry_id]
 
-    def serialize(self) -> Dict[str, Dict[str, bool]]:
+    def serialize(self) -> dict[str, dict[str, bool]]:
         return {
             StoredEntryListHolder.FIELD_UPDATED_AT: datetime_functions.current_datetime(),
             StoredEntryListHolder.FIELD_ENTRIES: {eid.value: pickup for eid, pickup in self.__entry_id_to_pickup}

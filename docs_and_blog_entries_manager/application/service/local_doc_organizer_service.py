@@ -1,10 +1,9 @@
 from typing import List
 
-from domain.docs.datasources.interface import IDocumentReader, IDocumentMover
+from domain.docs.datasource.interface import IDocumentReader, IDocumentMover, StoredDocEntriesAccessor
 from domain.docs.entity.doc_entry import DocEntry
 from domain.entries.entity.category_tree_definition import CategoryTreeDefinition
 from domain.entries.values.category_path import CategoryPath
-from infrastructure.types import StoredDocEntriesAccessor
 
 
 class LocalDocOrganizerService:

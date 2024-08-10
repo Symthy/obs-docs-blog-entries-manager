@@ -5,10 +5,10 @@ from domain.blogs.datasource.model.posted_blog_entry import PostedBlogEntry
 from domain.blogs.entity.blog_entry import BlogEntry
 from domain.blogs.entity.photo.photo_entry import PhotoEntry
 from domain.blogs.value.blog_content import BlogContent
+from domain.docs.datasource.interface import StoredDocEntriesLoader
 from domain.docs.entity.image.doc_image import DocImage
-from domain.docs.types import StoredDocEntriesLoader
 from domain.docs.value.doc_content import DocContent
-from infrastructure.store.blog_to_doc_entry_mapping import BlogToDocEntryMapping
+from domain.mappings.blog_to_doc_entry_mapping import BlogToDocEntryMapping
 from infrastructure.store.stored_entry_title_finder import StoredEntryTitleFinder
 
 

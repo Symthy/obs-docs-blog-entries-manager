@@ -1,9 +1,8 @@
 from application.service.blog_entry_pusher_service import BlogEntryPusherService
 from application.service.blog_entry_remover_service import BlogEntryRemoverService
 from common.results import Results
-from domain.docs.datasources.interface import IDocumentReader
+from domain.docs.datasource.interface import IDocumentReader, StoredDocEntriesAccessor
 from domain.docs.entity.doc_entry import DocEntry
-from infrastructure.types import StoredDocEntriesAccessor
 
 
 class BlogEntryAllUpdaterService:

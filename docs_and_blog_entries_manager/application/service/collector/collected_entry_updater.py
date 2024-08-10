@@ -2,7 +2,7 @@ from application.service.collector.entry_document_saver import EntryDocumentSave
 from application.service.converter.blog_photos_to_doc_images_converter import BlogPhotosToDocImagesConverter
 from application.service.converter.blog_to_doc_content_converter import BlogToDocContentConverter
 from domain.blogs.datasource.model.posted_blog_entry import PostedBlogEntry
-from domain.docs.datasources.interface import IDocumentMover
+from domain.docs.datasource.interface import IDocumentMover
 from domain.docs.entity.doc_entry import DocEntry
 
 

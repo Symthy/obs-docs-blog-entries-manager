@@ -5,12 +5,12 @@ from application.service.converter.blog_to_doc_content_converter import BlogToDo
 from common.constants import BLOG_CATEGORY
 from domain.blogs.datasource.model.posted_blog_entry import PostedBlogEntry
 from domain.blogs.entity.blog_entry import BlogEntry
-from domain.docs.datasources.model.document_dataset import DocumentDataset
+from domain.docs.datasource.interface import StoredDocEntriesAccessor
+from domain.docs.datasource.model.document_dataset import DocumentDataset
 from domain.docs.entity.doc_entry import DocEntry
 from domain.docs.entity.factory.doc_entry_builder import DocEntryBuilder
 from domain.docs.value.doc_entry_id import DocEntryId
-from infrastructure.store.blog_to_doc_entry_mapping import BlogToDocEntryMapping
-from infrastructure.types import StoredDocEntriesAccessor
+from domain.mappings.blog_to_doc_entry_mapping import BlogToDocEntryMapping
 
 
 class BlogToDocEntryConverter:

@@ -4,11 +4,11 @@ from assertpy import assert_that
 from application.service.converter.doc_to_blog_entry_converter import DocToBlogEntryConverter
 from domain.docs.value.doc_entry_id import DocEntryId
 from domain.entries.values.category_path import CategoryPath
+from domain.mappings.blog_to_doc_entry_mapping import BlogToDocEntryMapping
 from files import file_system
 from files.file_system import join_path
 from infrastructure.documents.document_file_reader import DocumentFileReader
 from infrastructure.documents.file.all_document_path_resolver import AllDocumentPathResolver
-from infrastructure.store.blog_to_doc_entry_mapping import BlogToDocEntryMapping
 from infrastructure.store.factory.stored_entries_accessor_factory import StoredEntriesAccessorFactory
 from infrastructure.store.factory.stored_entry_list_deserializer import StoredDocEntryListDeserializer
 from infrastructure.store.stored_entry_title_finder import StoredEntryTitleFinder

@@ -1,10 +1,12 @@
+import mock
 from assertpy import assert_that
 
 from application.service.validator.entry_link_validator import EntryLinkValidator
 from domain.docs.value.doc_entry_id import DocEntryId
+from domain.mappings.blog_to_doc_entry_mapping import BlogToDocEntryMapping
 from files.file_system import join_path
 from infrastructure.documents.document_file_reader import DocumentFileReader
-from infrastructure.store.blog_to_doc_entry_mapping import BlogToDocEntryMapping
+from infrastructure.documents.file.all_document_path_resolver import AllDocumentPathResolver
 from infrastructure.store.factory.stored_entries_accessor_factory import StoredEntriesAccessorFactory
 from infrastructure.store.stored_entry_title_finder import StoredEntryTitleFinder
 from tests.application.service.validator._data.path_resolver import resolve_test_data_dir_path
@@ -17,7 +19,8 @@ class TestEntryLinkValidator:
         docs_dir = join_path(dir_path, 'docs')
         blog_to_doc_mapping = BlogToDocEntryMapping(join_path(store_dir, 'blog_to_doc_mapping.json'))
         stored_doc_entries_accessor = StoredEntriesAccessorFactory(store_dir).build_for_doc()
-        document_reader = DocumentFileReader(docs_dir, stored_doc_entries_accessor)
+        resolver_mock = mock.MagicMock(AllDocumentPathResolver)
+        document_reader = DocumentFileReader(docs_dir, stored_doc_entries_accessor, resolver_mock, docs_dir)
         self.__entry_title_validator = EntryLinkValidator(StoredEntryTitleFinder(stored_doc_entries_accessor),
                                                           blog_to_doc_mapping, document_reader)
 

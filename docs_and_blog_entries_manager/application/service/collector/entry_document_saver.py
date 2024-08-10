@@ -1,11 +1,11 @@
 from application.service.converter.blog_to_doc_entry_converter import BlogToDocEntryConverter
+from domain.blogs.datasource.interface import StoredBlogEntriesAccessor
 from domain.blogs.entity.blog_entry import BlogEntry
-from domain.docs.datasources.interface import IDocumentSaver
+from domain.docs.datasource.interface import IDocumentSaver, StoredDocEntriesAccessor
 from domain.docs.entity.doc_entry import DocEntry
 from domain.docs.entity.image.doc_images import DocImages
 from domain.docs.value.doc_content import DocContent
-from infrastructure.store.blog_to_doc_entry_mapping import BlogToDocEntryMapping
-from infrastructure.types import StoredBlogEntriesAccessor, StoredDocEntriesAccessor
+from domain.mappings.blog_to_doc_entry_mapping import BlogToDocEntryMapping
 
 
 class EntryDocumentSaver:

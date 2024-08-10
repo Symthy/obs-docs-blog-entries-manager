@@ -1,11 +1,10 @@
 from common.constants import WORK_DOCS_DIR_PATH, NON_CATEGORY_NAME
-from domain.docs.datasources.interface import IWorkingDocumentReader
+from domain.docs.datasource.interface import IWorkingDocumentReader, StoredDocEntriesAccessor
 from domain.docs.entity.doc_entry import DocEntry
 from files import file_system
 from infrastructure.documents.content.document_category_editor import DocumentCategoryEditor
 from infrastructure.documents.doc_entry_restorer import WorkingDocEntryRestorer
 from infrastructure.documents.document_file_mover import DocumentFileMover
-from infrastructure.types import StoredDocEntriesAccessor
 
 
 class WorkingDocumentFileAccessor(IWorkingDocumentReader):
@@ -13,7 +12,6 @@ class WorkingDocumentFileAccessor(IWorkingDocumentReader):
                  document_file_mover: DocumentFileMover,
                  work_doc_dir_path: str = WORK_DOCS_DIR_PATH):
         self.__work_doc_dir_path = work_doc_dir_path
-        self.__stored_doc_entries_accessor = stored_doc_entries_accessor
         restorer = WorkingDocEntryRestorer(work_doc_dir_path)
         self.__working_doc_entry_restorer = restorer
         self.__document_category_editor = DocumentCategoryEditor(stored_doc_entries_accessor, work_doc_dir_path)

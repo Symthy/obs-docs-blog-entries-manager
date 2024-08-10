@@ -1,11 +1,11 @@
 from common.constants import BLOG_CATEGORY, DOCS_DIR_PATH
-from domain.docs.datasources.model.document_dataset import DocumentDataset
+from domain.docs.datasource.interface import StoredDocEntriesAccessor
+from domain.docs.datasource.model.document_dataset import DocumentDataset
 from domain.docs.value.doc_content import DocContent
 from domain.docs.value.doc_entry_id import DocEntryId
 from domain.entries.values.category_path import CategoryPath
 from files import text_file, file_system
 from infrastructure.documents.file.document_file_finder import DocumentFileFinder
-from infrastructure.types import StoredDocEntriesAccessor
 
 
 class DocumentCategoryEditor:

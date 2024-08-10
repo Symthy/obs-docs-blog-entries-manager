@@ -1,9 +1,9 @@
 from common.constants import DOCS_DIR_PATH
-from domain.docs.datasources.model.document_dataset import DocumentDataset
+from domain.docs.datasource.interface import StoredDocEntriesAccessor
+from domain.docs.datasource.model.document_dataset import DocumentDataset
 from domain.docs.value.doc_entry_id import DocEntryId
 from files import file_system
 from infrastructure.documents.content.document_content_reader import DocumentContentReader
-from infrastructure.types import StoredDocEntriesAccessor
 
 
 class DocumentFileFinder:

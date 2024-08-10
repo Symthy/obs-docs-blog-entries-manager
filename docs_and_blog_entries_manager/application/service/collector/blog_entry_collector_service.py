@@ -3,7 +3,7 @@ from application.service.collector.collected_entry_updater import CollectedEntry
 from domain.blogs.datasource.interface import IBlogEntryFinder
 from domain.blogs.datasource.model.posted_blog_entry import PostedBlogEntry
 from domain.docs.entity.doc_entry import DocEntry
-from infrastructure.store.blog_to_doc_entry_mapping import BlogToDocEntryMapping
+from domain.mappings.blog_to_doc_entry_mapping import BlogToDocEntryMapping
 
 
 class BlogEntryCollectorService:

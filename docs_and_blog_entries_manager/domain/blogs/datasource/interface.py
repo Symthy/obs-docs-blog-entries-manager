@@ -3,8 +3,14 @@ from typing import Optional
 
 from domain.blogs.datasource.model.posted_blog_entry import PostedBlogEntry
 from domain.blogs.datasource.model.pre_post_blog_entry import PrePostBlogEntry
+from domain.blogs.entity.blog_entries import BlogEntries
 from domain.blogs.entity.blog_entry import BlogEntry
 from domain.blogs.value.blog_entry_id import BlogEntryId
+from domain.entries.interface import IStoredEntriesLoader, IStoredEntriesModifier, IStoredEntriesAccessor
+
+StoredBlogEntriesLoader = IStoredEntriesLoader[BlogEntries, BlogEntry, BlogEntryId]
+StoredBlogEntriesModifier = IStoredEntriesModifier[BlogEntries, BlogEntry, BlogEntryId]
+StoredBlogEntriesAccessor = IStoredEntriesAccessor[BlogEntries, BlogEntry, BlogEntryId]
 
 
 # Todo: 戻り値をResultに変更

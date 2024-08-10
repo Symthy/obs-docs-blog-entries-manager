@@ -1,6 +1,7 @@
 from assertpy import assert_that
 from mock import mock
 
+from domain.docs.datasource.interface import StoredDocEntriesAccessor
 from domain.docs.entity.factory.doc_entry_builder import DocEntryBuilder
 from domain.docs.value.doc_entry_id import DocEntryId
 from domain.entries.values.category_path import CategoryPath
@@ -9,7 +10,6 @@ from files import file_system
 from infrastructure.documents.document_file_reader import DocumentFileReader
 from infrastructure.documents.file.all_document_path_resolver import AllDocumentPathResolver
 from infrastructure.store.factory.stored_entry_list_deserializer import StoredDocEntryListDeserializer
-from infrastructure.types import StoredDocEntriesAccessor
 from tests.infrastructure.documents._data.path_resolver import resolve_test_data_dir_path
 
 

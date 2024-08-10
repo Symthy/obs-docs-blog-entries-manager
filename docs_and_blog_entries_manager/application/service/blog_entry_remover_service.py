@@ -1,9 +1,8 @@
 from common.constants import BLOG_CATEGORY
-from domain.blogs.datasource.interface import IBlogEntryModifier
-from domain.docs.datasources.interface import IDocumentModifier
+from domain.blogs.datasource.interface import IBlogEntryModifier, StoredBlogEntriesAccessor
+from domain.docs.datasource.interface import IDocumentModifier
 from domain.docs.value.doc_entry_id import DocEntryId
-from infrastructure.store.blog_to_doc_entry_mapping import BlogToDocEntryMapping
-from infrastructure.types import StoredBlogEntriesAccessor
+from domain.mappings.blog_to_doc_entry_mapping import BlogToDocEntryMapping
 
 
 class BlogEntryRemoverService:

@@ -1,12 +1,17 @@
 from abc import ABC, abstractmethod
 
-from domain.docs.datasources.model.document_dataset import DocumentDataset
+from domain.docs.datasource.model.document_dataset import DocumentDataset
 from domain.docs.entity.doc_entries import DocEntries
 from domain.docs.entity.doc_entry import DocEntry
 from domain.docs.entity.image.doc_images import DocImages
 from domain.docs.value.doc_content import DocContent
 from domain.docs.value.doc_entry_id import DocEntryId
+from domain.entries.interface import IStoredEntriesLoader, IStoredEntriesModifier, IStoredEntriesAccessor
 from domain.entries.values.category_path import CategoryPath
+
+StoredDocEntriesLoader = IStoredEntriesLoader[DocEntries, DocEntry, DocEntryId]
+StoredDocEntriesModifier = IStoredEntriesModifier[DocEntries, DocEntry, DocEntryId]
+StoredDocEntriesAccessor = IStoredEntriesAccessor[DocEntries, DocEntry, DocEntryId]
 
 
 class IDocumentReader(ABC):
