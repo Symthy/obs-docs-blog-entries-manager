@@ -6,8 +6,20 @@ from datetime import datetime
 from config.blog_config import BlogConfig
 from docs_and_blog_entries_manager.api.api_client import ApiClient
 
-HATENA_BLOG_ENTRY_API = 'https://blog.hatena.ne.jp/{HATENA_ID}/{BLOG_ID}/atom/entry/'
-HATENA_PHOTO_ENTRY_API = 'https://f.hatena.ne.jp/atom/'
+HATENA_BLOG_ENTRY_API_URL_TEMPLATE = 'https://blog.hatena.ne.jp/{HATENA_ID}/{BLOG_ID}/atom/entry/'
+HATENA_PHOTO_ENTRY_API_URL = 'https://f.hatena.ne.jp/atom/'
+
+
+class BlogApiClient(ApiClient):
+    def __init__(self, hatena_id: str, blog_id: str, base_headers: dict):
+        api_url = (HATENA_BLOG_ENTRY_API_URL_TEMPLATE.replace('{HATENA_ID}', hatena_id)
+                   .replace('{BLOG_ID}', blog_id))
+        super().__init__(api_url, base_headers)
+
+
+class PhotoApiClient(ApiClient):
+    def __init__(self, base_headers: dict):
+        super().__init__(HATENA_PHOTO_ENTRY_API_URL, base_headers)
 
 
 class ApiClientFactory:
@@ -33,13 +45,8 @@ class ApiClientFactory:
             'X-WSSE': __build_wsse(self.__blog_conf)
         }
 
-    def __build_hatena_blog_api_base_url(self) -> str:
-        api_url = (HATENA_BLOG_ENTRY_API.replace('{HATENA_ID}', self.__blog_conf.hatena_id)
-                   .replace('{BLOG_ID}', self.__blog_conf.blog_id))
-        return api_url
+    def build_blog_api_client(self) -> BlogApiClient:
+        return BlogApiClient(self.__blog_conf.hatena_id, self.__blog_conf.blog_id, self.__build_request_header())
 
-    def build_blog_api_client(self) -> ApiClient:
-        return ApiClient(self.__build_hatena_blog_api_base_url(), self.__build_request_header())
-
-    def build_photo_api_client(self) -> ApiClient:
-        return ApiClient(HATENA_PHOTO_ENTRY_API, self.__build_request_header())
+    def build_photo_api_client(self) -> PhotoApiClient:
+        return PhotoApiClient(self.__build_request_header())

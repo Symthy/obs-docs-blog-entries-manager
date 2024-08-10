@@ -1,19 +1,19 @@
 from typing import Optional, List
 from urllib.parse import urlparse, parse_qsl
 
-from docs_and_blog_entries_manager.api.api_client import ApiClient
 from domain.blogs.datasource.interface import IBlogEntryRepository
 from domain.blogs.datasource.model.posted_blog_entry import PostedBlogEntry
 from domain.blogs.datasource.model.pre_post_blog_entry import PrePostBlogEntry
 from domain.blogs.value.blog_entry_id import BlogEntryId
 from domain.entries.interface import IEntryId
+from infrastructure.hatena.api.api_client_factory import BlogApiClient
 from infrastructure.hatena.api.blog_entry_response_body import BlogEntryResponseBody, BlogEntriesResponseBody
 from infrastructure.hatena.templates import request_formats
 from logs.logger import Logger
 
 
 class BlogEntryRepository(IBlogEntryRepository):
-    def __init__(self, blog_api_client: ApiClient, hatena_id: str, summary_entry_id: IEntryId):
+    def __init__(self, blog_api_client: BlogApiClient, hatena_id: str, summary_entry_id: BlogEntryId):
         self.__api_client = blog_api_client
         self.__hatena_id = hatena_id
         self.__summary_entry_id = summary_entry_id
@@ -27,14 +27,15 @@ class BlogEntryRepository(IBlogEntryRepository):
         xml_string_opt = self.__api_client.get(path=entry_id.value)
         return BlogEntryResponseBody(self.__hatena_id, xml_string_opt).parse()
 
-    def find_all(self) -> List[PostedBlogEntry]:
+    def find_all(self) -> list[PostedBlogEntry]:
         next_query_params: Optional[list[tuple]] = None
         blog_entries: List[PostedBlogEntry] = []
         while True:
             xml_string_opt = self.__api_client.get(query_params=next_query_params)
             if xml_string_opt is None:
                 break
-            blog_entries_xml = BlogEntriesResponseBody(xml_string_opt, self.__summary_entry_id.value)
+            blog_entries_xml = BlogEntriesResponseBody(xml_string_opt, self.__summary_entry_id.value,
+                                                       self.__summary_entry_id)
             blog_entries.extend(blog_entries_xml.parse())
             next_url = blog_entries_xml.next_page_url()
             next_query_params = parse_qsl(urlparse(next_url).query)

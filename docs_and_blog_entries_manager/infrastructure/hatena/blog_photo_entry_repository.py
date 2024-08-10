@@ -14,7 +14,8 @@ from infrastructure.hatena.photo_entry_repository import PhotoEntryRepository
 
 
 class BlogPhotoEntryRepository(IBlogEntryRepository):
-    def __init__(self, blog_entry_repository: BlogEntryRepository, photo_entry_repository: PhotoEntryRepository):
+    def __init__(self, blog_entry_repository: BlogEntryRepository,
+                 photo_entry_repository: PhotoEntryRepository):
         self.__blog_entry_repository = blog_entry_repository
         self.__photo_entry_repository = photo_entry_repository
 

@@ -1,17 +1,17 @@
 from typing import Optional, List
 
-from docs_and_blog_entries_manager.api.api_client import ApiClient
 from domain.blogs.entity.photo.photo_entries import PhotoEntries
 from domain.blogs.entity.photo.photo_entry import PhotoEntry
 from domain.blogs.value.photo_entry_id import PhotoEntryId
 from files import image_file, file_path
+from infrastructure.hatena.api.api_client_factory import PhotoApiClient
 from infrastructure.hatena.api.photo_entry_response_body import PhotoEntryResponseBody
 from infrastructure.hatena.templates import request_formats
 from logs.logger import Logger
 
 
 class PhotoEntryRepository:
-    def __init__(self, api_client: ApiClient):
+    def __init__(self, api_client: PhotoApiClient):
         self.__api_client = api_client
 
     # GET Photo

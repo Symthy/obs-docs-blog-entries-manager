@@ -20,7 +20,7 @@ class IConvertibleMarkdownLine(ABC):
 
 class IConvertibleMarkdownLines(ABC):
     @abstractmethod
-    def convert_md_lines(self) -> List[str]:
+    def convert_md_lines(self) -> list[str]:
         pass
 
 
@@ -126,61 +126,37 @@ class IStoredEntryAccessor(IStoredEntryLoader[TS, TI], IStoredEntryModifier[TS, 
         pass
 
 
-class IStoredEntriesLoader(Generic[TM, TS, TI], IStoredEntryLoader[TS, TI]):
-    def load_entry(self, entry_id: TI) -> TS:
-        pass
-
+class IStoredEntriesLoader(Generic[TM, TS, TI], IStoredEntryLoader[TS, TI], ABC):
+    @abstractmethod
     def load_entries(self) -> TM:
         pass
 
-    def load_entries_by_id(self, entry_ids: List[TI] = None) -> TM:
+    @abstractmethod
+    def load_entries_by_id(self, entry_ids: list[TI] = None) -> TM:
         pass
 
+    @abstractmethod
     def load_entries_by_category_path(self, category_path: CategoryPath) -> TM:
         pass
 
+    @abstractmethod
     def load_pickup_entries(self) -> TM:
         pass
 
 
-class IStoredEntriesModifier(Generic[TM, TS, TI], IStoredEntryModifier[TS, TI]):
-    def save_entry(self, entry: TS):
-        pass
-
+class IStoredEntriesModifier(Generic[TM, TS, TI], IStoredEntryModifier[TS, TI], ABC):
+    @abstractmethod
     def save_entries(self, entries: TM):
         pass
 
+    @abstractmethod
     def update_pickup(self, entry_id: TI, pickup: bool):
         pass
 
+    @abstractmethod
     def delete_entry(self, entry_id: TI):
         pass
 
 
-class IStoredEntriesAccessor(IStoredEntriesLoader[TM, TS, TI], IStoredEntriesModifier[TM, TS, TI]):
-    def load_entry(self, entry_id: TI) -> TS:
-        pass
-
-    def load_entries(self) -> TM:
-        pass
-
-    def load_entries_by_id(self, entry_ids: List[TI] = None) -> TM:
-        pass
-
-    def load_entries_by_category_path(self, category_path: CategoryPath) -> TM:
-        pass
-
-    def load_pickup_entries(self) -> TM:
-        pass
-
-    def save_entry(self, entry: TS):
-        pass
-
-    def save_entries(self, entries: TM):
-        pass
-
-    def update_pickup(self, entry_id: TI, pickup: bool):
-        pass
-
-    def delete_entry(self, entry_id: TI):
-        pass
+class IStoredEntriesAccessor(IStoredEntriesLoader[TM, TS, TI], IStoredEntriesModifier[TM, TS, TI], ABC):
+    pass
