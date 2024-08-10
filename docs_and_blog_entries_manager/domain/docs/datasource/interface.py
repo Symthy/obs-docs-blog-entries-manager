@@ -32,7 +32,7 @@ class IDocumentReader(ABC):
         pass
 
 
-class ISummaryFileSaver(ABC):
+class IDocSummaryFileSaver(ABC):
     @abstractmethod
     def save_summary(self, content: DocContent):
         pass
@@ -60,7 +60,7 @@ class IDocumentModifier(ABC):
         pass
 
 
-class IDocumentAccessor(IDocumentSaver, ISummaryFileSaver, IDocumentReader, IDocumentModifier, ABC):
+class IDocDocumentAccessor(IDocumentSaver, IDocSummaryFileSaver, IDocumentReader, IDocumentModifier, ABC):
     pass
 
 

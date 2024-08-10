@@ -1,5 +1,5 @@
 from common.constants import BLOG_CATEGORY, DOCS_DIR_PATH
-from domain.docs.datasource.interface import IDocumentAccessor, StoredDocEntriesAccessor
+from domain.docs.datasource.interface import IDocDocumentAccessor, StoredDocEntriesAccessor
 from domain.docs.datasource.model.document_dataset import DocumentDataset
 from domain.docs.entity.doc_entries import DocEntries
 from domain.docs.entity.doc_entry import DocEntry
@@ -12,7 +12,7 @@ from files import text_file, file_system, image_file
 from infrastructure.documents.document_file_reader import DocumentFileReader
 
 
-class DocumentFileAccessor(IDocumentAccessor):
+class DocumentFileAccessor(IDocDocumentAccessor):
 
     def __init__(self, stored_doc_entries_accessor: StoredDocEntriesAccessor,
                  document_file_reader: DocumentFileReader,

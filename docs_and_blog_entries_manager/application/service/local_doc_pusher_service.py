@@ -16,7 +16,8 @@ class LocalDocPusherService:
 
     def push(self, title: str) -> Result[DocEntry, str]:
         doc_entry = self.__working_doc_file_accessor.restore(title)
-        self.__document_file_mover.move(self.__working_doc_file_accessor.build_file_path(title), doc_entry)
+        self.__document_file_mover.move(self.__working_doc_file_accessor.build_file_path(title),
+                                        doc_entry.doc_file_path)
         return Result(doc_entry)
 
     def push_all(self):
