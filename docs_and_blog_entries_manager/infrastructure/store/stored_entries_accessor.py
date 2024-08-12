@@ -1,17 +1,18 @@
-from typing import List, Callable
+from typing import Callable
 
 from domain.entries.interface import IStoredEntriesAccessor, TM, TI, TS
 from domain.entries.values.category_path import CategoryPath
 from files import json_file
+from files.value.file_path import FilePath
 from infrastructure.store.stored_entry_accessor import _StoredEntryAccessor
 from infrastructure.store.stored_entry_list_holder import StoredEntryListHolder
 
 
 class StoredEntriesAccessor(IStoredEntriesAccessor[TM, TS, TI]):
 
-    def __init__(self, entry_list_file_path: str, stored_entry_accessor: _StoredEntryAccessor,
+    def __init__(self, entry_list_file_path: FilePath, stored_entry_accessor: _StoredEntryAccessor,
                  stored_entry_list: StoredEntryListHolder,
-                 entries_builder: Callable[[List[TS]], TM]):
+                 entries_builder: Callable[[list[TS]], TM]):
         self.__entry_list_file_path = entry_list_file_path
         self.__stored_entry_accessor = stored_entry_accessor
         self.__stored_entry_list: StoredEntryListHolder = stored_entry_list

@@ -1,15 +1,15 @@
 from __future__ import annotations
 
-from typing import List, Optional
+from typing import Optional
 
 from domain.entries.interface import IEntries, IConvertibleMarkdownLines
 from domain.entries.values.category_path import CategoryPath
 
 
 class EntriesTree(IConvertibleMarkdownLines):
-    def __init__(self, category_path: CategoryPath, entries: IEntries, children: List[EntriesTree] = None):
+    def __init__(self, category_path: CategoryPath, entries: IEntries, children: list[EntriesTree] = None):
         self.__category_path: CategoryPath = category_path
-        self.__children: List[EntriesTree] = children if children is not None else []
+        self.__children: list[EntriesTree] = children if children is not None else []
         self.__entries: IEntries = entries
 
     @property
@@ -17,11 +17,11 @@ class EntriesTree(IConvertibleMarkdownLines):
         return self.__category_path
 
     @property
-    def children(self) -> List[EntriesTree]:
+    def children(self) -> list[EntriesTree]:
         return self.__children
 
     @property
-    def child_category_paths(self) -> List[CategoryPath]:
+    def child_category_paths(self) -> list[CategoryPath]:
         return list(map(lambda c: c.category_path, self.__children))
 
     @property
@@ -41,7 +41,7 @@ class EntriesTree(IConvertibleMarkdownLines):
                 return child_tree.search_node(category_path)
         return None
 
-    def convert_md_lines(self) -> List[str]:
+    def convert_md_lines(self) -> list[str]:
         lines = [f'- {self.__category_path.end}']
         for child in self.__children:
             lines += self.__insert_indent(child.convert_md_lines())
@@ -49,5 +49,5 @@ class EntriesTree(IConvertibleMarkdownLines):
         return lines
 
     @staticmethod
-    def __insert_indent(md_lines: List[str]) -> List[str]:
+    def __insert_indent(md_lines: list[str]) -> list[str]:
         return list(map(lambda line: '  ' + line, md_lines))

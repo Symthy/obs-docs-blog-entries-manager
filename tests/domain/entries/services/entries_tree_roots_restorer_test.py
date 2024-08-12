@@ -8,6 +8,8 @@ from domain.entries.values.category_path import CategoryPath
 from infrastructure.store.stored_entries_accessor import StoredEntriesAccessor
 
 
+# Todo: 修復
+
 @pytest.fixture
 def category_tree_definition(mocker) -> CategoryTreeDefinition:
     mock_category_tree_def = mocker.Mock(spec=CategoryTreeDefinition)

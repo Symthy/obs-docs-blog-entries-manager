@@ -2,7 +2,7 @@ from typing import List
 
 from domain.entries.values.category_path import CategoryPath
 from domain.entries.values.entry_date_time import EntryDateTime
-from files import file_system
+from files.value.file_path import FilePath
 
 
 class PrePostBlogEntry:
@@ -11,7 +11,7 @@ class PrePostBlogEntry:
     """
 
     def __init__(self, title: str, content: str, category_path: CategoryPath, categories: List[str],
-                 doc_image_paths: List[str] = None):
+                 doc_image_paths: list[FilePath] = None):
         self.__title = title
         self.__content = content
         self.__category_path = category_path
@@ -28,7 +28,7 @@ class PrePostBlogEntry:
         return self.__content
 
     @property
-    def categories(self) -> List[str]:
+    def categories(self) -> list[str]:
         return self.__categories
 
     @property
@@ -40,9 +40,9 @@ class PrePostBlogEntry:
         return self.__updated_at
 
     @property
-    def doc_image_paths(self) -> List[str]:
+    def doc_image_paths(self) -> list[FilePath]:
         return self.__doc_image_paths
 
     @property
-    def doc_image_filenames(self) -> List[str]:
-        return list(map(lambda path: file_system.get_file_name_from_file_path(path), self.__doc_image_paths))
+    def doc_image_filenames(self) -> list[str]:
+        return list(map(lambda path: path.get_file_name_from_file_path(), self.__doc_image_paths))

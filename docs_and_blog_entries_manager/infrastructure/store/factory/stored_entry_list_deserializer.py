@@ -10,6 +10,7 @@ from domain.docs.entity.doc_entry import DocEntry
 from domain.docs.value.doc_entry_id import DocEntryId
 from domain.entries.interface import TI
 from files import json_file
+from files.value.file_path import FilePath
 from infrastructure.store.stored_entry_list_holder import StoredEntryListHolder
 
 
@@ -20,7 +21,7 @@ class IStoredEntryListDeserializer(ABC):
 
 
 class StoredBlogEntryListDeserializer(IStoredEntryListDeserializer):
-    def __init__(self, entry_list_file_path: str = BLOG_ENTRY_LIST_PATH):
+    def __init__(self, entry_list_file_path: FilePath = BLOG_ENTRY_LIST_PATH):
         self.__delegator = StoredEntryListDeserializer(BlogEntryId.new_instance, entry_list_file_path)
 
     def deserialize(self) -> StoredEntryListHolder[BlogEntries, BlogEntry, BlogEntryId]:
@@ -28,7 +29,7 @@ class StoredBlogEntryListDeserializer(IStoredEntryListDeserializer):
 
 
 class StoredDocEntryListDeserializer(IStoredEntryListDeserializer):
-    def __init__(self, entry_list_file_path: str = DOC_ENTRY_LIST_PATH):
+    def __init__(self, entry_list_file_path: FilePath = DOC_ENTRY_LIST_PATH):
         self.__delegator = StoredEntryListDeserializer(DocEntryId.new_instance, entry_list_file_path)
 
     def deserialize(self) -> StoredEntryListHolder[DocEntries, DocEntry, DocEntryId]:
@@ -36,7 +37,7 @@ class StoredDocEntryListDeserializer(IStoredEntryListDeserializer):
 
 
 class StoredEntryListDeserializer(IStoredEntryListDeserializer, Generic[TI]):
-    def __init__(self, entry_id_builder: Callable[[str], TI], entry_list_file_path: str = None):
+    def __init__(self, entry_id_builder: Callable[[str], TI], entry_list_file_path: FilePath = None):
         self.__entry_id_builder = entry_id_builder
         self.__entry_list_file_path = entry_list_file_path
 

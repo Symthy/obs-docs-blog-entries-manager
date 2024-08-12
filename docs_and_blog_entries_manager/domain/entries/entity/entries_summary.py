@@ -1,5 +1,3 @@
-from typing import List
-
 from domain.entries.entity.entries_tree_roots import EntriesTreeRoots
 from domain.entries.interface import IEntries
 
@@ -15,11 +13,11 @@ class EntriesSummary:
         self.__category = 'Summary'
 
     @property
-    def __pickup_entry_lines(self) -> List[str]:
+    def __pickup_entry_lines(self) -> list[str]:
         return self.__pickup_entries.convert_md_lines()
 
     @property
-    def __entry_tree_lines(self) -> List[str]:
+    def __entry_tree_lines(self) -> list[str]:
         return self.__entries_tree_roots.convert_md_lines()
 
     @property
@@ -31,8 +29,8 @@ class EntriesSummary:
         return self.__category
 
     @property
-    def all_entry_lines(self) -> List[str]:
-        lines: List[str] = []
+    def all_entry_lines(self) -> list[str]:
+        lines: list[str] = []
         if not self.__pickup_entries.is_empty():
             lines.append(self.__PICKUP_ENTRY_HEAD_LINE)
             lines.extend(self.__pickup_entry_lines)

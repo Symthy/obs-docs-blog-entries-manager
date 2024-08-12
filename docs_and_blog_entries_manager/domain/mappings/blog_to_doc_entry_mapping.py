@@ -4,15 +4,16 @@ from common.constants import LOCAL_STORE_DIR_PATH
 from domain.blogs.value.blog_entry_id import BlogEntryId
 from domain.docs.value.doc_entry_id import DocEntryId
 from files import json_file
+from files.value.file_path import FilePath
 
 
 class BlogToDocEntryMapping:
     __HATENA_BLOG_TO_DOC_ENTRY_FILE = 'blog_to_doc_mapping.json'  # rename from hatena_blog_to_doc_dict.json
-    __HATENA_BLOG_TO_DOC_ENTRY_PATH = LOCAL_STORE_DIR_PATH + __HATENA_BLOG_TO_DOC_ENTRY_FILE
+    __HATENA_BLOG_TO_DOC_ENTRY_PATH = FilePath(LOCAL_STORE_DIR_PATH + __HATENA_BLOG_TO_DOC_ENTRY_FILE)
 
-    def __init__(self, stored_json_file_path: str = None):
-        blog_to_docs: dict[str, str] = json_file.load(
-            self.__HATENA_BLOG_TO_DOC_ENTRY_PATH if stored_json_file_path is None else stored_json_file_path)
+    def __init__(self, stored_json_file_path: FilePath = None):
+        file_path = self.__HATENA_BLOG_TO_DOC_ENTRY_PATH if stored_json_file_path is None else stored_json_file_path
+        blog_to_docs: dict[str, str] = json_file.load(file_path)
         self.__blog_id_to_doc_id: dict[BlogEntryId, DocEntryId] = {BlogEntryId(b): DocEntryId(d) for b, d in
                                                                    blog_to_docs.items()}
         self.__doc_id_to_blog_id: dict[DocEntryId, BlogEntryId] = {}

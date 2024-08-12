@@ -4,6 +4,7 @@ from domain.docs.datasource.model.document_dataset import DocumentDataset
 from domain.docs.entity.doc_entries import DocEntries
 from domain.docs.entity.doc_entry import DocEntry
 from domain.docs.value.doc_entry_id import DocEntryId
+from files.value.file_path import DirectoryPath, FilePath
 from infrastructure.documents.doc_entry_restorer import DocEntryRestorer
 from infrastructure.documents.file.all_document_path_resolver import AllDocumentPathResolver
 from infrastructure.documents.file.document_file_finder import DocumentFileFinder
@@ -15,7 +16,7 @@ class DocumentFileReader(IDocumentReader):
     def __init__(self, stored_doc_entries_accessor: StoredDocEntriesAccessor,
                  stored_entry_list: StoredEntryListHolder,
                  all_document_path_resolver: AllDocumentPathResolver,
-                 doc_root_dir_path: str = DOCS_DIR_PATH):
+                 doc_root_dir_path: DirectoryPath = DOCS_DIR_PATH):
         self.__doc_root_dir_path = doc_root_dir_path
         self.__stored_doc_entries_accessor = stored_doc_entries_accessor
         self.__stored_entry_list = stored_entry_list
@@ -26,7 +27,7 @@ class DocumentFileReader(IDocumentReader):
     def find(self, doc_id: DocEntryId) -> DocumentDataset:
         return self.__document_file_finder.find(doc_id)
 
-    def restore(self, doc_entry_file_path: str):
+    def restore(self, doc_entry_file_path: FilePath):
         return self.__doc_entry_restorer.restore(doc_entry_file_path)
 
     def extract_entries_with_blog_category(self) -> DocEntries:

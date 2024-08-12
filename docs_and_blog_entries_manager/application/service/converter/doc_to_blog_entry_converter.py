@@ -1,6 +1,6 @@
 from common.constants import BLOG_CATEGORY
+from domain.blogs.datasource.interface import StoredBlogEntriesAccessor
 from domain.blogs.datasource.model.pre_post_blog_entry import PrePostBlogEntry
-from domain.docs.datasource.interface import StoredBlogEntriesAccessor
 from domain.docs.datasource.model.document_dataset import DocumentDataset
 from domain.docs.entity.doc_entry import DocEntry
 from domain.docs.value.doc_content import DocContent

@@ -28,8 +28,9 @@ class SummaryEntryPusherService:
 
     def __push_doc_summary(self, summary: EntriesSummary):
         # サマリーはルート直下に配置
-        self.__summary_file_saver.save_summary(DocContent(summary.content, ''))
+        self.__summary_file_saver.save_summary(DocContent(summary.content))
 
     def __push_blog_summary(self, summary: EntriesSummary):
+        # CategoryPath は 実際には category として付与するのみ。実態に合わせると歪むのでこのままにする
         summary_entry = PrePostBlogEntry(summary.title, summary.text, CategoryPath(summary.category), [])
         self.__blog_summary_entry_updater.update_summary(self.__summary_entry_id, summary_entry)

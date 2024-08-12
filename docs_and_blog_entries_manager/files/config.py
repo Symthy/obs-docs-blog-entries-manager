@@ -2,11 +2,12 @@ import codecs
 from typing import List
 
 from docs_and_blog_entries_manager.logs.logger import Logger
+from files.value.file_path import FilePath
 
 
-def read_lines(file_path: str) -> List[str]:
+def read_lines(file_path: FilePath) -> List[str]:
     try:
-        with codecs.open(file_path, mode='r', encoding='utf-8') as f:
+        with codecs.open(file_path.value, mode='r', encoding='utf-8') as f:
             lines = f.readlines()
             lines_exclusion_empty = list(
                 filter(lambda line: line.replace(' ', '').replace('\r', '').replace('\n', '') != '', lines))

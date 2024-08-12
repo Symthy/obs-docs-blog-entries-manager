@@ -8,7 +8,6 @@ from domain.blogs.entity.photo.photo_entries import PhotoEntries
 from domain.blogs.entity.photo.photo_entry import PhotoEntry
 from domain.blogs.value.blog_entry_id import BlogEntryId
 from domain.blogs.value.photo_entry_id import PhotoEntryId
-from files import file_system
 from infrastructure.hatena.blog_entry_repository import BlogEntryRepository
 from infrastructure.hatena.photo_entry_repository import PhotoEntryRepository
 
@@ -57,17 +56,17 @@ class BlogPhotoEntryRepository(IBlogEntryRepository):
         if posted_blog_entry_opt is None:
             return None
         for image_path in pre_post_blog_entry.doc_image_paths:
-            image_filename = file_system.get_file_name_from_file_path(image_path)
+            image_filename = image_path.get_file_name()
             photo_entry_opt = existed_blog_entry.images.get_entry(image_filename)
             if photo_entry_opt is None:
                 self.__photo_entry_repository.create(image_path)
             else:
-                self.__photo_entry_repository.update(image_filename, photo_entry_opt)
+                self.__photo_entry_repository.update(image_path, photo_entry_opt)
         photo_entries_to_be_deleted = existed_blog_entry.images.non_exist_entries(
             pre_post_blog_entry.doc_image_filenames)
         self.__photo_entry_repository.delete_all(photo_entries_to_be_deleted)
 
-    def update_summary(self, entry_id: BlogEntryId, blog_summary_entry: PrePostBlogEntry) -> bool:
+    def update_summary(self, entry_id: BlogEntryId, blog_summary_entry: PrePostBlogEntry):
         self.__blog_entry_repository.update_summary(entry_id, blog_summary_entry)
 
     def delete(self, blog_entry_id: BlogEntryId) -> BlogEntry:

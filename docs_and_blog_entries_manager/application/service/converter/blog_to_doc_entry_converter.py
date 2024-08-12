@@ -24,10 +24,12 @@ class BlogToDocEntryConverter:
         self.__blog_to_doc_content_converter = blog_to_doc_content_converter
 
     def convert(self, posted_blog_entry: PostedBlogEntry) -> DocumentDataset:
-        doc_entry_path = posted_blog_entry.category_path.value
+        # Todo: いらなければ消す
         blog_entry = posted_blog_entry.convert_to_blog_entry()
         doc_entry_id = self.__blog_to_doc_entry_mapping.find_doc_entry_id(blog_entry.id)
-        doc_content = self.__blog_to_doc_content_converter.convert(posted_blog_entry.content, doc_entry_path)
+        photo_entry_to_doc_image = self.__blog_photos_to_doc_images_converter.convert_to_dict(
+            posted_blog_entry.photo_entries, posted_blog_entry.category_path.value)
+        doc_content = self.__blog_to_doc_content_converter.convert(posted_blog_entry, photo_entry_to_doc_image)
         doc_entry = self.convert_to_doc_entry(blog_entry, doc_entry_id)
         return DocumentDataset(doc_entry, doc_content)
 

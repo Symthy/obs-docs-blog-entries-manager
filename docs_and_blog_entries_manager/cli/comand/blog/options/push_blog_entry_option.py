@@ -17,5 +17,4 @@ class PushBlogEntryOption(ISubCommandOption):
 
     def execute(self, args):
         doc_entry_id = DocEntryId(args.push)
-        result = self.__blog_entry_pusher_service.execute(doc_entry_id)
-        result.print_log()
+        self.__blog_entry_pusher_service.execute(doc_entry_id)

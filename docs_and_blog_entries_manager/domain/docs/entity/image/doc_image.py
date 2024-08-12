@@ -1,19 +1,20 @@
 from domain.entries.values.entry_date_time import EntryDateTime
-from files import file_system, image_file
+from files import image_file
+from files.value.file_path import FilePath, DirectoryPath
 
 
 class DocImage:
-    def __init__(self, doc_entry_dir_path: str, file_name: str, image_data: bytes,
+    def __init__(self, doc_entry_dir_path: DirectoryPath, file_name: str, image_data: bytes,
                  created_at: EntryDateTime = EntryDateTime(), updated_at: EntryDateTime = EntryDateTime()):
-        self.__doc_entry_dir_path: str = file_system.join_path(doc_entry_dir_path, 'images')
+        self.__image_dir_path: DirectoryPath = doc_entry_dir_path.add_dir('images')
         self.__file_name: str = file_name
         self.__image_data: bytes = image_data
         self.__created_at = created_at
         self.__updated_at = updated_at
 
     @property
-    def file_path(self) -> str:
-        return file_system.join_path(self.__doc_entry_dir_path, self.__file_name)
+    def file_path(self) -> FilePath:
+        return self.__image_dir_path.add_file(self.__file_name)
 
     @property
     def file_link(self) -> str:

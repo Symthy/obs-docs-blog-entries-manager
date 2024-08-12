@@ -23,8 +23,7 @@ class CollectedEntryUpdater:
                 continue
             photo_entry_to_doc_image = self.__blog_photos_to_doc_images_converter.convert_to_dict(
                 posted_blog_entry.photo_entries, posted_blog_entry.category_path.value)
-            doc_content = self.__blog_to_doc_content_converter.convert(
-                posted_blog_entry, posted_blog_entry.category_path.value, photo_entry_to_doc_image)
+            doc_content = self.__blog_to_doc_content_converter.convert(posted_blog_entry, photo_entry_to_doc_image)
             updated_doc_entry = self.__entry_document_saver.save(posted_blog_entry.convert_to_blog_entry(), doc_content)
-            if posted_blog_entry.category_path != doc_entry.category_path.value:
+            if posted_blog_entry.category_path != doc_entry.category_path:
                 self.__document_file_mover.move(doc_entry.doc_file_path, updated_doc_entry.doc_file_path)

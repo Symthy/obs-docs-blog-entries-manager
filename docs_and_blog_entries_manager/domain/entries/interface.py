@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import List, TypeVar, Generic, Optional
+from typing import TypeVar, Generic, Optional
 
 from domain.entries.values.category_path import CategoryPath
 
@@ -56,7 +56,7 @@ class IEntry(ISerializableObject, IConvertibleMarkdownLine, ABC):
 
 class IEntries(IConvertibleMarkdownLines, ABC):
     @property
-    def items(self) -> List[IEntry]:
+    def items(self) -> list[IEntry]:
         # required override
         raise Exception('Unimplemented!! (IEntries.entry_list)')
 
@@ -132,7 +132,7 @@ class IStoredEntriesLoader(Generic[TM, TS, TI], IStoredEntryLoader[TS, TI], ABC)
         pass
 
     @abstractmethod
-    def load_entries_by_id(self, entry_ids: list[TI] = None) -> TM:
+    def load_entries_by_ids(self, entry_ids: list[TI] = None) -> TM:
         pass
 
     @abstractmethod

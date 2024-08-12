@@ -1,5 +1,3 @@
-from typing import List
-
 from domain.docs.datasource.interface import IDocumentReader, IDocumentMover, StoredDocEntriesLoader
 from domain.docs.entity.doc_entry import DocEntry
 from domain.entries.entity.category_tree_definition import CategoryTreeDefinition
@@ -21,7 +19,7 @@ class LocalDocOrganizerService:
         self.__stored_doc_entries_loader = stored_doc_entries_loader
 
     def organize(self):
-        category_paths: List[CategoryPath] = self.__category_tree_def.all_category_paths
+        category_paths: list[CategoryPath] = self.__category_tree_def.all_category_paths
         # Todo: refactor
         for category_path in category_paths:
             doc_file_paths = self.__category_tree_def.get_file_paths(category_path)

@@ -53,8 +53,7 @@ class BlogEntryRepository(IBlogEntryRepository):
 
     # PUT blog
     def update(self, entry_id: BlogEntryId, entry: PrePostBlogEntry, is_draft: bool = False,
-               is_title_escape: bool = True) \
-            -> Optional[PostedBlogEntry]:
+               is_title_escape: bool = True) -> Optional[PostedBlogEntry]:
         blog_entry_xml = self.__update_entry(entry_id, entry, is_draft, is_title_escape)
         return BlogEntryResponseBody(self.__hatena_id, blog_entry_xml).parse()
 

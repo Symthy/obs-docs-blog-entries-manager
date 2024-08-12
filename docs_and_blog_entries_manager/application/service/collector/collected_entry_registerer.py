@@ -29,13 +29,12 @@ class CollectedEntryRegisterer:
                 posted_blog_entry.photo_entries, doc_entry_path)
             blog_content = self.__blog_to_doc_content_converter.convert_only_category_and_photo(
                 posted_blog_entry, photo_entry_to_doc_image)
-            doc_content = DocContent(blog_content.value, doc_entry_path)
+            doc_content = DocContent(blog_content.value)
             doc_images = DocImages(list(photo_entry_to_doc_image.values()))
             doc_entry = self.__entry_document_saver.save(
                 posted_blog_entry.convert_to_blog_entry(), doc_content, doc_images)
             blog_content_to_doc_entry[blog_content] = doc_entry
         # 保存したものに、記事のリンクを置換してから保存し直す
         for blog_content, doc_entry in blog_content_to_doc_entry.items():
-            doc_content = self.__blog_to_doc_content_converter.convert_link(
-                blog_content, doc_entry.category_path.value)
+            doc_content = self.__blog_to_doc_content_converter.convert_link(blog_content)
             self.__document_file_saver.save(doc_entry.category_path.value, doc_entry.title, doc_content)

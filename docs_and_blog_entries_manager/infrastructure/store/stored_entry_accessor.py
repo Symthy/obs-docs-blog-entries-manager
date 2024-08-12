@@ -2,17 +2,18 @@ from domain.entries.interface import IEntryDeserializer
 from domain.entries.interface import IStoredEntryAccessor, TS, TI
 from exceptions.entry_loading_exception import EntryLoadingException
 from exceptions.entry_saving_exception import EntrySavingException
-from files import json_file, file_system
+from files import json_file
+from files.value.file_path import FilePath, DirectoryPath
 
 
 class _StoredEntryAccessor(IStoredEntryAccessor[TS, TI]):
 
-    def __init__(self, stored_entry_dir_path: str, entry_deserializer: IEntryDeserializer):
+    def __init__(self, stored_entry_dir_path: DirectoryPath, entry_deserializer: IEntryDeserializer):
         self.__stored_entry_dir_path = stored_entry_dir_path
         self.__entry_deserializer = entry_deserializer
 
-    def __build_stored_json_path(self, entry_id: TI):
-        return file_system.join_path(self.__stored_entry_dir_path, f'{entry_id.value}.json')
+    def __build_stored_json_path(self, entry_id: TI) -> FilePath:
+        return self.__stored_entry_dir_path.add_file(f'{entry_id.value}.json')
 
     def load_entry(self, entry_id: TI) -> TS:
         try:
@@ -35,4 +36,4 @@ class _StoredEntryAccessor(IStoredEntryAccessor[TS, TI]):
         self.save_entry(updated_entry)
 
     def delete_entry(self, entry_id: TI):
-        file_system.remove_file(self.__build_stored_json_path(entry_id))
+        self.__build_stored_json_path(entry_id).remove_file()

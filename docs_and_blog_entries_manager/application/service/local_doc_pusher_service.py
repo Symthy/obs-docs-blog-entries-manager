@@ -1,5 +1,3 @@
-from common.result import Result
-from common.results import Results
 from domain.docs.datasource.interface import IDocumentMover, IWorkingDocumentReader
 from domain.docs.entity.doc_entry import DocEntry
 
@@ -14,16 +12,17 @@ class LocalDocPusherService:
         self.__working_doc_file_accessor = working_doc_file_accessor
         self.__document_file_mover = document_file_mover
 
-    def push(self, title: str) -> Result[DocEntry, str]:
+    def push(self, title: str):
         doc_entry = self.__working_doc_file_accessor.restore(title)
         self.__document_file_mover.move(self.__working_doc_file_accessor.build_file_path(title),
                                         doc_entry.doc_file_path)
-        return Result(doc_entry)
+        return doc_entry
 
-    def push_all(self):
+    def push_all(self) -> list[DocEntry]:
         completed_work_filepaths = self.__working_doc_file_accessor.extract_completed_filepaths()
-        results = []
+        doc_entries: list[DocEntry] = []
         for file_path in completed_work_filepaths:
-            result = self.push(file_path)
-            results.append(result)
-        return Results(*results)
+            title = file_path.get_file_name()
+            doc_entry = self.push(title)
+            doc_entries.append(doc_entry)
+        return doc_entries

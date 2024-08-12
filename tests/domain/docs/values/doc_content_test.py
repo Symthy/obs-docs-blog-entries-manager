@@ -3,6 +3,7 @@ from assertpy import assert_that
 
 from domain.docs.value.doc_content import DocContent
 from domain.entries.values.category_path import CategoryPath
+from files.value.file_path import FilePath
 
 CONTENT_FOR_TESTING = """
 自身の Github アカウント名と同じ名前のリポジトリを作ることで、プロフィールの最初に自身の好きな内容を追加することができる
@@ -30,12 +31,13 @@ Github Actions については [[Github Actions]] を参照
 
 
 def test_doc_content():
-    doc_content = DocContent(CONTENT_FOR_TESTING, 'dummy')
+    doc_content = DocContent(CONTENT_FOR_TESTING)
     assert_that(doc_content.category_path).is_equal_to(CategoryPath('Github/GithubActions/README'))
     assert_that(doc_content.categories).contains_only('dummy', 'profile')
-    assert_that(doc_content.image_paths).contains_only('Github/GithubActions/README/images/github-profile-summary.png')
+    assert_that(doc_content.image_paths).contains_only(
+        FilePath('Github/GithubActions/README/images/github-profile-summary.png'))
     assert_that(doc_content.internal_link_titles).contains_only('Github Actions')
-    content_with_removed_category = DocContent(doc_content.value_with_removed_categories(), 'dummy')
+    content_with_removed_category = DocContent(doc_content.value_with_removed_categories())
     assert_that(content_with_removed_category.category_path).is_equal_to(CategoryPath.non_category())
 
 
@@ -48,26 +50,26 @@ def test_doc_content():
 ])
 def test_value_with_removed_categories(content, expected):
     content = '\n #test/dummy #category \n'
-    doc_content = DocContent(content, 'dummy')
+    doc_content = DocContent(content)
     assert_that(doc_content.value_with_removed_categories()).is_equal_to(expected)
 
 
 def test_update_category_path():
-    doc_content = DocContent(CONTENT_FOR_TESTING, 'dummy')
+    doc_content = DocContent(CONTENT_FOR_TESTING)
     actual = doc_content.update_category_path(CategoryPath('Git/Github/Actions'))
     assert_that(actual.category_path).is_equal_to(CategoryPath('Git/Github/Actions'))
     assert_that(actual.categories).contains_only('dummy', 'profile')
 
 
 def test_add_category():
-    doc_content = DocContent(CONTENT_FOR_TESTING, 'dummy')
+    doc_content = DocContent(CONTENT_FOR_TESTING)
     actual = doc_content.add_category('test')
     assert_that(actual.category_path).is_equal_to(CategoryPath('Github/GithubActions/README'))
     assert_that(actual.categories).contains_only('dummy', 'profile', 'test')
 
 
 def test_remove_category():
-    doc_content = DocContent(CONTENT_FOR_TESTING, 'dummy')
+    doc_content = DocContent(CONTENT_FOR_TESTING)
     actual = doc_content.remove_category('dummy')
     assert_that(actual.category_path).is_equal_to(CategoryPath('Github/GithubActions/README'))
     assert_that(actual.categories).contains_only('profile')

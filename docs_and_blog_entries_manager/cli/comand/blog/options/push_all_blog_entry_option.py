@@ -19,5 +19,4 @@ class PushBlogEntryOption(ISubCommandOption):
         return args.push
 
     def execute(self, args):
-        result = self.__blog_entry_all_pusher_service.execute()
-        result.print_log()
+        self.__blog_entry_all_pusher_service.execute()

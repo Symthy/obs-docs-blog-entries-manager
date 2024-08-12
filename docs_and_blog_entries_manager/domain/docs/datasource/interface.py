@@ -8,6 +8,7 @@ from domain.docs.value.doc_content import DocContent
 from domain.docs.value.doc_entry_id import DocEntryId
 from domain.entries.interface import IStoredEntriesLoader, IStoredEntriesModifier, IStoredEntriesAccessor
 from domain.entries.values.category_path import CategoryPath
+from files.value.file_path import FilePath, DirectoryPath
 
 StoredDocEntriesLoader = IStoredEntriesLoader[DocEntries, DocEntry, DocEntryId]
 StoredDocEntriesModifier = IStoredEntriesModifier[DocEntries, DocEntry, DocEntryId]
@@ -20,7 +21,7 @@ class IDocumentReader(ABC):
         pass
 
     @abstractmethod
-    def restore(self, doc_entry_file_path: str) -> DocEntry:
+    def restore(self, doc_entry_file_path: FilePath) -> DocEntry:
         pass
 
     @abstractmethod
@@ -40,7 +41,7 @@ class IDocSummaryFileSaver(ABC):
 
 class IDocumentSaver(ABC):
     @abstractmethod
-    def save(self, doc_entry_dir_path: str, title: str, content: DocContent,
+    def save(self, doc_entry_dir_path: DirectoryPath, title: str, content: DocContent,
              images: DocImages) -> DocEntryId:
         pass
 
@@ -52,7 +53,7 @@ class IDocumentModifier(ABC):
         pass
 
     @abstractmethod
-    def insert_category_path(self, doc_file_path: str, category_path: CategoryPath) -> DocContent:
+    def insert_category_path(self, doc_file_path: FilePath, category_path: CategoryPath) -> DocContent:
         pass
 
     @abstractmethod
@@ -66,13 +67,13 @@ class IDocDocumentAccessor(IDocumentSaver, IDocSummaryFileSaver, IDocumentReader
 
 class IDocumentMover(ABC):
     @abstractmethod
-    def move(self, from_file_path: str, to_file_path: str):
+    def move(self, from_file_path: FilePath, to_file_path: FilePath):
         pass
 
 
 class IWorkingDocumentReader(ABC):
     @abstractmethod
-    def build_file_path(self, title: str) -> str:
+    def build_file_path(self, title: str) -> FilePath:
         pass
 
     @abstractmethod
@@ -80,5 +81,5 @@ class IWorkingDocumentReader(ABC):
         pass
 
     @abstractmethod
-    def extract_completed_filepaths(self) -> list[str]:
+    def extract_completed_filepaths(self) -> list[FilePath]:
         pass

@@ -4,6 +4,7 @@ import re
 from typing import List, Optional
 
 from domain.entries.values.category_path import CategoryPath
+from files.value.file_path import FilePath
 
 
 class DocContent:
@@ -11,9 +12,8 @@ class DocContent:
     __DOCUMENT_CATEGORY_REGEX = r'\s#([a-zA-Z]+[/a-zA-Z]+)'
     __DOCUMENT_INTERNAL_LINK_REGEX = r'\[\[(.+)\]\]'
 
-    def __init__(self, content: str, doc_entry_dir_path: str):
+    def __init__(self, content: str):
         self.__content = content if content.endswith('\n') else content + '\n'
-        self.__doc_entry_dir_path = doc_entry_dir_path
         self.__image_paths_from_doc_files = self.__extract_image_paths()
         all_categories = self.__extract_categories()
         self.__categories = all_categories[1:] if len(all_categories) >= 2 else []
@@ -47,11 +47,12 @@ class DocContent:
 
     @property
     def image_paths_from_doc_files(self) -> List[str]:
+        # images/xxxx のリスト
         return self.__image_paths_from_doc_files
 
     @property
-    def image_paths(self) -> List[str]:
-        return list(map(lambda path: f'{self.__category_path.value}/{path}', self.__image_paths_from_doc_files))
+    def image_paths(self) -> list[FilePath]:
+        return list(map(lambda path: self.__category_path.value.add_file(path), self.__image_paths_from_doc_files))
 
     @property
     def category_path(self) -> Optional[CategoryPath]:
@@ -81,7 +82,7 @@ class DocContent:
     def __update_categories_line(self, category_path: CategoryPath, *categories: str) -> DocContent:
         new_category_line = ' '.join(list(map(lambda c: f'#{c}', [category_path.value, *categories]))) + '\n'
         new_content = self.value_with_removed_categories() + new_category_line
-        return DocContent(new_content, self.__doc_entry_dir_path)
+        return DocContent(new_content)
 
     def replace_internal_link_titles(self, title_to_url: dict[str, str]) -> str:
         # blogContentへの変換用

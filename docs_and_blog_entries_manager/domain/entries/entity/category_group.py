@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from typing import List
-
 from domain.entries.values.category_path import CategoryPath
 
 
@@ -11,17 +9,17 @@ class CategoryGroup:
     - 末端のカテゴリは children が空
     """
 
-    def __init__(self, category_path: CategoryPath, category_children: List[CategoryGroup] = None):
+    def __init__(self, category_path: CategoryPath, category_children: list[CategoryGroup] = None):
         self.__category_name = category_path.end
         self.__category_path = category_path
-        self.__children: List[CategoryGroup] = [] if category_children is None else category_children
+        self.__children: list[CategoryGroup] = [] if category_children is None else category_children
 
     @property
     def category_name(self) -> str:
         return self.__category_name
 
     @property
-    def sub_categories(self) -> List[str]:
+    def sub_categories(self) -> list[str]:
         return [child.category_name for child in self.__children]
 
     def find_category_path(self, category_path: CategoryPath) -> bool:
@@ -34,7 +32,7 @@ class CategoryGroup:
                 return True
         return False
 
-    def category_full_paths(self, parent_category_path: CategoryPath = CategoryPath('.')) -> List[CategoryPath]:
+    def category_full_paths(self, parent_category_path: CategoryPath = CategoryPath('.')) -> list[CategoryPath]:
         """
         フルパスの category_path のみ取得。途中階層のパスは含めない
         末端ノードに到達した時だけリストにいれることで実現

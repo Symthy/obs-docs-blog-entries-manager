@@ -3,14 +3,13 @@ from assertpy import assert_that
 from domain.blogs.value.blog_entry_id import BlogEntryId
 from domain.docs.value.doc_entry_id import DocEntryId
 from domain.mappings.blog_to_doc_entry_mapping import BlogToDocEntryMapping
-from files import file_system
 from tests.infrastructure.store._data.path_resolver import resolve_test_data_dir_path
 
 
 class TestBlogToDocEntryMapping:
     def setup_method(self):
         data_path = resolve_test_data_dir_path()
-        self.__mapping = BlogToDocEntryMapping(file_system.join_path(data_path, 'blog_to_doc_mapping.json'))
+        self.__mapping = BlogToDocEntryMapping(data_path.add_file('blog_to_doc_mapping.json'))
 
     def test_find_doc_entry_id(self):
         doc_entry_id = self.__mapping.find_doc_entry_id(BlogEntryId('13574176438059028795'))

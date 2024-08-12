@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Optional
 
 from domain.entries.entity.entries_tree import EntriesTree
 from domain.entries.interface import IConvertibleMarkdownLines
@@ -10,11 +10,11 @@ class EntriesTreeRoots(IConvertibleMarkdownLines):
         self.__category_path_to_entries_tree = category_path_to_entries_tree
 
     @property
-    def root_paths(self) -> List[CategoryPath]:
+    def root_paths(self) -> list[CategoryPath]:
         return list(self.__category_path_to_entries_tree.keys())
 
     @property
-    def root_trees(self) -> List[EntriesTree]:
+    def root_trees(self) -> list[EntriesTree]:
         return list(self.__category_path_to_entries_tree.values())
 
     def get_root_tree(self, category_path: CategoryPath) -> Optional[EntriesTree]:
@@ -37,7 +37,7 @@ class EntriesTreeRoots(IConvertibleMarkdownLines):
     def root_num(self) -> int:
         return len(self.__category_path_to_entries_tree)
 
-    def convert_md_lines(self) -> List[str]:
+    def convert_md_lines(self) -> list[str]:
         lines = []
         for entries_tree in list(self.__category_path_to_entries_tree.values()):
             lines += entries_tree.convert_md_lines()

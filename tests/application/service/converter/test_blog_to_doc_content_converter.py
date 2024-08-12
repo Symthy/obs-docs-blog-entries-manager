@@ -6,7 +6,6 @@ from application.service.converter.blog_to_doc_content_converter import BlogToDo
 from domain.blogs.datasource.model.posted_blog_entry import PostedBlogEntry
 from domain.blogs.value.blog_entry_id import BlogEntryId
 from domain.mappings.blog_to_doc_entry_mapping import BlogToDocEntryMapping
-from files.file_system import join_path
 from infrastructure.store.factory.stored_entries_accessor_factory import StoredEntriesAccessorFactory
 from infrastructure.store.stored_entry_title_finder import StoredEntryTitleFinder
 from tests.application.service.converter._data.path_resolver import resolve_test_data_dir_path
@@ -15,9 +14,9 @@ from tests.application.service.converter._data.path_resolver import resolve_test
 class TestBlogToDocContentConverter:
     def setup_method(self):
         dir_path = resolve_test_data_dir_path()
-        store_dir = join_path(dir_path, 'store')
-        docs_dir = join_path(dir_path, 'docs')
-        blog_to_doc_mapping = BlogToDocEntryMapping(join_path(store_dir, 'blog_to_doc_mapping.json'))
+        store_dir = dir_path.add_dir('store')
+        docs_dir = dir_path.add_dir('docs')
+        blog_to_doc_mapping = BlogToDocEntryMapping(store_dir.add_file('blog_to_doc_mapping.json'))
         stored_doc_entries_accessor = StoredEntriesAccessorFactory(store_dir).build_for_doc()
         stored_blog_entries_accessor = StoredEntriesAccessorFactory(store_dir).build_for_blog()
         blog_entry_title_finder = StoredEntryTitleFinder(stored_blog_entries_accessor)

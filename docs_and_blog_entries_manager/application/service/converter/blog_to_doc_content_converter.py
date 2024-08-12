@@ -24,12 +24,12 @@ class BlogToDocContentConverter:
         self.__blog_to_doc_mapping = blog_to_doc_mapping
         self.__stored_doc_entries_loader = stored_doc_entries_loader
 
-    def convert(self, posted_blog_entry: PostedBlogEntry, doc_entry_path: str,
+    def convert(self, posted_blog_entry: PostedBlogEntry,
                 photo_entry_to_doc_image: dict[PhotoEntry, DocImage]) -> DocContent:
         blog_content = self.convert_only_category_and_photo(posted_blog_entry, photo_entry_to_doc_image)
-        return self.convert_link(blog_content, doc_entry_path)
+        return self.convert_link(blog_content)
 
-    def convert_link(self, blog_content: IntermediateBlogContent, doc_entry_path: str) -> DocContent:
+    def convert_link(self, blog_content: IntermediateBlogContent) -> DocContent:
         blog_entry_title_to_url = self.__extract_linked_entry_title_to_url(blog_content)
         blog_entry_link_to_doc_internal_link = {}
         for title, url in blog_entry_title_to_url.items():
@@ -39,15 +39,15 @@ class BlogToDocContentConverter:
             blog_entry_link = f'[{title}]({url})'
             doc_internal_entry = f'[[{linked_doc_entry.title}]]'
             blog_entry_link_to_doc_internal_link[blog_entry_link] = doc_internal_entry
-        return self.__convert_content(blog_content, doc_entry_path, blog_entry_link_to_doc_internal_link)
+        return self.__convert_content(blog_content, blog_entry_link_to_doc_internal_link)
 
     @staticmethod
-    def __convert_content(blog_content: BlogContent | IntermediateBlogContent, doc_entry_path: str,
+    def __convert_content(blog_content: BlogContent | IntermediateBlogContent,
                           blog_entry_link_to_doc_internal_link: dict[str, str]) -> DocContent:
         content = blog_content.value
         for blog_entry_link, doc_internal_link in blog_entry_link_to_doc_internal_link.items():
             content = content.replace(blog_entry_link, doc_internal_link)
-        return DocContent(content, doc_entry_path)
+        return DocContent(content)
 
     @classmethod
     def convert_only_category_and_photo(

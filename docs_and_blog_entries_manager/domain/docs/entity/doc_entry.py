@@ -7,7 +7,7 @@ from domain.docs.value.doc_entry_id import DocEntryId
 from domain.entries.interface import IEntry
 from domain.entries.values.category_path import CategoryPath
 from domain.entries.values.entry_date_time import EntryDateTime
-from files import file_system
+from files.value.file_path import FilePath
 
 
 class DocEntry(IEntry):
@@ -41,15 +41,15 @@ class DocEntry(IEntry):
         return self.__title
 
     @property
-    def doc_file_path(self) -> str:
-        return file_system.join_path('.', self.category_path.value, self.__doc_file_name)
+    def doc_file_path(self) -> FilePath:
+        return self.category_path.value.add_file(self.__doc_file_name)
 
     @property
     def doc_file_name(self) -> str:
         return self.__doc_file_name
 
     @property
-    def categories(self) -> List[str]:
+    def categories(self) -> list[str]:
         return self.__categories
 
     @property
@@ -104,7 +104,7 @@ class DocEntry(IEntry):
 
     def convert_md_line(self) -> str:
         blog_mark = '【B】' if self.contains_blog_category else ''
-        return f'- {blog_mark}[{self.title}]({self.doc_file_path}) (ID:{self.id})'
+        return f'- {blog_mark}[{self.title}]({self.doc_file_path.value}) (ID:{self.id})'
 
     def serialize(self) -> dict:
         return vars(self)

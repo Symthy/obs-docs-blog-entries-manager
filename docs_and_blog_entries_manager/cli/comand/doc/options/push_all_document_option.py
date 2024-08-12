@@ -3,7 +3,7 @@ import argparse
 from application.service.blog_entry_pusher_service import BlogEntryPusherService
 from application.service.local_doc_pusher_service import LocalDocPusherService
 from cli.comand.interface import ISubCommandOption
-from domain.docs.entity.doc_entry import DocEntry
+from logs.logger import Logger
 
 
 class PushDocumentOption(ISubCommandOption):
@@ -20,11 +20,10 @@ class PushDocumentOption(ISubCommandOption):
         return args.push_all
 
     def execute(self, args):
-        results = self.__local_doc_pusher_service.push_all()
-        results.print_log('Successfully posted entry to local store', 'DocumentPath')
-        for result in results.success_values:
-            doc_entry: DocEntry = result.value
+        doc_entries = self.__local_doc_pusher_service.push_all()
+        Logger.info('Successfully posted entry to local store')
+        for doc_entry in doc_entries:
             if args.blog:
-                result = self.__blog_entry_pusher_service.execute(doc_entry.id)
-                result.print_log('Successfully posted entry to blog.', 'DocumentPath')
+                self.__blog_entry_pusher_service.execute(doc_entry.id)
+                Logger.info('Successfully posted entry to blog.')
             # Todo: オプション指定が無いときは、タグによってblog投稿も行うか制御する

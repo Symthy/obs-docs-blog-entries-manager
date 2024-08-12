@@ -3,7 +3,8 @@ from typing import Optional, List
 from domain.blogs.entity.photo.photo_entries import PhotoEntries
 from domain.blogs.entity.photo.photo_entry import PhotoEntry
 from domain.blogs.value.photo_entry_id import PhotoEntryId
-from files import image_file, file_path
+from files import image_file
+from files.value.file_path import FilePath
 from infrastructure.hatena.api.api_client_factory import PhotoApiClient
 from infrastructure.hatena.api.photo_entry_response_body import PhotoEntryResponseBody
 from infrastructure.hatena.templates import request_formats
@@ -22,7 +23,7 @@ class PhotoEntryRepository:
         return PhotoEntryResponseBody(xml_string_opt).parse('')
 
     # POST photo
-    def create_all(self, image_file_paths: List[str]) -> PhotoEntries:
+    def create_all(self, image_file_paths: list[FilePath]) -> PhotoEntries:
         photo_entries: List[PhotoEntry] = []
         for image_path in image_file_paths:
             entry_opt = self.create(image_path)
@@ -30,7 +31,7 @@ class PhotoEntryRepository:
                 photo_entries.append(entry_opt)
         return PhotoEntries(photo_entries)
 
-    def create(self, image_file_path: str) -> Optional[PhotoEntry]:
+    def create(self, image_file_path: FilePath) -> Optional[PhotoEntry]:
         def __build_hatena_photo_entry_body() -> Optional[str]:
             # Todo: refactor use library
             __PIC_EXTENSION_TO_CONTENT_TYPE = {
@@ -41,13 +42,10 @@ class PhotoEntryRepository:
                 'bmp': 'image/bmp',
                 'svg': 'image/svg+xml',
             }
-            split_str = image_file_path.rsplit('.', 1)
-            path_without_extension = split_str[0]
-            file_name_without_extension = file_path.get_file_name(path_without_extension)
-            title = file_name_without_extension
-            extension = split_str[-1].lower()
+            title = image_file_path.get_file_name_without_ext()
+            extension = image_file_path.get_file_extension()
             if not extension in __PIC_EXTENSION_TO_CONTENT_TYPE:
-                Logger.warn(f'Non support image file extension: {image_file_path}')
+                Logger.warn(f'Non support image file extension: {image_file_path.value}')
                 return None
             b64_pic_data = image_file.read_b64(image_file_path)
             return request_formats.build_photo_entry_post_xml_body(title,
@@ -55,14 +53,14 @@ class PhotoEntryRepository:
                                                                    b64_pic_data)
 
         body = __build_hatena_photo_entry_body()
-        Logger.info(f'POST Photo: {image_file_path}')
+        Logger.info(f'POST Photo: {image_file_path.value}')
         xml_string_opt = self.__api_client.post(body, 'post')
-        image_filename = file_path.get_file_name(image_file_path)
+        image_filename = image_file_path.get_file_name()
         return PhotoEntryResponseBody(xml_string_opt).parse(image_filename)
 
     # UPDATE(DELETE+POST) photo
     # because PUT can change title only
-    def update(self, image_file_path: str, photo_entry: PhotoEntry) -> Optional[PhotoEntry]:
+    def update(self, image_file_path: FilePath, photo_entry: PhotoEntry) -> Optional[PhotoEntry]:
         # Todo: error
         self.__delete(photo_entry)
         return self.create(image_file_path)

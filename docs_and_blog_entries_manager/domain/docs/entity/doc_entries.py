@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import List, Optional
+from typing import Optional
 
 from domain.docs.entity.doc_entry import DocEntry
 from domain.docs.value.doc_entry_id import DocEntryId
@@ -8,7 +8,7 @@ from domain.entries.interface import IEntries
 
 
 class DocEntries(IEntries):
-    def __init__(self, entries: List[DocEntry] = None):
+    def __init__(self, entries: list[DocEntry] = None):
         self.__entries: dict[str, DocEntry] = {}
         if entries is not None:
             self.__entries = {entry.id: entry for entry in entries}

@@ -1,6 +1,5 @@
 from application.service.blog_entry_pusher_service import BlogEntryPusherService
 from application.service.blog_entry_remover_service import BlogEntryRemoverService
-from common.results import Results
 from domain.docs.datasource.interface import IDocumentReader, StoredDocEntriesAccessor
 from domain.docs.entity.doc_entry import DocEntry
 
@@ -20,19 +19,15 @@ class BlogEntryAllUpdaterService:
         self.__document_reader = document_reader
 
     def execute(self):
-        results = self.__post_blog_entries()
-        return results.merge(self.__remove_blog_entries())
+        self.__post_blog_entries()
+        self.__remove_blog_entries()
 
     def __post_blog_entries(self):
-        results = []
         doc_entries_added_blog_category = self.__document_reader.extract_entries_with_blog_category()
         for doc_entry in doc_entries_added_blog_category.items:
-            result = self.__blog_entry_pusher.execute(doc_entry.id)
-            results.append(result)
-        return Results(*results)
+            self.__blog_entry_pusher.execute(doc_entry.id)
 
     def __remove_blog_entries(self):
-        results = []
         doc_entries_has_blog_category: list[DocEntry] \
             = self.__stored_doc_entries_accessor.load_entries().items_filtered_blog_category()
         for old_doc_entry in doc_entries_has_blog_category:
@@ -43,4 +38,3 @@ class BlogEntryAllUpdaterService:
                 continue
             self.__stored_doc_entries_accessor.save_entry(current_doc_entry)
             self.__blog_entry_remover.execute(current_doc_entry.id)
-        return Results(*results)  # Todo

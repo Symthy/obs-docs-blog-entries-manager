@@ -1,6 +1,7 @@
 import os
 from configparser import ConfigParser
 
+from files.value.file_path import FilePath
 from libs.config_loader import ConfigLoader
 
 CONF_SECTION_DEFAULT = 'DEFAULT'
@@ -22,9 +23,9 @@ class BlogConfig:
         self.__summary_entry_title = conf.get(CONF_SECTION_DEFAULT, CONF_SUMMARY_ENTRY_TITLE_KEY)
 
     @staticmethod
-    def load(config_path='./conf/blog.conf'.replace('/', os.sep)):
+    def load(config_path=FilePath('./conf/blog.conf'.replace('/', os.sep))):
         conf_parser = ConfigLoader()
-        with open(config_path, 'r', encoding='utf-8') as file:
+        with open(config_path.value, 'r', encoding='utf-8') as file:
             conf_parser.read_file(file)
         return BlogConfig(conf_parser)
 

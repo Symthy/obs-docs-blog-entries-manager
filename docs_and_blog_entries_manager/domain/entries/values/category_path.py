@@ -1,23 +1,22 @@
 from __future__ import annotations
 
-from typing import List
-
 from common.constants import NON_CATEGORY_NAME
+from files.value.file_path import DirectoryPath
 
 
 class CategoryPath:
     def __init__(self, category_path: str):
         if category_path == '':
             raise ValueError(f'Invalid category path: {category_path}')
-        self.__values: List[str] = category_path.split('/')
+        self.__values: list[str] = category_path.split('/')
 
     @staticmethod
     def non_category() -> CategoryPath:
         return CategoryPath(NON_CATEGORY_NAME)
 
     @property
-    def value(self) -> str:
-        return '/'.join(self.__values)
+    def value(self) -> DirectoryPath:
+        return DirectoryPath(*self.__values)
 
     @property
     def length(self) -> int:
@@ -59,19 +58,22 @@ class CategoryPath:
     def exist_parent(self):
         return len(self.__values) > 1
 
-    def upper_all_paths(self) -> List[CategoryPath]:
+    def upper_all_paths(self) -> list[CategoryPath]:
         if len(self.__values) <= 1:
             return []
-        paths: List[CategoryPath] = []
+        paths: list[CategoryPath] = []
         for i in range(len(self.__values) - 1):
             paths.append(CategoryPath('/'.join(self.__values[0:i + 1])))
         return paths
 
+    def __to_str(self) -> str:
+        return '/'.join(self.__values)
+
     def __eq__(self, other: CategoryPath) -> bool:
-        return self.value == other.value
+        return self.__to_str() == other.__to_str()
 
     def __hash__(self):
-        return hash(self.value)
+        return hash(self.__to_str())
 
     def __str__(self):
-        return self.value
+        return self.__to_str()
