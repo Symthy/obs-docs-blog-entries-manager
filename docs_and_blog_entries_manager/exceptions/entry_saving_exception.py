@@ -1,4 +1,4 @@
-from domain.entries.interface import IEntry
+from entries.domain.interface import IEntry
 
 
 class EntrySavingException(Exception):

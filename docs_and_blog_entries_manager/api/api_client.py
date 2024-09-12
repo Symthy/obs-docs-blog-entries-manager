@@ -5,8 +5,8 @@ from urllib.parse import urljoin
 import requests
 from requests import Response
 
-from docs_and_blog_entries_manager.exceptions.api_exception import ApiException
-from docs_and_blog_entries_manager.logs.logger import Logger
+from exceptions.api_exception import ApiException
+from logs.logger import Logger
 
 
 class ApiClient:

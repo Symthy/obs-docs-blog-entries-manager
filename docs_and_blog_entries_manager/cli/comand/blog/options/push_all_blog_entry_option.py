@@ -1,6 +1,6 @@
 import argparse
 
-from application.service.blog_entry_all_updater_service import BlogEntryAllUpdaterService
+from composites.usecase.blog_entry_all_updater_service import BlogEntryAllUpdaterService
 from cli.comand.interface import ISubCommandOption
 
 

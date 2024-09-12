@@ -1,7 +1,7 @@
 import argparse
 
-from application.service.local_doc_importer_service import LocalDocImporterService
-from application.service.local_doc_organizer_service import LocalDocOrganizerService
+from docs.usecase.local_doc_importer_service import LocalDocImporterService
+from docs.usecase.local_doc_organizer_service import LocalDocOrganizerService
 from cli.comand.interface import ISubCommandOption
 
 

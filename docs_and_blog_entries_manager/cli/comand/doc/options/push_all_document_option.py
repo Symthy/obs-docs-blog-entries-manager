@@ -1,7 +1,7 @@
 import argparse
 
-from application.service.blog_entry_pusher_service import BlogEntryPusherService
-from application.service.local_doc_pusher_service import LocalDocPusherService
+from composites.usecase.blog_entry_pusher_service import BlogEntryPusherService
+from docs.usecase.local_doc_pusher_service import LocalDocPusherService
 from cli.comand.interface import ISubCommandOption
 from logs.logger import Logger
 

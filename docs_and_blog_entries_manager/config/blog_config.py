@@ -1,8 +1,8 @@
 import os
 from configparser import ConfigParser
 
-from files.value.file_path import FilePath
-from libs.config_loader import ConfigLoader
+from files.value import FilePath
+from libs import ConfigLoader
 
 CONF_SECTION_DEFAULT = 'DEFAULT'
 CONF_KEY_HATENA_ID = 'HATENA_ID'

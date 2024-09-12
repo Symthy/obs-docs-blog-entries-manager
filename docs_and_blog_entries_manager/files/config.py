@@ -1,11 +1,10 @@
 import codecs
-from typing import List
 
 from docs_and_blog_entries_manager.logs.logger import Logger
 from files.value.file_path import FilePath
 
 
-def read_lines(file_path: FilePath) -> List[str]:
+def read_lines(file_path: FilePath) -> list[str]:
     try:
         with codecs.open(file_path.value, mode='r', encoding='utf-8') as f:
             lines = f.readlines()

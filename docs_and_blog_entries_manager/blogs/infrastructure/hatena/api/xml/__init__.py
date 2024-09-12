@@ -1,0 +1,2 @@
+from .blog_entry_xml_parser import BlogEntryXmlParser
+from .photo_entry_xml_parser import PhotoEntryXmlParser

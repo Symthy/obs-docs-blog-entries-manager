@@ -1,0 +1,1 @@
+from .blog_photo_entry_repository_factory import BlogPhotoEntryRepositoryFactory

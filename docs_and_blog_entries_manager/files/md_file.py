@@ -1,7 +1,7 @@
 import re
 from typing import List
 
-from domain.blogs.entity.photo.photo_entries import PhotoEntries
+from blogs.domain.entity import PhotoEntries
 
 
 def join_lines(lines: List[str]) -> str:

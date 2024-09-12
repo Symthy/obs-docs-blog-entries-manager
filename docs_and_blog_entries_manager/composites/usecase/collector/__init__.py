@@ -1,0 +1,1 @@
+from blog_entry_collector_service import BlogEntryCollectorService

@@ -1,4 +1,4 @@
-from domain.entries.interface import IEntryId
+from entries.domain.interface import IEntryId
 
 
 class EntryLoadingException(Exception):
