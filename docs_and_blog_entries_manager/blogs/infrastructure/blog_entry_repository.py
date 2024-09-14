@@ -2,8 +2,8 @@ from typing import Optional, List
 from urllib.parse import urlparse, parse_qsl
 
 from blogs.domain.datasource.interface import IBlogEntryRepository
-from blogs.domain.datasource.model import PostedBlogEntry
-from blogs.domain.datasource.model import PrePostBlogEntry
+from blogs.domain.entity import PostedBlogEntry
+from blogs.domain.entity import PrePostBlogEntry
 from blogs.domain.value import BlogEntryId
 from blogs.infrastructure.hatena.api import BlogApiClient
 from blogs.infrastructure.hatena.api import BlogEntryResponseBody, BlogEntriesResponseBody

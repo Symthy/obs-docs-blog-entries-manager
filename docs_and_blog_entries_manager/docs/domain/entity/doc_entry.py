@@ -5,8 +5,7 @@ from typing import List
 from common.constants import BLOG_CATEGORY
 from docs.domain.value import DocEntryId
 from entries.domain.interface import IEntry
-from entries.domain.value import CategoryPath
-from entries.domain.value import EntryDateTime
+from entries.domain.value import CategoryPath, EntryDateTime
 from files.value import FilePath
 
 

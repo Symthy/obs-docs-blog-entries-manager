@@ -1,6 +1,6 @@
 from typing import Optional
 
-from blogs.domain.datasource.model import PostedBlogEntry
+from blogs.domain.entity import PostedBlogEntry
 from blogs.domain.value import BlogEntryId
 from blogs.infrastructure.hatena.api.xml import BlogEntryXmlParser
 from common.constants import EXCLUDE_ENTRY_IDS_TXT_PATH

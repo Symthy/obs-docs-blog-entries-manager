@@ -1,12 +1,10 @@
 from abc import ABC, abstractmethod
 from typing import Generic, Callable
 
-from blogs.domain.entity import BlogEntries
-from blogs.domain.entity import BlogEntry
+from blogs.domain.entity import BlogEntries, BlogEntry
 from blogs.domain.value import BlogEntryId
 from common.constants import BLOG_ENTRY_LIST_PATH, DOC_ENTRY_LIST_PATH
-from docs.domain.entity import DocEntries
-from docs.domain.entity import DocEntry
+from docs.domain.entity import DocEntries, DocEntry
 from docs.domain.value import DocEntryId
 from entries.domain.interface import TI
 from files import json_file

@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from typing import Optional, List
+from typing import Optional
 
-from blogs.domain.entity import PhotoEntry
+from .photo_entry import PhotoEntry
 
 
 class PhotoEntries:
@@ -12,11 +12,11 @@ class PhotoEntries:
             {} if images is None else {image.image_filename: image for image in images}
 
     @property
-    def items(self) -> List[PhotoEntry]:
+    def items(self) -> list[PhotoEntry]:
         return list(self.__filename_to_photo_entry.values())
 
     @property
-    def image_filenames(self) -> List[str]:
+    def image_filenames(self) -> list[str]:
         return list(self.__filename_to_photo_entry.keys())
 
     def is_exist(self, image_filename: str) -> bool:
@@ -30,7 +30,7 @@ class PhotoEntries:
             return None
         return self.__filename_to_photo_entry[image_filename]
 
-    def get_entries(self, image_filename: List[str]) -> List[PhotoEntry]:
+    def get_entries(self, image_filename: list[str]) -> list[PhotoEntry]:
         photo_entries = []
         for image_filename in image_filename:
             photo_entry_opt = self.get_entry(image_filename)
@@ -39,8 +39,8 @@ class PhotoEntries:
             photo_entries.append(photo_entry_opt)
         return photo_entries
 
-    def non_exist_entries(self, image_filenames: List[str]) -> PhotoEntries:
-        photo_entries: List[PhotoEntry] = []
+    def non_exist_entries(self, image_filenames: list[str]) -> PhotoEntries:
+        photo_entries: list[PhotoEntry] = []
         for existed_photo_entry in self.__filename_to_photo_entry.values():
             if existed_photo_entry.image_filename not in image_filenames:
                 photo_entries.append(existed_photo_entry)

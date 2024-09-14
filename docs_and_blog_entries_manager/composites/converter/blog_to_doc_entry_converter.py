@@ -1,16 +1,14 @@
 from typing import Optional
 
-from blogs.domain.datasource.model import PostedBlogEntry
-from blogs.domain.entity.blog_entry import BlogEntry
+from blogs.domain.entity import PostedBlogEntry, BlogEntry
 from common.constants import BLOG_CATEGORY
-from composites.converter.blog_photos_to_doc_images_converter import BlogPhotosToDocImagesConverter
-from composites.converter.blog_to_doc_content_converter import BlogToDocContentConverter
 from composites.entity import BlogToDocEntryMapping
 from docs.domain.datasource.interface import StoredDocEntriesAccessor
-from docs.domain.datasource.model.document_dataset import DocumentDataset
-from docs.domain.entity.doc_entry import DocEntry
+from docs.domain.entity import DocEntry, DocumentDataset
 from docs.domain.factory import DocEntryBuilder
-from docs.domain.value.doc_entry_id import DocEntryId
+from docs.domain.value import DocEntryId
+from .blog_photos_to_doc_images_converter import BlogPhotosToDocImagesConverter
+from .blog_to_doc_content_converter import BlogToDocContentConverter
 
 
 class BlogToDocEntryConverter:
@@ -25,7 +23,7 @@ class BlogToDocEntryConverter:
 
     def convert(self, posted_blog_entry: PostedBlogEntry) -> DocumentDataset:
         # Todo: いらなければ消す
-        blog_entry = posted_blog_entry.convert_to_blog_entry()
+        blog_entry = posted_blog_entry.blog_entry()
         doc_entry_id = self.__blog_to_doc_entry_mapping.find_doc_entry_id(blog_entry.id)
         photo_entry_to_doc_image = self.__blog_photos_to_doc_images_converter.convert_to_dict(
             posted_blog_entry.photo_entries, posted_blog_entry.category_path.value)

@@ -1,8 +1,5 @@
 from blogs.domain.value import BlogEntryId
-from blogs.infrastructure import BlogEntryRepository
-from blogs.infrastructure import BlogPhotoEntryRepository
-from blogs.infrastructure import PhotoEntryRepository
-
+from blogs.infrastructure import BlogEntryRepository, BlogPhotoEntryRepository, PhotoEntryRepository
 from blogs.infrastructure.hatena.api import ApiClientFactory
 from config.blog_config import BlogConfig
 

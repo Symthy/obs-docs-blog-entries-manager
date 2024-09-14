@@ -1,9 +1,8 @@
 from common.constants import WORK_DOCS_DIR_PATH, NON_CATEGORY_NAME
 from docs.domain.datasource.interface import IWorkingDocumentReader, StoredDocEntriesAccessor
 from docs.domain.entity import DocEntry
-from docs.infrastructure import DocumentFileMover
-from docs.infrastructure import WorkingDocEntryRestorer
-from docs.infrastructure.content import DocumentCategoryEditor
+from docs.infrastructure import DocumentFileMover, WorkingDocEntryRestorer
+from docs.infrastructure.content.document_category_editor import DocumentCategoryEditor
 from files.value import DirectoryPath, FilePath
 
 

@@ -2,8 +2,7 @@ from typing import Optional
 
 from docs.domain.entity import DocEntry
 from docs.domain.value import DocEntryId
-from entries.domain.value import CategoryPath
-from entries.domain.value import EntryDateTime
+from entries.domain.value import CategoryPath, EntryDateTime
 
 
 class DocEntryBuilder:

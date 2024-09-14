@@ -2,7 +2,7 @@ from common.constants import DOCS_DIR_PATH
 from docs.domain.entity import DocEntry
 from docs.domain.factory import DocEntryBuilder
 from docs.domain.value import DocEntryId
-from docs.infrastructure.content import DocumentContentReader
+from docs.infrastructure.content.document_content_reader import DocumentContentReader
 from entries.domain.value import EntryDateTime
 from files.value import DirectoryPath, FilePath
 from stores.infrastructure import StoredEntryListHolder

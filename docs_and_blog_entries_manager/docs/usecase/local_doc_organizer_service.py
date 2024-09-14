@@ -1,6 +1,5 @@
 from docs.domain.datasource.interface import IDocumentReader, IDocumentMover, StoredDocEntriesLoader
 from docs.domain.entity import DocEntry
-
 from entries.domain.entity.category_tree_definition import CategoryTreeDefinition
 from entries.domain.value import CategoryPath
 

@@ -1,9 +1,8 @@
-from composites.usecase.collector.entry_document_saver import EntryDocumentSaver
-from composites.converter import BlogPhotosToDocImagesConverter
-from composites.converter.blog_to_doc_content_converter import BlogToDocContentConverter
-from blogs.domain.datasource import PostedBlogEntry
-from domain.docs.datasource.interface import IDocumentMover
-from domain.docs.entity.doc_entry import DocEntry
+from blogs.domain.entity import PostedBlogEntry
+from composites.converter import BlogPhotosToDocImagesConverter, BlogToDocContentConverter
+from docs.domain.datasource.interface import IDocumentMover
+from docs.domain.entity.doc_entry import DocEntry
+from .entry_document_saver import EntryDocumentSaver
 
 
 class CollectedEntryUpdater:
@@ -24,6 +23,6 @@ class CollectedEntryUpdater:
             photo_entry_to_doc_image = self.__blog_photos_to_doc_images_converter.convert_to_dict(
                 posted_blog_entry.photo_entries, posted_blog_entry.category_path.value)
             doc_content = self.__blog_to_doc_content_converter.convert(posted_blog_entry, photo_entry_to_doc_image)
-            updated_doc_entry = self.__entry_document_saver.save(posted_blog_entry.convert_to_blog_entry(), doc_content)
+            updated_doc_entry = self.__entry_document_saver.save(posted_blog_entry.blog_entry(), doc_content)
             if posted_blog_entry.category_path != doc_entry.category_path:
                 self.__document_file_mover.move(doc_entry.doc_file_path, updated_doc_entry.doc_file_path)

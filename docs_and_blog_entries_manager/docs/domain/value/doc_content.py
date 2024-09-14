@@ -4,7 +4,7 @@ import re
 from typing import Optional
 
 from entries.domain.value import CategoryPath
-from files.value.file_path import FilePath
+from files.value import FilePath
 
 
 class DocContent:

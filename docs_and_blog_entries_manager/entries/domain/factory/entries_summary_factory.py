@@ -1,8 +1,7 @@
-from entries.domain.entity.category_tree_definition import CategoryTreeDefinition
-from entries.domain.entity.entries_summary import EntriesSummary
-from entries.domain.factory.entries_tree_roots_restorer import EntriesTreeRootsRestorer
+from entries.domain.entity import CategoryTreeDefinition, EntriesSummary
 from entries.domain.interface import IStoredEntriesAccessor
 from files.value import DirectoryPath
+from .entries_tree_roots_restorer import EntriesTreeRootsRestorer
 
 
 class EntriesSummaryFactory:

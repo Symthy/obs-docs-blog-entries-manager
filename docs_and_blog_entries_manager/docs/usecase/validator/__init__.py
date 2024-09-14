@@ -1,1 +1,1 @@
-from doc_entry_link_validator import DocEntryLinkValidator
+from .doc_entry_link_validator import DocEntryLinkValidator

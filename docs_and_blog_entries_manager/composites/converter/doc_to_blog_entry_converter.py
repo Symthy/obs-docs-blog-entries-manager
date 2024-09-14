@@ -1,9 +1,8 @@
 from blogs.domain.datasource.interface import StoredBlogEntriesAccessor
-from blogs.domain.datasource.model import PrePostBlogEntry
+from blogs.domain.entity import PrePostBlogEntry
 from common.constants import BLOG_CATEGORY
 from composites.entity import BlogToDocEntryMapping
-from docs.domain.datasource.model import DocumentDataset
-from docs.domain.entity import DocEntry
+from docs.domain.entity import DocEntry, DocumentDataset
 from docs.domain.value import DocContent
 from stores.infrastructure import StoredEntryTitleFinder
 

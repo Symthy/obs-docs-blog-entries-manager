@@ -3,9 +3,9 @@ from __future__ import annotations
 from typing import Optional
 
 from common.constants import DOCS_DIR_PATH
-from entries.domain.entity.category_group import CategoryGroup
-from entries.domain.value.category_path import CategoryPath
+from entries.domain.value import CategoryPath
 from files.value.file_path import FilePath, DirectoryPath
+from .category_group import CategoryGroup
 
 
 class CategoryTreeDefinition:

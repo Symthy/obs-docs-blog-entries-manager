@@ -1,12 +1,10 @@
 from common.constants import DOCS_DIR_PATH
 from docs.domain.datasource.interface import IDocumentReader, StoredDocEntriesAccessor
-from docs.domain.datasource.model import DocumentDataset
-from docs.domain.entity import DocEntries
-from docs.domain.entity import DocEntry
+from docs.domain.entity import DocEntries, DocEntry, DocumentDataset
 from docs.domain.value import DocEntryId
 from docs.infrastructure import DocEntryRestorer
 from docs.infrastructure.file import AllDocumentPathResolver
-from docs.infrastructure.file import DocumentFileFinder
+from docs.infrastructure.file.document_file_finder import DocumentFileFinder
 from files.value import DirectoryPath, FilePath
 from stores.infrastructure import StoredEntryListHolder
 

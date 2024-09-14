@@ -3,7 +3,7 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import TypeVar, Generic, Optional
 
-from entries.domain.value.category_path import CategoryPath
+from entries.domain.value import CategoryPath
 
 
 class ISerializableObject(ABC):

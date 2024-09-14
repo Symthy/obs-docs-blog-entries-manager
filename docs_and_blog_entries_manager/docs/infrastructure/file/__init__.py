@@ -1,2 +1,1 @@
-from all_document_path_resolver import AllDocumentPathResolver
-from document_file_finder import DocumentFileFinder
+from .all_document_path_resolver import AllDocumentPathResolver

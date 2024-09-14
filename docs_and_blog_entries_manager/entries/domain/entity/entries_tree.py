@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Optional
 
 from entries.domain.interface import IEntries, IConvertibleMarkdownLines
-from entries.domain.value.category_path import CategoryPath
+from entries.domain.value import CategoryPath
 
 
 class EntriesTree(IConvertibleMarkdownLines):

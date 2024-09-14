@@ -3,9 +3,9 @@ from typing import Callable
 from entries.domain.interface import IStoredEntriesAccessor, TM, TI, TS
 from entries.domain.value import CategoryPath
 from files import json_file
-from files.value.file_path import FilePath
-from stores.infrastructure.stored_entry_accessor import StoredEntryAccessor
-from stores.infrastructure.stored_entry_list_holder import StoredEntryListHolder
+from files.value import FilePath
+from .stored_entry_accessor import StoredEntryAccessor
+from .stored_entry_list_holder import StoredEntryListHolder
 
 
 class StoredEntriesAccessor(IStoredEntriesAccessor[TM, TS, TI]):

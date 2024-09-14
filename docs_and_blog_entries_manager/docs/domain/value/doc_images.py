@@ -1,4 +1,4 @@
-from docs.domain.value import DocImage
+from .doc_image import DocImage
 
 
 class DocImages:

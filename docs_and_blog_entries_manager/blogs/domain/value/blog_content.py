@@ -4,8 +4,8 @@ import copy
 import re
 from typing import List
 
-from blogs.domain.value import BlogEntryId
-from blogs.domain.value import PhotoEntryId
+from blogs.domain.value.blog_entry_id import BlogEntryId
+from blogs.domain.value.photo_entry_id import PhotoEntryId
 from entries.domain.value import CategoryPath
 from logs.logger import Logger
 

@@ -1,9 +1,7 @@
-from blogs.domain.entity import BlogEntry
-from blogs.domain.entity import PhotoEntries
+from blogs.domain.entity import BlogEntry, PhotoEntries
 from blogs.domain.value import BlogEntryId
 from entries.domain.interface import IEntryDeserializer
-from entries.domain.value import CategoryPath
-from entries.domain.value import EntryDateTime
+from entries.domain.value import CategoryPath, EntryDateTime
 
 
 class BlogEntryDeserializer(IEntryDeserializer):

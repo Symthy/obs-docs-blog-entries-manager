@@ -1,5 +1,5 @@
 from blogs.domain.datasource.interface import IBlogSummaryEntryUpdater
-from blogs.domain.datasource.interface import PrePostBlogEntry
+from blogs.domain.entity import PrePostBlogEntry
 from blogs.domain.value import BlogEntryId
 from docs.domain.datasource.interface import IDocSummaryFileSaver
 from docs.domain.value import DocContent

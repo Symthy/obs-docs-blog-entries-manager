@@ -1,2 +1,2 @@
-from entries_summary_factory import EntriesSummaryFactory
-from entries_tree_roots_restorer import EntriesTreeRootsRestorer
+from .entries_summary_factory import EntriesSummaryFactory
+from .entries_tree_roots_restorer import EntriesTreeRootsRestorer

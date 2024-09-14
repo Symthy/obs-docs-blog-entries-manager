@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-from typing import List, Optional
+from typing import Optional
 
-from blogs.domain.entity import BlogEntry
 from blogs.domain.value import BlogEntryId
 from entries.domain.interface import IEntries
+from .blog_entry import BlogEntry
 
 
 class BlogEntries(IEntries):
@@ -14,7 +14,7 @@ class BlogEntries(IEntries):
             self.__entries = {entry.id: entry for entry in entries}
 
     @property
-    def items(self) -> List[BlogEntry]:
+    def items(self) -> list[BlogEntry]:
         return list(self.__entries.values())
 
     def is_empty(self) -> bool:
@@ -41,9 +41,9 @@ class BlogEntries(IEntries):
         # existed entry is overwritten
         self.__entries |= blog_entries.__entries
 
-    def convert_md_lines(self) -> List[str]:
+    def convert_md_lines(self) -> list[str]:
         return [entry.convert_md_line() for entry in self.items]
 
     @classmethod
-    def new_instance(cls, entry_list: List[BlogEntry]) -> BlogEntries:
+    def new_instance(cls, entry_list: list[BlogEntry]) -> BlogEntries:
         return BlogEntries(entry_list)

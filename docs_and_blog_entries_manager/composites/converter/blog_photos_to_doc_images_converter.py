@@ -1,5 +1,4 @@
-from blogs.domain.entity import PhotoEntries
-from blogs.domain.entity import PhotoEntry
+from blogs.domain.entity import PhotoEntries, PhotoEntry
 from blogs.infrastructure.image import ImageDownLoader
 from docs.domain.value import DocImage
 from files.value import DirectoryPath

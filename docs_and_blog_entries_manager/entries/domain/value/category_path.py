@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from common.constants import NON_CATEGORY_NAME
-from files.value.file_path import DirectoryPath
+from files.value import DirectoryPath
 
 
 class CategoryPath:

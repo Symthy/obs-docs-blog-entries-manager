@@ -1,8 +1,6 @@
-from entries.domain.entity.category_tree_definition import CategoryTreeDefinition
-from entries.domain.entity.entries_tree import EntriesTree
-from entries.domain.entity.entries_tree_roots import EntriesTreeRoots
+from entries.domain.entity import CategoryTreeDefinition, EntriesTree, EntriesTreeRoots
 from entries.domain.interface import IEntries, IStoredEntriesAccessor
-from entries.domain.value.category_path import CategoryPath
+from entries.domain.value import CategoryPath
 
 
 class EntriesTreeRootsRestorer:
@@ -27,10 +25,12 @@ class EntriesTreeRootsRestorer:
         for category_full_path in self.__category_tree_definition.category_full_paths:
             entries = self.__stored_entries_accessor.load_entries_by_category_path(category_full_path)
             if not entries.is_empty():
+                # 末端のノードはここで格納
                 category_path_to_entries[category_full_path] = entries
             if not category_full_path.exist_parent():
                 continue
             for upper_category_path in category_full_path.upper_all_paths():
+                # 末端より上のノードはここで格納
                 if upper_category_path in category_path_to_entries.keys():
                     # 既に探索済みのため skip
                     continue

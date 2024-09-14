@@ -1,5 +1,5 @@
-from entries.domain.entity.entries_tree_roots import EntriesTreeRoots
 from entries.domain.interface import IEntries
+from .entries_tree_roots import EntriesTreeRoots
 
 
 class EntriesSummary:

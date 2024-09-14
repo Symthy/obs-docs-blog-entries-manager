@@ -2,11 +2,10 @@ from __future__ import annotations
 
 from typing import List, Optional
 
-from blogs.domain.entity import PhotoEntries
-from blogs.domain.value import BlogEntryId
+from blogs.domain.value.blog_entry_id import BlogEntryId
 from entries.domain.interface import IEntry
-from entries.domain.value import CategoryPath
-from entries.domain.value import EntryDateTime
+from entries.domain.value import CategoryPath, EntryDateTime
+from .photo_entries import PhotoEntries
 
 
 class BlogEntry(IEntry):

@@ -2,8 +2,7 @@ from docs.domain.entity import DocEntry
 from docs.domain.value import DocEntryId
 
 from entries.domain.interface import IEntryDeserializer
-from entries.domain.value import CategoryPath
-from entries.domain.value import EntryDateTime
+from entries.domain.value import CategoryPath, EntryDateTime
 
 
 class DocEntryDeserializer(IEntryDeserializer):

@@ -1,11 +1,10 @@
 from blogs.domain.datasource.interface import StoredBlogEntriesAccessor
-from blogs.domain.entity.blog_entry import BlogEntry
-from composites.converter.blog_to_doc_entry_converter import BlogToDocEntryConverter
-from composites.entity.blog_to_doc_entry_mapping import BlogToDocEntryMapping
+from blogs.domain.entity import BlogEntry
+from composites.converter import BlogToDocEntryConverter
+from composites.entity import BlogToDocEntryMapping
 from docs.domain.datasource.interface import StoredDocEntriesAccessor, IDocumentSaver
-from docs.domain.entity.doc_entry import DocEntry
-from docs.domain.value.doc_content import DocContent
-from docs.domain.value.doc_images import DocImages
+from docs.domain.entity import DocEntry
+from docs.domain.value import DocContent, DocImages
 
 
 class EntryDocumentSaver:

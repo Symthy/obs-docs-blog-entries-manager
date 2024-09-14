@@ -1,16 +1,11 @@
 from common.constants import BLOG_CATEGORY, DOCS_DIR_PATH
 from docs.domain.datasource.interface import IDocDocumentAccessor, StoredDocEntriesAccessor
-from docs.domain.datasource.model import DocumentDataset
-from docs.domain.entity import DocEntries
-from docs.domain.entity import DocEntry
-from docs.domain.value import DocContent
-from docs.domain.value import DocEntryId
-from docs.domain.value import DocImages
-from docs.infrastructure import DocumentFileReader
-from entries.domain.value import CategoryPath
-from entries.domain.value import EntryDateTime
+from docs.domain.entity import DocEntries, DocEntry, DocumentDataset
+from docs.domain.value import DocContent, DocEntryId, DocImages
+from entries.domain.value import CategoryPath, EntryDateTime
 from files import text_file, image_file
 from files.value import FilePath, DirectoryPath
+from .document_file_reader import DocumentFileReader
 
 
 class DocumentFileAccessor(IDocDocumentAccessor):

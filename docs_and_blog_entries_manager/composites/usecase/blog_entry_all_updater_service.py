@@ -1,5 +1,4 @@
-from composites.usecase import BlogEntryPusherService
-from composites.usecase import BlogEntryRemoverService
+from composites.usecase import BlogEntryPusherService, BlogEntryRemoverService
 from docs.domain.datasource.interface import IDocumentReader, StoredDocEntriesAccessor
 from docs.domain.entity import DocEntry
 

@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import Optional
 
 from blogs.domain.value import PhotoEntryId
-from docs_and_blog_entries_manager.ltimes import datetime_functions
+from ltimes import datetime_functions
 
 
 class PhotoEntry:

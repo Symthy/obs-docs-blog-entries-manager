@@ -1,15 +1,10 @@
 from typing import Optional
 
 from blogs.domain.datasource.interface import IBlogEntryRepository
-from blogs.domain.datasource.model import PostedBlogEntry
-from blogs.domain.datasource.model import PrePostBlogEntry
-from blogs.domain.entity.blog_entry import BlogEntry
-from blogs.domain.entity.photo_entries import PhotoEntries
-from blogs.domain.entity.photo_entry import PhotoEntry
-from blogs.domain.value.blog_entry_id import BlogEntryId
-from blogs.domain.value.photo_entry_id import PhotoEntryId
-from blogs.infrastructure import BlogEntryRepository
-from blogs.infrastructure import PhotoEntryRepository
+from blogs.domain.entity import BlogEntry, PhotoEntry, PhotoEntries, PostedBlogEntry, PrePostBlogEntry
+from blogs.domain.value import BlogEntryId, PhotoEntryId
+from .blog_entry_repository import BlogEntryRepository
+from .photo_entry_repository import PhotoEntryRepository
 
 
 class BlogPhotoEntryRepository(IBlogEntryRepository):
@@ -49,7 +44,7 @@ class BlogPhotoEntryRepository(IBlogEntryRepository):
         photo_entries = self.__photo_entry_repository.create_all(pre_post_blog_entry.doc_image_paths)
         # Todo: 後からマージするのは微妙
         posted_blog_entry_opt.merge_photo_entries(photo_entries)
-        return posted_blog_entry_opt.convert_to_blog_entry()
+        return posted_blog_entry_opt.blog_entry()
 
     def update(self, pre_post_blog_entry: PrePostBlogEntry, existed_blog_entry: BlogEntry) -> Optional[BlogEntry]:
         posted_blog_entry_opt = self.__blog_entry_repository.update(existed_blog_entry.id, pre_post_blog_entry)

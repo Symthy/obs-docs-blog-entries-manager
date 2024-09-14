@@ -3,8 +3,8 @@ import hashlib
 import random
 from datetime import datetime
 
-from blogs.infrastructure.hatena.api import BlogApiClient, PhotoApiClient
 from config import BlogConfig
+from .api_client import BlogApiClient, PhotoApiClient
 
 
 class ApiClientFactory:

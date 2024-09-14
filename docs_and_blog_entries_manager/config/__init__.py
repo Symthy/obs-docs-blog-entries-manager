@@ -1,1 +1,1 @@
-from blog_config import BlogConfig
+from .blog_config import BlogConfig

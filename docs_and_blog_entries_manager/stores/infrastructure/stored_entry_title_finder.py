@@ -1,7 +1,7 @@
 from typing import Generic
 
 from entries.domain.interface import TS, TM
-from stores.infrastructure.stored_entries_accessor import StoredEntriesAccessor
+from .stored_entries_accessor import StoredEntriesAccessor
 
 
 class StoredEntryTitleFinder(Generic[TS]):

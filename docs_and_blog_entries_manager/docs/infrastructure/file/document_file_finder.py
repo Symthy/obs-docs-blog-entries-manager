@@ -1,8 +1,8 @@
 from common.constants import DOCS_DIR_PATH
 from docs.domain.datasource.interface import StoredDocEntriesAccessor
-from docs.domain.datasource.model import DocumentDataset
+from docs.domain.entity import DocumentDataset
 from docs.domain.value import DocEntryId
-from docs.infrastructure.content import DocumentContentReader
+from docs.infrastructure.content.document_content_reader import DocumentContentReader
 from files.value import DirectoryPath
 
 

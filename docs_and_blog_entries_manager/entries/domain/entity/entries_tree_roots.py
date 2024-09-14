@@ -1,8 +1,8 @@
 from typing import Optional
 
-from entries.domain.entity.entries_tree import EntriesTree
 from entries.domain.interface import IConvertibleMarkdownLines
-from entries.domain.value.category_path import CategoryPath
+from entries.domain.value import CategoryPath
+from .entries_tree import EntriesTree
 
 
 class EntriesTreeRoots(IConvertibleMarkdownLines):

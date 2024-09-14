@@ -1,12 +1,9 @@
-from composites.usecase.collector.entry_document_saver import EntryDocumentSaver
-from composites.converter import IntermediateBlogContent
-from composites.converter import BlogPhotosToDocImagesConverter
-from composites.converter.blog_to_doc_content_converter import BlogToDocContentConverter
-from blogs.domain.datasource import PostedBlogEntry
-from domain.docs.datasource.interface import IDocumentSaver
-from domain.docs.entity.doc_entry import DocEntry
-from domain.docs.entity.image.doc_images import DocImages
-from domain.docs.value.doc_content import DocContent
+from blogs.domain.entity import PostedBlogEntry
+from composites.converter import BlogPhotosToDocImagesConverter, IntermediateBlogContent, BlogToDocContentConverter
+from docs.domain.datasource.interface import IDocumentSaver
+from docs.domain.entity import DocEntry
+from docs.domain.value import DocContent, DocImages
+from .entry_document_saver import EntryDocumentSaver
 
 
 class CollectedEntryRegisterer:
@@ -32,7 +29,7 @@ class CollectedEntryRegisterer:
             doc_content = DocContent(blog_content.value)
             doc_images = DocImages(list(photo_entry_to_doc_image.values()))
             doc_entry = self.__entry_document_saver.save(
-                posted_blog_entry.convert_to_blog_entry(), doc_content, doc_images)
+                posted_blog_entry.blog_entry(), doc_content, doc_images)
             blog_content_to_doc_entry[blog_content] = doc_entry
         # 保存したものに、記事のリンクを置換してから保存し直す
         for blog_content, doc_entry in blog_content_to_doc_entry.items():

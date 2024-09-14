@@ -1,7 +1,7 @@
 from typing import List
 from xml.sax.saxutils import escape
 
-from blogs.domain.datasource.model import PrePostBlogEntry
+from blogs.domain.entity import PrePostBlogEntry
 from common.constants import SUMMARY_PAGE_TITLE
 
 

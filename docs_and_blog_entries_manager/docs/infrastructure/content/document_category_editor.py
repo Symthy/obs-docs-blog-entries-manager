@@ -1,9 +1,8 @@
 from common.constants import BLOG_CATEGORY, DOCS_DIR_PATH
 from docs.domain.datasource.interface import StoredDocEntriesAccessor
-from docs.domain.datasource.model import DocumentDataset
-from docs.domain.value import DocContent
-from docs.domain.value import DocEntryId
-from docs.infrastructure.file import DocumentFileFinder
+from docs.domain.entity import DocumentDataset
+from docs.domain.value import DocContent, DocEntryId
+from docs.infrastructure.file.document_file_finder import DocumentFileFinder
 from entries.domain.value import CategoryPath
 from files import text_file
 from files.value import FilePath, DirectoryPath

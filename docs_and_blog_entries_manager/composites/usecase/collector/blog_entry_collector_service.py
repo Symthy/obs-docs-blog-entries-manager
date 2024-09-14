@@ -1,10 +1,9 @@
-from docs.entity.doc_entry import DocEntry
-
-from blogs.domain.datasource import IBlogEntryFinder
-from blogs.domain.datasource import PostedBlogEntry
+from blogs.domain.datasource.interface import IBlogEntryFinder
+from blogs.domain.entity import PostedBlogEntry
 from composites.entity import BlogToDocEntryMapping
-from composites.usecase.collector.collected_entry_registerer import CollectedEntryRegisterer
-from composites.usecase.collector.collected_entry_updater import CollectedEntryUpdater
+from docs.domain.entity import DocEntry
+from .collected_entry_registerer import CollectedEntryRegisterer
+from .collected_entry_updater import CollectedEntryUpdater
 
 
 class BlogEntryCollectorService:

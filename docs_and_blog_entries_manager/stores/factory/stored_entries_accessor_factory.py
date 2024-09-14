@@ -1,13 +1,12 @@
 from blogs.domain.datasource.interface import StoredBlogEntriesAccessor
-from blogs.domain.entity.blog_entries import BlogEntries
+from blogs.domain.entity import BlogEntries
 from blogs.domain.factory import BlogEntryDeserializer
 from docs.domain.datasource.interface import StoredDocEntriesAccessor
 from docs.domain.entity import DocEntries
 from docs.domain.factory import DocEntryDeserializer
-from files.value import (DirectoryPath, FilePath)
-from stores.factory import StoredBlogEntryListDeserializer, StoredDocEntryListDeserializer
-from stores.infrastructure import StoredEntriesAccessor
-from stores.infrastructure import StoredEntryAccessor
+from files.value import DirectoryPath, FilePath
+from stores.infrastructure import StoredEntriesAccessor, StoredEntryAccessor
+from .stored_entry_list_deserializer import StoredBlogEntryListDeserializer, StoredDocEntryListDeserializer
 
 
 class StoredEntriesAccessorFactory:

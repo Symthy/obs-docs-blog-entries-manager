@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
 from typing import Optional
 
-from blogs.domain.datasource.model import PostedBlogEntry
-from blogs.domain.datasource.model import PrePostBlogEntry
 from blogs.domain.entity import BlogEntries
 from blogs.domain.entity import BlogEntry
+from blogs.domain.entity import PostedBlogEntry
+from blogs.domain.entity import PrePostBlogEntry
 from blogs.domain.value import BlogEntryId
 from entries.domain.interface import IStoredEntriesLoader, IStoredEntriesModifier, IStoredEntriesAccessor
 

@@ -4,7 +4,7 @@ from common.constants import BLOG_CATEGORY
 from composites.converter import DocToBlogEntryConverter
 from composites.entity import BlogToDocEntryMapping
 from docs.domain.datasource.interface import IDocumentModifier
-from docs.domain.datasource.model import DocumentDataset
+from docs.domain.entity import DocumentDataset
 from docs.domain.value import DocEntryId
 from docs.usecase.validator import DocEntryLinkValidator
 from logs.logger import Logger

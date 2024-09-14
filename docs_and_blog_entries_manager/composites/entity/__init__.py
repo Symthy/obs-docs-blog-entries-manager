@@ -1,1 +1,1 @@
-from blog_to_doc_entry_mapping import BlogToDocEntryMapping
+from .blog_to_doc_entry_mapping import BlogToDocEntryMapping

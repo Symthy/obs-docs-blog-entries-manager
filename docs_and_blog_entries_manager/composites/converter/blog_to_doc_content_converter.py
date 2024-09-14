@@ -1,15 +1,12 @@
 import re
 
-from blogs.domain.datasource.model import PostedBlogEntry
-from blogs.domain.entity import PhotoEntry
-from blogs.domain.entity.blog_entry import BlogEntry
+from blogs.domain.entity import PhotoEntry, BlogEntry, PostedBlogEntry
 from blogs.domain.value import BlogContent
-from composites.converter.Intermediate_blog_content import _IntermediateBlogContent
 from composites.entity import BlogToDocEntryMapping
 from docs.domain.datasource.interface import StoredDocEntriesLoader
-from docs.domain.value import DocContent
-from docs.domain.value import DocImage
+from docs.domain.value import DocContent, DocImage
 from stores.infrastructure import StoredEntryTitleFinder
+from .intermediate_blog_content import IntermediateBlogContent
 
 
 class BlogToDocContentConverter:
@@ -29,7 +26,7 @@ class BlogToDocContentConverter:
         blog_content = self.convert_only_category_and_photo(posted_blog_entry, photo_entry_to_doc_image)
         return self.convert_link(blog_content)
 
-    def convert_link(self, blog_content: _IntermediateBlogContent) -> DocContent:
+    def convert_link(self, blog_content: IntermediateBlogContent) -> DocContent:
         blog_entry_title_to_url = self.__extract_linked_entry_title_to_url(blog_content)
         blog_entry_link_to_doc_internal_link = {}
         for title, url in blog_entry_title_to_url.items():
@@ -42,7 +39,7 @@ class BlogToDocContentConverter:
         return self.__convert_content(blog_content, blog_entry_link_to_doc_internal_link)
 
     @staticmethod
-    def __convert_content(blog_content: BlogContent | _IntermediateBlogContent,
+    def __convert_content(blog_content: BlogContent | IntermediateBlogContent,
                           blog_entry_link_to_doc_internal_link: dict[str, str]) -> DocContent:
         content = blog_content.value
         for blog_entry_link, doc_internal_link in blog_entry_link_to_doc_internal_link.items():
@@ -52,13 +49,13 @@ class BlogToDocContentConverter:
     @classmethod
     def convert_only_category_and_photo(
             cls, posted_blog_entry: PostedBlogEntry,
-            photo_entry_to_doc_image: dict[PhotoEntry, DocImage]) -> _IntermediateBlogContent:
+            photo_entry_to_doc_image: dict[PhotoEntry, DocImage]) -> IntermediateBlogContent:
         blog_content = posted_blog_entry.content.value_with_inserted_categories
         for photo_entry, doc_image in photo_entry_to_doc_image.items():
             blog_content.replace_photo_link(photo_entry.id, doc_image.file_link)
-        return _IntermediateBlogContent(blog_content)
+        return IntermediateBlogContent(blog_content)
 
-    def __extract_linked_entry_title_to_url(self, blog_content: BlogContent | _IntermediateBlogContent) \
+    def __extract_linked_entry_title_to_url(self, blog_content: BlogContent | IntermediateBlogContent) \
             -> dict[str, str]:
         matches = re.findall(self.__blog_entry_link_regex, blog_content.value)
         title_to_url = {}

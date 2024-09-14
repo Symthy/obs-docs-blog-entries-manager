@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from typing import Optional
 
-from docs.domain.entity import DocEntry
 from docs.domain.value import DocEntryId
 from entries.domain.interface import IEntries
+from .doc_entry import DocEntry
 
 
 class DocEntries(IEntries):

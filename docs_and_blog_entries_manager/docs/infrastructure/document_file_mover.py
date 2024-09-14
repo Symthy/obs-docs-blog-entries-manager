@@ -1,7 +1,7 @@
 from common.constants import DOCS_DIR_PATH
 from docs.domain.datasource.interface import IDocumentMover, StoredDocEntriesAccessor
-from docs.infrastructure import DocumentFileReader
 from files.value import FilePath, DirectoryPath
+from .document_file_reader import DocumentFileReader
 
 
 class DocumentFileMover(IDocumentMover):

@@ -1,14 +1,10 @@
 from abc import ABC, abstractmethod
 
-from docs.domain.datasource.model.document_dataset import DocumentDataset
-from docs.domain.entity.doc_entries import DocEntries
-from docs.domain.entity.doc_entry import DocEntry
-from docs.domain.value import DocImages
-from docs.domain.value.doc_content import DocContent
-from docs.domain.value.doc_entry_id import DocEntryId
+from docs.domain.entity import DocumentDataset, DocEntries, DocEntry
+from docs.domain.value import DocImages, DocContent, DocEntryId
 from entries.domain.interface import IStoredEntriesLoader, IStoredEntriesModifier, IStoredEntriesAccessor
-from entries.domain.value.category_path import CategoryPath
-from files.value.file_path import FilePath, DirectoryPath
+from entries.domain.value import CategoryPath
+from files.value import FilePath, DirectoryPath
 
 StoredDocEntriesLoader = IStoredEntriesLoader[DocEntries, DocEntry, DocEntryId]
 StoredDocEntriesModifier = IStoredEntriesModifier[DocEntries, DocEntry, DocEntryId]
