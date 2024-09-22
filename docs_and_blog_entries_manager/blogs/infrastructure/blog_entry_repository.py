@@ -1,14 +1,17 @@
-from typing import Optional, List
+from typing import Optional
 from urllib.parse import urlparse, parse_qsl
 
 from blogs.domain.datasource.interface import IBlogEntryRepository
 from blogs.domain.entity import PostedBlogEntry
 from blogs.domain.entity import PrePostBlogEntry
 from blogs.domain.value import BlogEntryId
+from blogs.infrastructure.exceptions.blog_entry_delete_failed_exception import BlogEntryDeleteFailedException
+from blogs.infrastructure.exceptions.blog_entry_find_all_failed_exception import BlogEntryFindAllFailedException
+from blogs.infrastructure.exceptions.blog_entry_find_failed_exception import BlogEntryFindFailedException
+from blogs.infrastructure.exceptions.blog_entry_update_failed_exception import BlogEntryUpdateFailedException
 from blogs.infrastructure.hatena.api import BlogApiClient
 from blogs.infrastructure.hatena.api import BlogEntryResponseBody, BlogEntriesResponseBody
 from blogs.infrastructure.hatena.templates import request_formats
-from entries.domain.interface import IEntryId
 from logs.logger import Logger
 
 
@@ -19,28 +22,34 @@ class BlogEntryRepository(IBlogEntryRepository):
         self.__summary_entry_id = summary_entry_id
 
     # public for Debug
-    def get_entry_xml_by_id(self, entry_id: IEntryId) -> str:
+    def get_entry_xml_by_id(self, entry_id: BlogEntryId) -> str:
         return self.__api_client.get(path=entry_id.value)
 
     # GET Blog
-    def find(self, entry_id: IEntryId) -> Optional[PostedBlogEntry]:
-        xml_string_opt = self.__api_client.get(path=entry_id.value)
-        return BlogEntryResponseBody(self.__hatena_id, xml_string_opt).parse()
+    def find(self, entry_id: BlogEntryId) -> Optional[PostedBlogEntry]:
+        try:
+            xml_string_opt = self.__api_client.get(path=entry_id.value)
+            return BlogEntryResponseBody(self.__hatena_id, xml_string_opt).parse()
+        except Exception as e:
+            raise BlogEntryFindFailedException(entry_id, e)
 
     def find_all(self) -> list[PostedBlogEntry]:
         next_query_params: Optional[list[tuple]] = None
-        blog_entries: List[PostedBlogEntry] = []
-        while True:
-            xml_string_opt = self.__api_client.get(query_params=next_query_params)
-            if xml_string_opt is None:
-                break
-            blog_entries_xml = BlogEntriesResponseBody(xml_string_opt, self.__summary_entry_id.value,
-                                                       self.__summary_entry_id)
-            blog_entries.extend(blog_entries_xml.parse())
-            next_url = blog_entries_xml.next_page_url()
-            next_query_params = parse_qsl(urlparse(next_url).query)
-            if next_query_params is None:
-                break
+        blog_entries: list[PostedBlogEntry] = []
+        try:
+            while True:
+                xml_string_opt = self.__api_client.get(query_params=next_query_params)
+                if xml_string_opt is None:
+                    break
+                blog_entries_xml = BlogEntriesResponseBody(xml_string_opt, self.__summary_entry_id.value,
+                                                           self.__summary_entry_id)
+                blog_entries.extend(blog_entries_xml.parse())
+                next_url = blog_entries_xml.next_page_url()
+                next_query_params = parse_qsl(urlparse(next_url).query)
+                if next_query_params is None:
+                    break
+        except Exception as e:
+            raise BlogEntryFindAllFailedException(e)
         return blog_entries
 
     # POST blog
@@ -54,8 +63,11 @@ class BlogEntryRepository(IBlogEntryRepository):
     # PUT blog
     def update(self, entry_id: BlogEntryId, entry: PrePostBlogEntry, is_draft: bool = False,
                is_title_escape: bool = True) -> Optional[PostedBlogEntry]:
-        blog_entry_xml = self.__update_entry(entry_id, entry, is_draft, is_title_escape)
-        return BlogEntryResponseBody(self.__hatena_id, blog_entry_xml).parse()
+        try:
+            blog_entry_xml = self.__update_entry(entry_id, entry, is_draft, is_title_escape)
+            return BlogEntryResponseBody(self.__hatena_id, blog_entry_xml).parse()
+        except Exception as e:
+            raise BlogEntryUpdateFailedException(entry_id, e)
 
     def update_summary(self, entry_id: BlogEntryId, blog_summary_entry: PrePostBlogEntry) -> bool:
         # Todo: blog entry をここで生成に寄せる
@@ -74,4 +86,7 @@ class BlogEntryRepository(IBlogEntryRepository):
         return self.__api_client.put(body, entry_id.value)
 
     def delete(self, entry_id: BlogEntryId):
-        self.__api_client.delete(entry_id.value)
+        try:
+            self.__api_client.delete(entry_id.value)
+        except Exception as e:
+            raise BlogEntryDeleteFailedException(entry_id, e)

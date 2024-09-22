@@ -42,9 +42,9 @@ class BlogPhotoEntryRepository(IBlogEntryRepository):
         if posted_blog_entry_opt is None:
             return None
         photo_entries = self.__photo_entry_repository.create_all(pre_post_blog_entry.doc_image_paths)
-        # Todo: 後からマージするのは微妙
-        posted_blog_entry_opt.merge_photo_entries(photo_entries)
-        return posted_blog_entry_opt.blog_entry()
+        # 後からマージするのは微妙だが、良い方法思いつかないのでこうしておく
+        posted_blog_entry = posted_blog_entry_opt.merge_photo_entries(photo_entries)
+        return posted_blog_entry.blog_entry()
 
     def update(self, pre_post_blog_entry: PrePostBlogEntry, existed_blog_entry: BlogEntry) -> Optional[BlogEntry]:
         posted_blog_entry_opt = self.__blog_entry_repository.update(existed_blog_entry.id, pre_post_blog_entry)

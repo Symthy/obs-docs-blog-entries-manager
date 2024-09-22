@@ -22,10 +22,16 @@ class IBlogSummaryEntryUpdater(ABC):
 class IBlogEntryFinder(ABC):
     @abstractmethod
     def find(self, blog_entry_id: BlogEntryId) -> PostedBlogEntry:
+        """
+        :raises: FindBlogEntryException
+        """
         pass
 
     @abstractmethod
     def find_all(self) -> list[PostedBlogEntry]:
+        """
+        :raises: FindAllBlogEntryException
+        """
         pass
 
 
