@@ -33,4 +33,11 @@ class EntryDateTime:
         return self.to_datetime().strftime('%Y/%m')
 
     def is_time_after(self, other: EntryDateTime) -> bool:
+        # 引数よりあとか
         return self.__value > other.__value
+
+    def is_time_before(self, other: EntryDateTime) -> bool:
+        return self.__value < other.__value
+
+    def is_equals(self, other: EntryDateTime) -> bool:
+        return self.__value == other.__value

@@ -38,7 +38,7 @@ class IDocSummaryFileSaver(ABC):
 class IDocumentSaver(ABC):
     @abstractmethod
     def save(self, doc_entry_dir_path: DirectoryPath, title: str, content: DocContent,
-             images: DocImages) -> DocEntryId:
+             images: DocImages | None = None) -> DocEntryId:
         pass
 
 

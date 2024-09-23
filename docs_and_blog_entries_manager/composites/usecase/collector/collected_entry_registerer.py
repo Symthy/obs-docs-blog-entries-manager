@@ -3,6 +3,7 @@ from composites.converter import BlogPhotosToDocImagesConverter, IntermediateBlo
 from docs.domain.datasource.interface import IDocumentSaver
 from docs.domain.entity import DocEntry
 from docs.domain.value import DocContent, DocImages
+from logs import Logger
 from .entry_document_saver import EntryDocumentSaver
 
 
@@ -26,11 +27,17 @@ class CollectedEntryRegisterer:
                 posted_blog_entry.photo_entries, doc_entry_path)
             blog_content = self.__blog_to_doc_content_converter.convert_only_category_and_photo(
                 posted_blog_entry, photo_entry_to_doc_image)
-            doc_content = DocContent(blog_content.value)
-            doc_images = DocImages(list(photo_entry_to_doc_image.values()))
-            doc_entry = self.__entry_document_saver.save(
-                posted_blog_entry.blog_entry(), doc_content, doc_images)
-            blog_content_to_doc_entry[blog_content] = doc_entry
+            try:
+                doc_entry = self.__entry_document_saver.save(
+                    posted_blog_entry.blog_entry(),
+                    DocContent(blog_content.value),
+                    DocImages(list(photo_entry_to_doc_image.values())))
+                blog_content_to_doc_entry[blog_content] = doc_entry
+            except Exception as e:
+                # 保存失敗の場合は可能な範囲で保存して継続
+                Logger.warn(f'failed to save (title: {posted_blog_entry.title}) (detail: {e})')
+                continue
+
         # 保存したものに、記事のリンクを置換してから保存し直す
         for blog_content, doc_entry in blog_content_to_doc_entry.items():
             doc_content = self.__blog_to_doc_content_converter.convert_link(blog_content)
