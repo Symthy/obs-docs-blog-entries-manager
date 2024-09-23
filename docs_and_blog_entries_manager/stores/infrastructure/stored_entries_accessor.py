@@ -19,9 +19,11 @@ class StoredEntriesAccessor(IStoredEntriesAccessor[TM, TS, TI]):
         self.__entries_builder = entries_builder
 
     def load_entry(self, entry_id: TI) -> TS:
+        # delegate
         return self.__stored_entry_accessor.load_entry(entry_id)
 
     def load_entries(self) -> TM:
+        # delegate
         return self.__entries_builder(
             [self.__stored_entry_accessor.load_entry(entry_id) for entry_id in self.__stored_entry_list.entry_ids])
 
@@ -32,8 +34,10 @@ class StoredEntriesAccessor(IStoredEntriesAccessor[TM, TS, TI]):
         return self.__entries_builder(entry_list)
 
     def load_entries_by_category_path(self, category_path: CategoryPath) -> TM:
+        # CategoryPath は容易に変更可能なためリストに保持しない。愚直に舐める。
         entry_list: list[TS] = []
         for entry_id in self.__stored_entry_list.entry_ids:
+            # delegate
             entry = self.__stored_entry_accessor.load_entry(entry_id)
             if entry.category_path == category_path:
                 entry_list.append(entry)
@@ -46,6 +50,7 @@ class StoredEntriesAccessor(IStoredEntriesAccessor[TM, TS, TI]):
         return self.__entries_builder(entries)
 
     def save_entry(self, entry: TS):
+        # delegate
         return self.__stored_entry_accessor.save_entry(entry)
 
     def save_entries(self, entries: TM):

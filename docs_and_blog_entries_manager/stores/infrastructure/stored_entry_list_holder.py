@@ -6,9 +6,10 @@ from entries.domain.interface import TM, TS, TI
 from ltimes import datetime_functions
 
 
+# Todo: Generics -> interface
 class StoredEntryListHolder(Generic[TM, TS, TI]):
     """
-    xxx_entry_list.jsonの全データを保持するクラス
+    xxx_entry_list.jsonの全データを保持するための共通クラス
     """
     FIELD_UPDATED_AT = 'updated_at'
     FIELD_ENTRIES = 'entries'
@@ -60,7 +61,7 @@ class StoredEntryListHolder(Generic[TM, TS, TI]):
 # {
 #   "updated_at": "2022-01-02T03:04:05+0900",
 #   "entries": [
-#     "entry_id"
+#     "entry_id": false
 #      :
 #   ]
 # }

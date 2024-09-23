@@ -9,5 +9,6 @@ class StoredEntryTitleFinder(Generic[TS]):
         self.__accessor = stored_entries_accessor
 
     def find(self, title: str) -> TS | None:
+        # delegate
         entries: TM = self.__accessor.load_entries()
         return entries.find_by_title(title)

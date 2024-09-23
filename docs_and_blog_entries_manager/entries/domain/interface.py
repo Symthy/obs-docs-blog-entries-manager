@@ -4,6 +4,7 @@ from abc import ABC, abstractmethod
 from typing import TypeVar, Generic, Optional
 
 from entries.domain.value import CategoryPath
+from entries.domain.value.entry_type import EntryType
 
 
 class ISerializableObject(ABC):
@@ -44,6 +45,11 @@ class IEntry(ISerializableObject, IConvertibleMarkdownLine, ABC):
     def pickup(self) -> bool:
         # required override
         raise Exception('Unimplemented!! (IEntry.pickup)')
+
+    @property
+    def entry_type(self) -> EntryType:
+        # required override
+        raise Exception('Unimplemented!! (IEntry.entry_type)')
 
     @abstractmethod
     def update_pickup(self, pickup: bool) -> IEntry:
@@ -86,6 +92,11 @@ class IEntryId(ABC):
     def value(self) -> str:
         # required override
         raise Exception('Unimplemented!! (IEntryId.value)')
+
+    @property
+    def entry_type(self) -> EntryType:
+        # required override
+        raise Exception('Unimplemented!! (IEntryId.entry_type)')
 
     @classmethod
     @abstractmethod

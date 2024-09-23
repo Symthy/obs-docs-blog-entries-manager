@@ -11,10 +11,11 @@ class AllDocumentPathResolver:
         self.__category_tree_def = category_tree_def
 
     def resolve(self) -> dict[DocEntryId, str]:
-        doc_id_to_path = {}
         all_category_paths: list[CategoryPath] = self.__category_tree_def.all_category_paths
         dir_paths = list(
             map(lambda path: self.__doc_root_dir_path.add_dir(path.value), all_category_paths))
+
+        doc_id_to_path = {}
         for dir_path in dir_paths:
             doc_file_paths = dir_path.get_file_paths_in_target_dir()
             doc_id_to_path |= dict(

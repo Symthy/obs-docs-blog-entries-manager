@@ -5,6 +5,7 @@ from typing import List, Optional
 from blogs.domain.value.blog_entry_id import BlogEntryId
 from entries.domain.interface import IEntry
 from entries.domain.value import CategoryPath, EntryDateTime
+from entries.domain.value.entry_type import EntryType
 from .photo_entries import PhotoEntries
 
 
@@ -65,14 +66,15 @@ class BlogEntry(IEntry):
 
     @property
     def images(self) -> Optional[PhotoEntries]:
-        return self.__images if not self.is_images_empty() else None
+        return self.__images if not self.__images.is_empty() else None
+
+    @property
+    def entry_type(self) -> EntryType:
+        return EntryType.BLOG
 
     def update_pickup(self, pickup: bool) -> BlogEntry:
         return BlogEntry(self.id, self.title, self.page_url, self.updated_at, self.category_path, self.categories,
                          self.images, pickup)
-
-    def is_images_empty(self) -> bool:
-        return self.__images.is_empty()
 
     def convert_md_line(self) -> str:
         return f'- [{self.title}]({self.page_url}) ({self.updated_at_month_day})'

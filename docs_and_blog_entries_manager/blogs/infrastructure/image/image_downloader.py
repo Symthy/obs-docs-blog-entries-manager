@@ -2,7 +2,7 @@ from http import HTTPStatus
 
 import requests
 
-from exceptions.download_exception import DownloadException
+from blogs.infrastructure.exceptions.download_exception import DownloadException
 from logs.logger import Logger
 
 

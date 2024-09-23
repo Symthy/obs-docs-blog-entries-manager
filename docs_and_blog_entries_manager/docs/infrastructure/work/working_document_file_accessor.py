@@ -7,6 +7,10 @@ from files.value import DirectoryPath, FilePath
 
 
 class WorkingDocumentFileAccessor(IWorkingDocumentReader):
+    """
+    workフォルダ専用のDocumentFileAccessorのラッパー
+    """
+
     def __init__(self, stored_doc_entries_accessor: StoredDocEntriesAccessor,
                  document_file_mover: DocumentFileMover,
                  work_doc_dir_path: DirectoryPath = WORK_DOCS_DIR_PATH):

@@ -1,12 +1,16 @@
 from entries.domain.interface import IEntryDeserializer
 from entries.domain.interface import IStoredEntryAccessor, TS, TI
-from exceptions.entry_loading_exception import EntryLoadingException
-from exceptions.entry_saving_exception import EntrySavingException
 from files import json_file
 from files.value import FilePath, DirectoryPath
+from stores.exceptions.entry_deleting_exception import EntryDeletingException
+from stores.exceptions.entry_loading_exception import EntryLoadingException
+from stores.exceptions.entry_saving_exception import EntrySavingException
 
 
 class StoredEntryAccessor(IStoredEntryAccessor[TS, TI]):
+    """
+    単一のentryファイルの読み書きを担当
+    """
 
     def __init__(self, stored_entry_dir_path: DirectoryPath, entry_deserializer: IEntryDeserializer):
         self.__stored_entry_dir_path = stored_entry_dir_path
@@ -36,4 +40,7 @@ class StoredEntryAccessor(IStoredEntryAccessor[TS, TI]):
         self.save_entry(updated_entry)
 
     def delete_entry(self, entry_id: TI):
-        self.__build_stored_json_path(entry_id).remove_file()
+        try:
+            self.__build_stored_json_path(entry_id).remove_file()
+        except Exception as e:
+            raise EntryDeletingException(entry_id, e)

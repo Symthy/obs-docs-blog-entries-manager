@@ -6,6 +6,7 @@ from common.constants import BLOG_CATEGORY
 from docs.domain.value import DocEntryId
 from entries.domain.interface import IEntry
 from entries.domain.value import CategoryPath, EntryDateTime
+from entries.domain.value.entry_type import EntryType
 from files.value import FilePath
 
 
@@ -79,6 +80,10 @@ class DocEntry(IEntry):
     def is_completed(self) -> bool:
         return not self.is_inprogress
 
+    @property
+    def entry_type(self) -> EntryType:
+        return EntryType.DOC
+
     def equals_path(self, other: DocEntry) -> bool:
         return self.category_path == other.category_path
 
@@ -107,3 +112,6 @@ class DocEntry(IEntry):
 
     def serialize(self) -> dict:
         return vars(self)
+
+    def __str__(self):
+        return f'{self.title}({self.id})'

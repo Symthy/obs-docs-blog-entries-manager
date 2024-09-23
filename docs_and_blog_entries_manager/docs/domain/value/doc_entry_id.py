@@ -4,6 +4,7 @@ from datetime import datetime
 
 from entries.domain.interface import IEntryId
 from entries.domain.value import EntryDateTime
+from entries.domain.value.entry_type import EntryType
 
 
 class DocEntryId(IEntryId):
@@ -21,6 +22,10 @@ class DocEntryId(IEntryId):
     @property
     def value(self) -> str:
         return self.__value
+
+    @property
+    def entry_type(self) -> EntryType:
+        return EntryType.DOC
 
     def __eq__(self, other: DocEntryId):
         return self.__value == other.__value
