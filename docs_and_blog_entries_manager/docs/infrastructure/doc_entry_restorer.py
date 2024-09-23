@@ -8,19 +8,14 @@ from files.value import DirectoryPath, FilePath
 from stores.infrastructure import StoredEntryListHolder
 
 
-class WorkingDocEntryRestorer:
-    def __init__(self, doc_root_dir_path: DirectoryPath = DOCS_DIR_PATH):
-        self.__internal = _InternalDocEntryRestorer(doc_root_dir_path)
-
-    def restore(self, doc_entry_file_path: FilePath) -> DocEntry:
-        return self.__internal.restore(doc_entry_file_path)
-
-
 class DocEntryRestorer:
     def __init__(self, stored_doc_entry_list: StoredEntryListHolder, doc_root_dir_path: DirectoryPath = DOCS_DIR_PATH):
         self.__internal = _InternalDocEntryRestorer(doc_root_dir_path, stored_doc_entry_list)
 
     def restore(self, doc_entry_file_path: FilePath) -> DocEntry:
+        """
+        :raise: DocumentLoadingException
+        """
         return self.__internal.restore(doc_entry_file_path)
 
 
@@ -32,6 +27,9 @@ class _InternalDocEntryRestorer:
         self.__doc_content_reader = DocumentContentReader()
 
     def restore(self, doc_entry_file_path: FilePath) -> DocEntry:
+        """
+        :raise: DocumentLoadingException
+        """
         doc_file_path = self.__doc_root_dir_path.join_file_path(doc_entry_file_path)
         content = self.__doc_content_reader.load(doc_file_path)
         created_at = doc_file_path.get_created_file_time()

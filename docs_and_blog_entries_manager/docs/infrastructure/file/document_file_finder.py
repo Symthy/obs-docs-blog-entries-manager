@@ -14,7 +14,11 @@ class DocumentFileFinder:
         self.__doc_content_reader = DocumentContentReader()
 
     def find(self, doc_id: DocEntryId) -> DocumentDataset:
+        """
+        :raise: DocumentLoadingException
+        """
         doc_entry = self.__stored_doc_entries_accessor.load_entry(doc_id)
         doc_file_path = self.__doc_root_dir_path.join_file_path(doc_entry.doc_file_path)
+        # delegate
         content = self.__doc_content_reader.load(doc_file_path)
         return DocumentDataset(doc_entry, content)

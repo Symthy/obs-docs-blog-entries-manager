@@ -1,4 +1,3 @@
-from .doc_entry_restorer import DocEntryRestorer, WorkingDocEntryRestorer
 from .document_file_accessor import DocumentFileAccessor
 from .document_file_mover import DocumentFileMover
 from .document_file_reader import DocumentFileReader

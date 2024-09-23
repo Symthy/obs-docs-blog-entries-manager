@@ -1,8 +1,9 @@
-from common.constants import WORK_DOCS_DIR_PATH, NON_CATEGORY_NAME
+from common.constants import WORK_DOCS_DIR_PATH
 from docs.domain.datasource.interface import IWorkingDocumentReader, StoredDocEntriesAccessor
 from docs.domain.entity import DocEntry
-from docs.infrastructure import DocumentFileMover, WorkingDocEntryRestorer
+from docs.infrastructure import DocumentFileMover
 from docs.infrastructure.content.document_category_editor import DocumentCategoryEditor
+from docs.infrastructure.work.working_doc_entry_restorer import WorkingDocEntryRestorer
 from files.value import DirectoryPath, FilePath
 
 
@@ -24,12 +25,18 @@ class WorkingDocumentFileAccessor(IWorkingDocumentReader):
         return self.__work_doc_dir_path.add_file(f'{title}.md')
 
     def restore(self, title: str) -> DocEntry:
+        """
+        :raise: DocumentLoadingException
+        """
         work_doc_file_path = self.build_file_path(title)
         doc_entry = self.__working_doc_entry_restorer.restore(work_doc_file_path)
-        self.__document_category_editor.insert_category_path(work_doc_file_path, NON_CATEGORY_NAME)
+        # self.__document_category_editor.insert_category_path(work_doc_file_path, NON_CATEGORY_NAME)
         return doc_entry
 
     def extract_completed_filepaths(self) -> list[FilePath]:
+        """
+        :raise: DocumentLoadingException
+        """
         work_file_paths: list[FilePath] = self.__work_doc_dir_path.get_file_paths_in_target_dir()
         completed_file_path: list[FilePath] = list(
             filter(lambda path: self.__working_doc_entry_restorer.restore(path).is_completed, work_file_paths))

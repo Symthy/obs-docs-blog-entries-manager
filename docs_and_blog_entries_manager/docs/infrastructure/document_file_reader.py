@@ -2,7 +2,7 @@ from common.constants import DOCS_DIR_PATH
 from docs.domain.datasource.interface import IDocumentReader, StoredDocEntriesAccessor
 from docs.domain.entity import DocEntries, DocEntry, DocumentDataset
 from docs.domain.value import DocEntryId
-from docs.infrastructure import DocEntryRestorer
+from docs.infrastructure.doc_entry_restorer import DocEntryRestorer
 from docs.infrastructure.file import AllDocumentPathResolver
 from docs.infrastructure.file.document_file_finder import DocumentFileFinder
 from files.value import DirectoryPath, FilePath
@@ -23,12 +23,23 @@ class DocumentFileReader(IDocumentReader):
         self.__document_file_finder = DocumentFileFinder(stored_doc_entries_accessor, doc_root_dir_path)
 
     def find(self, doc_id: DocEntryId) -> DocumentDataset:
+        """
+        :raise: DocumentLoadingException
+        """
+        # delegate
         return self.__document_file_finder.find(doc_id)
 
-    def restore(self, doc_entry_file_path: FilePath):
+    def restore(self, doc_entry_file_path: FilePath) -> DocEntry:
+        """
+        :raise: DocumentLoadingException
+        """
+        # delegate
         return self.__doc_entry_restorer.restore(doc_entry_file_path)
 
     def extract_entries_with_blog_category(self) -> DocEntries:
+        """
+        :raises: DocumentLoadingException
+        """
         added_blog_category_entries = []
         doc_entries = self.__stored_doc_entries_accessor.load_entries()
         for old_doc_entry in doc_entries.items_filtered_non_blog_category():
@@ -38,6 +49,9 @@ class DocumentFileReader(IDocumentReader):
         return DocEntries(added_blog_category_entries)
 
     def extract_entries_with_non_register(self) -> DocEntries:
+        """
+        :raise: DocumentLoadingException
+        """
         doc_id_to_path: dict[DocEntryId, str] = self.__all_document_path_resolver.resolve()
         doc_entries: list[DocEntry] = []
         for doc_id, doc_entry_path in doc_id_to_path:
