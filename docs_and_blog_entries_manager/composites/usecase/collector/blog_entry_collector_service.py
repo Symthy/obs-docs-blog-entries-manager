@@ -22,7 +22,7 @@ class BlogEntryCollectorService:
 
     def execute(self):
         all_posted_blog_entries: list[PostedBlogEntry] = self.__blog_entry_finder.find_all()
-        # Todo: errorケース md保存成功して、json保存失敗したら、mdは残す（他機能で救えるため
+        # 方針：md保存成功して、json保存失敗したら、mdは残す（他機能で救えるため
         self.__register_all(all_posted_blog_entries)
         self.__update_all(all_posted_blog_entries)
 

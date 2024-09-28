@@ -1,12 +1,13 @@
 import argparse
 
-from composites.usecase.blog_entry_pusher_service import BlogEntryPusherService
-from cli.comand.interface import ISubCommandOption
 from domain.docs.value.doc_entry_id import DocEntryId
+
+from cli.comand.interface import ISubCommandOption
+from composites.usecase.entry_to_blog_pusher_service import EntryToBlogPusherService
 
 
 class PushBlogEntryOption(ISubCommandOption):
-    def __init__(self, blog_entry_pusher_service: BlogEntryPusherService):
+    def __init__(self, blog_entry_pusher_service: EntryToBlogPusherService):
         self.__blog_entry_pusher_service = blog_entry_pusher_service
 
     def add_option(self, subparser: argparse.ArgumentParser):

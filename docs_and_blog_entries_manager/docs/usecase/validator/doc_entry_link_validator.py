@@ -17,8 +17,13 @@ class DocEntryLinkValidator:
         self.__document_reader = document_reader
 
     def validate(self, doc_id: DocEntryId) -> bool:
+        """
+        Document内の他Documentへのリンクが存在するか、またリンク先のDocumentはBlogに投稿済みか
+        :raises: DocumentLoadingException
+        """
         doc_data_set = self.__document_reader.find(doc_id)
-        for title in doc_data_set.doc_content.internal_link_titles:
+        internal_linked_document_titles = doc_data_set.doc_content.internal_link_titles
+        for title in internal_linked_document_titles:
             doc_entry_opt = self.__entry_title_finder.find(title)
             if doc_entry_opt is None:
                 return False

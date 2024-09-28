@@ -12,6 +12,8 @@ from blogs.infrastructure.exceptions.blog_entry_update_failed_exception import B
 from blogs.infrastructure.hatena.api import BlogApiClient
 from blogs.infrastructure.hatena.api import BlogEntryResponseBody, BlogEntriesResponseBody
 from blogs.infrastructure.hatena.templates import request_formats
+from common.constants import EXCLUDE_ENTRY_IDS_TXT_PATH
+from files import config
 from logs.logger import Logger
 
 
@@ -20,6 +22,9 @@ class BlogEntryRepository(IBlogEntryRepository):
         self.__api_client = blog_api_client
         self.__hatena_id = hatena_id
         self.__summary_entry_id = summary_entry_id
+        exclude_entry_ids = config.read_lines(EXCLUDE_ENTRY_IDS_TXT_PATH)
+        exclude_entry_ids.append(summary_entry_id.value)  # exclude summary entry index page
+        self.__exclude_entry_ids = exclude_entry_ids
 
     # public for Debug
     def get_entry_xml_by_id(self, entry_id: BlogEntryId) -> str:
@@ -29,6 +34,8 @@ class BlogEntryRepository(IBlogEntryRepository):
     def find(self, entry_id: BlogEntryId) -> Optional[PostedBlogEntry]:
         try:
             xml_string_opt = self.__api_client.get(path=entry_id.value)
+            if xml_string_opt is None:
+                raise Exception(f'Not found entry: {entry_id}')
             return BlogEntryResponseBody(self.__hatena_id, xml_string_opt).parse()
         except Exception as e:
             raise BlogEntryFindFailedException(entry_id, e)
@@ -41,9 +48,11 @@ class BlogEntryRepository(IBlogEntryRepository):
                 xml_string_opt = self.__api_client.get(query_params=next_query_params)
                 if xml_string_opt is None:
                     break
-                blog_entries_xml = BlogEntriesResponseBody(xml_string_opt, self.__summary_entry_id.value,
-                                                           self.__summary_entry_id)
-                blog_entries.extend(blog_entries_xml.parse())
+                blog_entries_xml = BlogEntriesResponseBody(xml_string_opt, self.__hatena_id)
+                found_posted_blog_entries = blog_entries_xml.parse()
+                filtered_posted_blog_entries = list(
+                    filter(lambda entry: entry.id.value not in self.__exclude_entry_ids, found_posted_blog_entries))
+                blog_entries.extend(filtered_posted_blog_entries)
                 next_url = blog_entries_xml.next_page_url()
                 next_query_params = parse_qsl(urlparse(next_url).query)
                 if next_query_params is None:
@@ -53,8 +62,7 @@ class BlogEntryRepository(IBlogEntryRepository):
         return blog_entries
 
     # POST blog
-    def create(self, entry: PrePostBlogEntry, is_draft: bool = False, is_title_escape: bool = True) \
-            -> Optional[PostedBlogEntry]:
+    def create(self, entry: PrePostBlogEntry, is_draft: bool = False, is_title_escape: bool = True) -> PostedBlogEntry:
         body = request_formats.build_blog_entry_xml_body(self.__hatena_id, entry, is_draft, is_title_escape)
         Logger.info(f'POST Blog: {entry.title}')
         blog_entry_xml = self.__api_client.post(body)
@@ -62,7 +70,7 @@ class BlogEntryRepository(IBlogEntryRepository):
 
     # PUT blog
     def update(self, entry_id: BlogEntryId, entry: PrePostBlogEntry, is_draft: bool = False,
-               is_title_escape: bool = True) -> Optional[PostedBlogEntry]:
+               is_title_escape: bool = True) -> PostedBlogEntry:
         try:
             blog_entry_xml = self.__update_entry(entry_id, entry, is_draft, is_title_escape)
             return BlogEntryResponseBody(self.__hatena_id, blog_entry_xml).parse()
@@ -70,12 +78,12 @@ class BlogEntryRepository(IBlogEntryRepository):
             raise BlogEntryUpdateFailedException(entry_id, e)
 
     def update_summary(self, entry_id: BlogEntryId, blog_summary_entry: PrePostBlogEntry) -> bool:
-        # Todo: blog entry をここで生成に寄せる
+        # summary は blog entry をローカルに保存しない
         # category = 'Summary'
         # title = request_formats.summary_page_title()
         # content = request_formats.build_blog_summary_entry_content(content)
-        entry_xml = self.__update_entry(entry_id, blog_summary_entry)
-        if entry_xml is None:
+        entry_xml_opt = self.__update_entry(entry_id, blog_summary_entry)
+        if entry_xml_opt is None:
             return False
         return True
 

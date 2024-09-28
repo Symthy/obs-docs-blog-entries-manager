@@ -39,6 +39,9 @@ class BlogToDocEntryMapping:
             return self.__blog_id_to_doc_id[blog_entry_id]
         return None
 
+    def find_all(self) -> dict[BlogEntryId, DocEntryId]:
+        return self.__blog_id_to_doc_id
+
     def exist(self, blog_entry_id: BlogEntryId) -> bool:
         return blog_entry_id in self.__blog_id_to_doc_id
 

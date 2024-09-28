@@ -3,25 +3,13 @@ from docs.domain.entity import DocEntry
 from docs.domain.factory import DocEntryBuilder
 from docs.domain.value import DocEntryId
 from docs.infrastructure.content.document_content_reader import DocumentContentReader
-from entries.domain.value import EntryDateTime
+from entries.domain.value import EntryDateTime, CategoryPath
 from files.value import DirectoryPath, FilePath
 from stores.infrastructure import StoredEntryListHolder
 
 
 class DocEntryRestorer:
     def __init__(self, stored_doc_entry_list: StoredEntryListHolder, doc_root_dir_path: DirectoryPath = DOCS_DIR_PATH):
-        self.__internal = _InternalDocEntryRestorer(doc_root_dir_path, stored_doc_entry_list)
-
-    def restore(self, doc_entry_file_path: FilePath) -> DocEntry:
-        """
-        :raise: DocumentLoadingException
-        """
-        return self.__internal.restore(doc_entry_file_path)
-
-
-class _InternalDocEntryRestorer:
-    def __init__(self, doc_root_dir_path: DirectoryPath = DOCS_DIR_PATH,
-                 stored_doc_entry_list: StoredEntryListHolder = None):
         self.__doc_root_dir_path = doc_root_dir_path
         self.__stored_doc_entry_list = stored_doc_entry_list
         self.__doc_content_reader = DocumentContentReader()
@@ -32,6 +20,9 @@ class _InternalDocEntryRestorer:
         """
         doc_file_path = self.__doc_root_dir_path.join_file_path(doc_entry_file_path)
         content = self.__doc_content_reader.load(doc_file_path)
+        if content.category_path is None:
+            category_path = CategoryPath(doc_entry_file_path.value)
+            content.update_category_path(category_path)
         created_at = doc_file_path.get_created_file_time()
         updated_at = doc_file_path.get_updated_file_time()
         entry_id = DocEntryId(created_at)

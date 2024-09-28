@@ -8,9 +8,8 @@ from blogs.infrastructure.hatena.api.xml import entry_xml
 
 
 class BlogEntryXmlParser:
-    def __init__(self, hatena_id: str, exclude_entry_ids: list[str] = None):
+    def __init__(self, hatena_id: str):
         self.__hatena_id = hatena_id
-        self.__exclude_entry_ids = exclude_entry_ids if exclude_entry_ids is None else []
 
     @classmethod
     def extract_next_page_url(cls, response_xml) -> Optional[str]:
@@ -29,7 +28,7 @@ class BlogEntryXmlParser:
                    map(lambda entry_node: self.__parse(entry_node, tag_head),
                        root_node.iter(tag_head + 'entry'))))
 
-    def parse(self, response_xml: str) -> Optional[PostedBlogEntry]:
+    def parse(self, response_xml: str) -> PostedBlogEntry:
         root_node = entry_xml.convert_root_node(response_xml)
         tag_head = entry_xml.extract_tag_head(root_node, 'entry')
         return self.__parse(root_node, tag_head)
@@ -38,8 +37,6 @@ class BlogEntryXmlParser:
         # id example: tag:blog.hatena.ne.jp,2013:blog-Sympathia-17680117126980108518-13574176438048806685
         # entry id is last sequence
         entry_id = entry_node.find(tag_head + 'id').text.rsplit('-', 1)[1]
-        if entry_id in self.__exclude_entry_ids:
-            return None
 
         title = entry_node.find(tag_head + 'title').text
         content = self.__extract_content(entry_node, tag_head)

@@ -1,14 +1,14 @@
 import argparse
 
-from composites.usecase.blog_entry_pusher_service import BlogEntryPusherService
-from docs.usecase.local_doc_pusher_service import LocalDocPusherService
 from cli.comand.interface import ISubCommandOption
+from composites.usecase.entry_to_blog_pusher_service import EntryToBlogPusherService
+from docs.usecase.local_doc_pusher_service import LocalDocPusherService
 from logs.logger import Logger
 
 
 class PushDocumentOption(ISubCommandOption):
     def __init__(self, local_doc_pusher_service: LocalDocPusherService,
-                 blog_entry_pusher_service: BlogEntryPusherService):
+                 blog_entry_pusher_service: EntryToBlogPusherService):
         self.__local_doc_pusher_service = local_doc_pusher_service
         self.__blog_entry_pusher_service = blog_entry_pusher_service
 

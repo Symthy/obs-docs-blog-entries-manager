@@ -1,4 +1,4 @@
-from common.constants import WORK_DOCS_DIR_PATH
+from common.constants import WORK_DOCS_DIR_PATH, NON_CATEGORY_NAME
 from docs.domain.datasource.interface import IWorkingDocumentReader, StoredDocEntriesAccessor
 from docs.domain.entity import DocEntry
 from docs.infrastructure import DocumentFileMover
@@ -30,7 +30,7 @@ class WorkingDocumentFileAccessor(IWorkingDocumentReader):
         """
         work_doc_file_path = self.build_file_path(title)
         doc_entry = self.__working_doc_entry_restorer.restore(work_doc_file_path)
-        # self.__document_category_editor.insert_category_path(work_doc_file_path, NON_CATEGORY_NAME)
+        self.__document_category_editor.insert_category_path(work_doc_file_path, NON_CATEGORY_NAME)
         return doc_entry
 
     def extract_completed_filepaths(self) -> list[FilePath]:

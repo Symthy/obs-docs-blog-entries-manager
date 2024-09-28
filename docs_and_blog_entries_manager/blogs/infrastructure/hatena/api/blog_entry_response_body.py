@@ -1,10 +1,7 @@
 from typing import Optional
 
 from blogs.domain.entity import PostedBlogEntry
-from blogs.domain.value import BlogEntryId
 from blogs.infrastructure.hatena.api.xml import BlogEntryXmlParser
-from common.constants import EXCLUDE_ENTRY_IDS_TXT_PATH
-from files import config
 
 
 # def __print_xml_children(root: ET.Element):
@@ -16,18 +13,16 @@ from files import config
 
 # Todo: refactor (xmlはクラス化して隔離した方が良い)
 class BlogEntriesResponseBody:
-    def __init__(self, response_xml: str, hatena_id: str, summary_entry_id: BlogEntryId):
+    def __init__(self, response_xml: str, hatena_id: str):
         self.__hatena_id = hatena_id
         self.__response_xml = response_xml
-        exclude_entry_ids = config.read_lines(EXCLUDE_ENTRY_IDS_TXT_PATH)
-        exclude_entry_ids.append(summary_entry_id.value)  # exclude summary entry index page]
-        self.__blog_entry_xmf_parser = BlogEntryXmlParser(hatena_id, exclude_entry_ids)
+        self.__blog_entry_xmf_parser = BlogEntryXmlParser(hatena_id)
 
     def next_page_url(self) -> Optional[str]:
         return self.__blog_entry_xmf_parser.extract_next_page_url(self.__response_xml)
 
     def parse(self) -> list[PostedBlogEntry]:
-        posted_blog_entries = self.__blog_entry_xmf_parser.parse_all(root_node, tag_head)
+        posted_blog_entries = self.__blog_entry_xmf_parser.parse_all(self.__response_xml)
         # for entry_node in root_node.iter(tag_head + 'entry'):
         #     # __print_xml_children(entry)
         #     blog_entry = blog_entry_xml.parse(entry_node, tag_head, exclude_ids)
@@ -38,14 +33,10 @@ class BlogEntriesResponseBody:
 
 # Todo: refactor
 class BlogEntryResponseBody:
-    def __init__(self, hatena_id: str, response_xml: Optional[str]):
+    def __init__(self, hatena_id: str, response_xml: str):
         self.__hatena_id = hatena_id
         self.__response_xml = response_xml
-        exclude_entry_ids = config.read_lines(EXCLUDE_ENTRY_IDS_TXT_PATH)
-        self.__blog_entry_xml_parser = BlogEntryXmlParser(hatena_id, exclude_entry_ids)
+        self.__blog_entry_xml_parser = BlogEntryXmlParser(hatena_id)
 
-    def parse(self) -> Optional[PostedBlogEntry]:
-        if self.__response_xml is None:
-            return None
-
+    def parse(self) -> PostedBlogEntry:
         return self.__blog_entry_xml_parser.parse(self.__response_xml)

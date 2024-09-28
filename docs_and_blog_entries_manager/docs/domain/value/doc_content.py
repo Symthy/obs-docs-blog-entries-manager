@@ -18,9 +18,6 @@ class DocContent:
         all_categories = self.__extract_categories()
         self.__categories = all_categories[1:] if len(all_categories) >= 2 else []
         self.__category_path = CategoryPath(all_categories[0]) if len(all_categories) >= 1 else None
-        if self.__category_path is None:
-            self.__category_path = CategoryPath.non_category()
-            self.__content += f'#{self.__category_path.value}\n'
         self.__internal_links = self.__extract_entry_links()
 
     def __extract_image_paths(self) -> list[str]:
