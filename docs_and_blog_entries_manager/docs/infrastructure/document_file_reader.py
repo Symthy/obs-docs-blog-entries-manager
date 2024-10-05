@@ -5,20 +5,20 @@ from docs.domain.value import DocEntryId
 from docs.infrastructure.doc_entry_restorer import DocEntryRestorer
 from docs.infrastructure.file import AllDocumentPathResolver
 from docs.infrastructure.file.document_file_finder import DocumentFileFinder
+from docs.infrastructure.types import ReadableDocEntryListHolder
 from files.value import DirectoryPath, FilePath
-from stores.infrastructure import StoredEntryListHolder
 
 
 class DocumentFileReader(IDocumentReader):
 
     def __init__(self, stored_doc_entries_accessor: StoredDocEntriesAccessor,
-                 stored_entry_list: StoredEntryListHolder,
+                 stored_doc_entry_list: ReadableDocEntryListHolder,
                  all_document_path_resolver: AllDocumentPathResolver,
                  doc_root_dir_path: DirectoryPath = DOCS_DIR_PATH):
         self.__doc_root_dir_path = doc_root_dir_path
         self.__stored_doc_entries_accessor = stored_doc_entries_accessor
-        self.__stored_entry_list = stored_entry_list
-        self.__doc_entry_restorer = DocEntryRestorer(stored_entry_list, self.__doc_root_dir_path)
+        self.__stored_doc_entry_list = stored_doc_entry_list
+        self.__doc_entry_restorer = DocEntryRestorer(stored_doc_entry_list, self.__doc_root_dir_path)
         self.__all_document_path_resolver = all_document_path_resolver
         self.__document_file_finder = DocumentFileFinder(stored_doc_entries_accessor, doc_root_dir_path)
 
@@ -55,6 +55,6 @@ class DocumentFileReader(IDocumentReader):
         doc_id_to_path: dict[DocEntryId, str] = self.__all_document_path_resolver.resolve()
         doc_entries: list[DocEntry] = []
         for doc_id, doc_entry_path in doc_id_to_path:
-            if not self.__stored_entry_list.exist_id(doc_id):
+            if not self.__stored_doc_entry_list.exist_id(doc_id):
                 doc_entries.append(self.restore(doc_entry_path))
         return DocEntries(doc_entries)

@@ -1,6 +1,7 @@
 from blogs.domain.datasource.interface import StoredBlogEntriesAccessor
 from blogs.domain.entity import BlogEntries
 from blogs.domain.factory import BlogEntryDeserializer
+from common.constants import LOCAL_STORE_DIR_PATH
 from docs.domain.datasource.interface import StoredDocEntriesAccessor
 from docs.domain.entity import DocEntries
 from docs.domain.factory import DocEntryDeserializer
@@ -10,7 +11,7 @@ from .stored_entry_list_deserializer import StoredBlogEntryListDeserializer, Sto
 
 
 class StoredEntriesAccessorFactory:
-    def __init__(self, store_dir_path: DirectoryPath):
+    def __init__(self, store_dir_path: DirectoryPath = LOCAL_STORE_DIR_PATH):
         self.__store_dir_path = store_dir_path
 
     def build_for_blog(self) -> StoredBlogEntriesAccessor:

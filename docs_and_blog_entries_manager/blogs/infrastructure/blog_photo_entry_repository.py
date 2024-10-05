@@ -46,18 +46,18 @@ class BlogPhotoEntryRepository(IBlogEntryRepository):
         posted_blog_entry = posted_blog_entry_opt.merge_photo_entries(photo_entries)
         return posted_blog_entry.blog_entry()
 
-    def update(self, pre_post_blog_entry: PrePostBlogEntry, existed_blog_entry: BlogEntry) -> Optional[BlogEntry]:
-        posted_blog_entry_opt = self.__blog_entry_repository.update(existed_blog_entry.id, pre_post_blog_entry)
+    def update(self, pre_post_blog_entry: PrePostBlogEntry, old_blog_entry: BlogEntry) -> Optional[BlogEntry]:
+        posted_blog_entry_opt = self.__blog_entry_repository.update(old_blog_entry.id, pre_post_blog_entry)
         if posted_blog_entry_opt is None:
             return None
         for image_path in pre_post_blog_entry.doc_image_paths:
             image_filename = image_path.get_file_name()
-            photo_entry_opt = existed_blog_entry.images.get_entry(image_filename)
+            photo_entry_opt = old_blog_entry.images.get_entry(image_filename)
             if photo_entry_opt is None:
                 self.__photo_entry_repository.create(image_path)
             else:
                 self.__photo_entry_repository.update(image_path, photo_entry_opt)
-        photo_entries_to_be_deleted = existed_blog_entry.images.non_exist_entries(
+        photo_entries_to_be_deleted = old_blog_entry.images.non_exist_entries(
             pre_post_blog_entry.doc_image_filenames)
         self.__photo_entry_repository.delete_all(photo_entries_to_be_deleted)
 

@@ -1,9 +1,9 @@
-from common.constants import BLOG_CATEGORY, DOCS_DIR_PATH
+from common.constants import DOCS_DIR_PATH
 from docs.domain.datasource.interface import IDocDocumentAccessor, StoredDocEntriesAccessor
 from docs.domain.entity import DocEntries, DocEntry, DocumentDataset
 from docs.domain.value import DocContent, DocEntryId, DocImages
 from entries.domain.value import CategoryPath, EntryDateTime
-from files import text_file, image_file
+from files import image_file
 from files.value import FilePath, DirectoryPath
 from .content.document_category_editor import DocumentCategoryEditor
 from .content.document_content_saver import DocumentContentSaver
@@ -78,32 +78,15 @@ class DocumentFileAccessor(IDocDocumentAccessor):
         """
         :raise: DocumentSavingException
         """
-        doc_dataset = self.__document_reader.find(doc_id)
-        new_doc_content = self.__insert_category_to_content(doc_dataset.doc_entry.doc_file_path,
-                                                            doc_dataset.doc_content, category_to_be_added)
-        new_doc_entry = doc_dataset.doc_entry.insert_category(category_to_be_added)
-        self.__stored_doc_entries_accessor.save_entry(new_doc_entry)
-        return DocumentDataset(new_doc_entry, new_doc_content)
+        # delegate
+        return self.__document_category_editor.insert_category(doc_id, category_to_be_added)
 
-    def __insert_category_to_content(self, doc_file_path: FilePath, content: DocContent, category: str) -> DocContent:
+    def insert_category_path_to_content(self, doc_file_path: FilePath, category_path: CategoryPath) -> DocContent:
         """
         :raise: DocumentSavingException
         """
-        if category == BLOG_CATEGORY and content.contains_category(BLOG_CATEGORY):
-            return content
-        else:
-            updated_content = content.add_category(category)
-        self.__document_saver.save(doc_file_path, updated_content)
-        return updated_content
-
-    def insert_category_path(self, doc_file_path: FilePath, category_path: CategoryPath) -> DocContent:
-        """
-        :raise: DocumentSavingException
-        """
-        content = DocContent(text_file.read_file(doc_file_path))
-        updated_content = content.update_category_path(category_path)
-        self.__document_saver.save(doc_file_path, updated_content)
-        return content
+        # delegate
+        return self.__document_category_editor.insert_category_path_to_content(doc_file_path, category_path)
 
     def delete_category(self, doc_id: DocEntryId, category_to_be_removed: str):
         """

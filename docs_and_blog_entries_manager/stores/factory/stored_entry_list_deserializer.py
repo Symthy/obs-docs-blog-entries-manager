@@ -35,7 +35,7 @@ class StoredDocEntryListDeserializer(IStoredEntryListDeserializer):
 
 
 class StoredEntryListDeserializer(IStoredEntryListDeserializer, Generic[TI]):
-    def __init__(self, entry_id_builder: Callable[[str], TI], entry_list_file_path: FilePath = None):
+    def __init__(self, entry_id_builder: Callable[[str], TI], entry_list_file_path: FilePath):
         self.__entry_id_builder = entry_id_builder
         self.__entry_list_file_path = entry_list_file_path
 

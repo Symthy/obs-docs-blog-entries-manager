@@ -3,13 +3,14 @@ from docs.domain.entity import DocEntry
 from docs.domain.factory import DocEntryBuilder
 from docs.domain.value import DocEntryId
 from docs.infrastructure.content.document_content_reader import DocumentContentReader
+from docs.infrastructure.types import ReadableDocEntryListHolder
 from entries.domain.value import EntryDateTime, CategoryPath
 from files.value import DirectoryPath, FilePath
-from stores.infrastructure import StoredEntryListHolder
 
 
 class DocEntryRestorer:
-    def __init__(self, stored_doc_entry_list: StoredEntryListHolder, doc_root_dir_path: DirectoryPath = DOCS_DIR_PATH):
+    def __init__(self, stored_doc_entry_list: ReadableDocEntryListHolder,
+                 doc_root_dir_path: DirectoryPath = DOCS_DIR_PATH):
         self.__doc_root_dir_path = doc_root_dir_path
         self.__stored_doc_entry_list = stored_doc_entry_list
         self.__doc_content_reader = DocumentContentReader()

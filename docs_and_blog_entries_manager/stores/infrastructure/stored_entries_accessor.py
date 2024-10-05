@@ -4,8 +4,8 @@ from entries.domain.interface import IStoredEntriesAccessor, TM, TI, TS
 from entries.domain.value import CategoryPath
 from files import json_file
 from files.value import FilePath
+from stores.infrastructure.stored_entry_list_holder import StoredEntryListHolder
 from .stored_entry_accessor import StoredEntryAccessor
-from .stored_entry_list_holder import StoredEntryListHolder
 
 
 class StoredEntriesAccessor(IStoredEntriesAccessor[TM, TS, TI]):

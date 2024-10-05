@@ -7,6 +7,7 @@ from files import json_file
 from files.value import FilePath
 
 
+# Todo: ファイル読み込み処理分離
 class BlogToDocEntryMapping:
     __HATENA_BLOG_TO_DOC_ENTRY_FILE = 'blog_to_doc_mapping.json'  # rename from hatena_blog_to_doc_dict.json
     __HATENA_BLOG_TO_DOC_ENTRY_PATH = FilePath(LOCAL_STORE_DIR_PATH + __HATENA_BLOG_TO_DOC_ENTRY_FILE)

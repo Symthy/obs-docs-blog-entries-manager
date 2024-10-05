@@ -6,7 +6,6 @@ from entries.domain.interface import TM, TS, TI
 from ltimes import datetime_functions
 
 
-# Todo: Generics -> interface
 class StoredEntryListHolder(Generic[TM, TS, TI]):
     """
     xxx_entry_list.jsonの全データを保持するための共通クラス
@@ -30,6 +29,14 @@ class StoredEntryListHolder(Generic[TM, TS, TI]):
     def update_at(self) -> str:
         return self.__updated_at
 
+    def exist_id(self, entry_id: TI) -> bool:
+        return entry_id in self.__entry_id_to_pickup
+
+    def is_pickup(self, entry_id: TI) -> bool:
+        if not self.exist_id:
+            return False
+        return self.__entry_id_to_pickup[entry_id]
+
     def push_entry(self, entry: TS):
         self.__entry_id_to_pickup[entry.id.value] = entry.pickup
 
@@ -42,14 +49,6 @@ class StoredEntryListHolder(Generic[TM, TS, TI]):
 
     def delete_entry(self, entry_id: TI):
         self.__entry_id_to_pickup.pop(entry_id)
-
-    def exist_id(self, entry_id: TI) -> bool:
-        return entry_id in self.__entry_id_to_pickup
-
-    def is_pickup(self, entry_id: TI) -> bool:
-        if not self.exist_id:
-            return False
-        return self.__entry_id_to_pickup[entry_id]
 
     def serialize(self) -> dict[str, dict[str, bool]]:
         return {

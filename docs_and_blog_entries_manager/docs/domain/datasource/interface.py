@@ -49,7 +49,7 @@ class IDocumentModifier(ABC):
         pass
 
     @abstractmethod
-    def insert_category_path(self, doc_file_path: FilePath, category_path: CategoryPath) -> DocContent:
+    def insert_category_path_to_content(self, doc_file_path: FilePath, category_path: CategoryPath) -> DocContent:
         pass
 
     @abstractmethod
