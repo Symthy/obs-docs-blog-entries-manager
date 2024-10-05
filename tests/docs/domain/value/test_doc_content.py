@@ -39,8 +39,8 @@ class TestDocContent:
         assert_that(doc_content.image_paths).contains_only(
             FilePath('Github', 'GithubActions', 'README', 'images', 'github-profile-summary.png'))
         assert_that(doc_content.internal_link_titles).contains_only('Github Actions')
-        content_with_removed_category = DocContent(doc_content.value_with_removed_categories())
-        assert_that(content_with_removed_category.category_path).is_equal_to(CategoryPath.non_category())
+        content_with_removed_category = DocContent(doc_content.value_with_removed_category_line())
+        assert_that(content_with_removed_category.category_path).is_none()
 
     @pytest.mark.parametrize("content, expected", [
         ('\n#dummy\n', '\n'),
@@ -52,7 +52,7 @@ class TestDocContent:
     def test_value_with_removed_categories(self, content, expected):
         content = '\n #test/dummy #category \n'
         doc_content = DocContent(content)
-        assert_that(doc_content.value_with_removed_categories()).is_equal_to(expected)
+        assert_that(doc_content.value_with_removed_category_line()).is_equal_to(expected)
 
     def test_update_category_path(self):
         doc_content = DocContent(CONTENT_FOR_TESTING)

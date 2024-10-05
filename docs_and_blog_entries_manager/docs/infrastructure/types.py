@@ -1,8 +1,7 @@
-from abc import ABC
-
+from docs.domain.entity import DocEntries, DocEntry
 from docs.domain.value import DocEntryId
-from stores.infrastructure.interface import IReadableStoredEntryList
+from stores.infrastructure.interface import IReadableStoredEntryList, IStoredEntryListHolder
 
+ReadableDocEntryListHolder = IReadableStoredEntryList[DocEntries, DocEntry, DocEntryId]
 
-class ReadableDocEntryListHolder(IReadableStoredEntryList[DocEntryId], ABC):
-    pass
+StoredDocEntryListHolder = IStoredEntryListHolder[DocEntries, DocEntry, DocEntryId]

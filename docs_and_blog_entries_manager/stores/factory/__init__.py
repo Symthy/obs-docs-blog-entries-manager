@@ -1,1 +1,1 @@
-from .stored_entries_accessor_factory import StoredEntriesAccessorFactory
+from .stored_entry_list_deserializer import StoredEntryListDeserializer

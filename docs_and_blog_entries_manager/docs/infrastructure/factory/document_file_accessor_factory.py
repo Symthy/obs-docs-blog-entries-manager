@@ -3,14 +3,14 @@ from docs.domain.datasource.interface import StoredDocEntriesAccessor
 from docs.infrastructure import DocumentFileAccessor
 from docs.infrastructure import DocumentFileReader
 from docs.infrastructure.file import AllDocumentPathResolver
+from docs.infrastructure.types import StoredDocEntryListHolder
 from entries.domain.entity import CategoryTreeDefinition
 from files.value import DirectoryPath
-from stores.infrastructure import StoredEntryListHolder
 
 
 class DocumentFileAccessorFactory:
     def __init__(self, stored_doc_entries_accessor: StoredDocEntriesAccessor,
-                 stored_doc_entry_list: StoredEntryListHolder,
+                 stored_doc_entry_list: StoredDocEntryListHolder,
                  category_tree_def: CategoryTreeDefinition,
                  doc_root_dir_path: DirectoryPath = DOCS_DIR_PATH):
         self.__doc_root_dir_path = doc_root_dir_path

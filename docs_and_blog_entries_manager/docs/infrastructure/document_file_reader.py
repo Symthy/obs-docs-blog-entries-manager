@@ -15,10 +15,9 @@ class DocumentFileReader(IDocumentReader):
                  stored_doc_entry_list: ReadableDocEntryListHolder,
                  all_document_path_resolver: AllDocumentPathResolver,
                  doc_root_dir_path: DirectoryPath = DOCS_DIR_PATH):
-        self.__doc_root_dir_path = doc_root_dir_path
         self.__stored_doc_entries_accessor = stored_doc_entries_accessor
         self.__stored_doc_entry_list = stored_doc_entry_list
-        self.__doc_entry_restorer = DocEntryRestorer(stored_doc_entry_list, self.__doc_root_dir_path)
+        self.__doc_entry_restorer = DocEntryRestorer(doc_root_dir_path, stored_doc_entry_list)
         self.__all_document_path_resolver = all_document_path_resolver
         self.__document_file_finder = DocumentFileFinder(stored_doc_entries_accessor, doc_root_dir_path)
 

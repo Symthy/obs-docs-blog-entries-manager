@@ -4,9 +4,10 @@ from assertpy import assert_that
 
 from blogs.domain.entity import PostedBlogEntry
 from blogs.domain.value import BlogEntryId
+from blogs.infrastructure.factory import StoredBlogEntriesAccessorFactory
 from composites.converter import BlogToDocContentConverter
 from composites.entity import BlogToDocEntryMapping
-from stores.factory import StoredEntriesAccessorFactory
+from docs.infrastructure.factory import StoredDocEntriesAccessorFactory
 from stores.infrastructure import StoredEntryTitleFinder
 from tests.composites.converter._data.path_resolver import resolve_test_data_dir_path
 
@@ -17,8 +18,8 @@ class TestBlogToDocContentConverter:
         store_dir = dir_path.add_dir('store')
         docs_dir = dir_path.add_dir('docs')
         blog_to_doc_mapping = BlogToDocEntryMapping(store_dir.add_file('blog_to_doc_mapping.json'))
-        stored_doc_entries_accessor = StoredEntriesAccessorFactory(store_dir).build_for_doc()
-        stored_blog_entries_accessor = StoredEntriesAccessorFactory(store_dir).build_for_blog()
+        stored_doc_entries_accessor = StoredDocEntriesAccessorFactory(store_dir).build()
+        stored_blog_entries_accessor = StoredBlogEntriesAccessorFactory(store_dir).build()
         blog_entry_title_finder = StoredEntryTitleFinder(stored_blog_entries_accessor)
         self.__converter = BlogToDocContentConverter('symthy.hatenablog.com', blog_entry_title_finder,
                                                      blog_to_doc_mapping, stored_doc_entries_accessor)

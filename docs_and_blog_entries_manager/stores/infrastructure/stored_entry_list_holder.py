@@ -1,12 +1,11 @@
 from __future__ import annotations
 
-from typing import Generic
-
 from entries.domain.interface import TM, TS, TI
 from ltimes import datetime_functions
+from stores.infrastructure.interface import IStoredEntryListHolder
 
 
-class StoredEntryListHolder(Generic[TM, TS, TI]):
+class StoredEntryListHolder(IStoredEntryListHolder[TM, TS, TI]):
     """
     xxx_entry_list.jsonの全データを保持するための共通クラス
     """

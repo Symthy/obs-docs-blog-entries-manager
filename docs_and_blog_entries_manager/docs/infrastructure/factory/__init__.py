@@ -1,1 +1,3 @@
 from .document_file_accessor_factory import DocumentFileAccessorFactory
+from .stored_doc_entries_accessor_factory import StoredDocEntriesAccessorFactory
+from .stored_doc_entry_list_deserializer import StoredDocEntryListDeserializer

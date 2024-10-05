@@ -1,14 +1,14 @@
 import mock
 from assertpy import assert_that
 
+from blogs.infrastructure.factory import StoredBlogEntriesAccessorFactory
 from composites.converter.doc_to_blog_entry_converter import DocToBlogEntryConverter
 from composites.entity import BlogToDocEntryMapping
 from docs.domain.value.doc_entry_id import DocEntryId
 from docs.infrastructure.document_file_reader import DocumentFileReader
+from docs.infrastructure.factory import StoredDocEntriesAccessorFactory, StoredDocEntryListDeserializer
 from docs.infrastructure.file.all_document_path_resolver import AllDocumentPathResolver
 from entries.domain.value import CategoryPath
-from stores.factory import StoredDocEntryListDeserializer
-from stores.factory.stored_entries_accessor_factory import StoredEntriesAccessorFactory
 from stores.infrastructure.stored_entry_title_finder import StoredEntryTitleFinder
 from tests.composites.converter._data.path_resolver import resolve_test_data_dir_path
 
@@ -19,14 +19,13 @@ class TestDocToBlogEntryConverter:
         store_dir = dir_path.add_dir('store')
         docs_dir = dir_path.add_dir('docs')
         blog_to_doc_mapping = BlogToDocEntryMapping(store_dir.add_file('blog_to_doc_mapping.json'))
-        stored_doc_entries_accessor = StoredEntriesAccessorFactory(store_dir).build_for_doc()
-        stored_blog_entries_accessor = StoredEntriesAccessorFactory(store_dir).build_for_blog()
+        stored_doc_entries_accessor = StoredDocEntriesAccessorFactory(store_dir).build()
+        stored_blog_entries_accessor = StoredBlogEntriesAccessorFactory(store_dir).build()
         doc_entry_title_finder = StoredEntryTitleFinder(stored_doc_entries_accessor)
         self.__converter = DocToBlogEntryConverter(doc_entry_title_finder, blog_to_doc_mapping,
                                                    stored_blog_entries_accessor)
         resolver_mock = mock.MagicMock(AllDocumentPathResolver)
-        entry_list = StoredDocEntryListDeserializer(
-            store_dir.add_file('doc_entry_list.json')).deserialize()
+        entry_list = StoredDocEntryListDeserializer(store_dir.add_file('doc_entry_list.json')).deserialize()
         self.__document_reader = DocumentFileReader(stored_doc_entries_accessor, entry_list, resolver_mock, docs_dir)
 
     def test_convert_to_prepost(self):

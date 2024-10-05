@@ -9,8 +9,8 @@ from files.value import DirectoryPath, FilePath
 
 
 class DocEntryRestorer:
-    def __init__(self, stored_doc_entry_list: ReadableDocEntryListHolder,
-                 doc_root_dir_path: DirectoryPath = DOCS_DIR_PATH):
+    def __init__(self, doc_root_dir_path: DirectoryPath = DOCS_DIR_PATH,
+                 stored_doc_entry_list: ReadableDocEntryListHolder = None):
         self.__doc_root_dir_path = doc_root_dir_path
         self.__stored_doc_entry_list = stored_doc_entry_list
         self.__doc_content_reader = DocumentContentReader()

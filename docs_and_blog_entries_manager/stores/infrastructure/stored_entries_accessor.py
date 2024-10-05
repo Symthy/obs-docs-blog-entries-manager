@@ -4,18 +4,18 @@ from entries.domain.interface import IStoredEntriesAccessor, TM, TI, TS
 from entries.domain.value import CategoryPath
 from files import json_file
 from files.value import FilePath
-from stores.infrastructure.stored_entry_list_holder import StoredEntryListHolder
+from .interface import IStoredEntryListHolder
 from .stored_entry_accessor import StoredEntryAccessor
 
 
 class StoredEntriesAccessor(IStoredEntriesAccessor[TM, TS, TI]):
 
     def __init__(self, entry_list_file_path: FilePath, stored_entry_accessor: StoredEntryAccessor,
-                 stored_entry_list: StoredEntryListHolder,
+                 stored_entry_list: IStoredEntryListHolder,
                  entries_builder: Callable[[list[TS]], TM]):
         self.__entry_list_file_path = entry_list_file_path
         self.__stored_entry_accessor = stored_entry_accessor
-        self.__stored_entry_list: StoredEntryListHolder = stored_entry_list
+        self.__stored_entry_list: IStoredEntryListHolder = stored_entry_list
         self.__entries_builder = entries_builder
 
     def load_entry(self, entry_id: TI) -> TS:

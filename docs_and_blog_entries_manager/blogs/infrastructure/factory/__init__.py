@@ -1,1 +1,2 @@
 from .blog_photo_entry_repository_factory import BlogPhotoEntryRepositoryFactory
+from .stored_blog_entries_accessor_factory import StoredBlogEntriesAccessorFactory

@@ -4,10 +4,9 @@ from assertpy import assert_that
 from composites.entity.blog_to_doc_entry_mapping import BlogToDocEntryMapping
 from docs.domain.value.doc_entry_id import DocEntryId
 from docs.infrastructure.document_file_reader import DocumentFileReader
+from docs.infrastructure.factory import StoredDocEntriesAccessorFactory, StoredDocEntryListDeserializer
 from docs.infrastructure.file.all_document_path_resolver import AllDocumentPathResolver
 from docs.usecase.validator.doc_entry_link_validator import DocEntryLinkValidator
-from stores.factory.stored_entries_accessor_factory import StoredEntriesAccessorFactory
-from stores.factory.stored_entry_list_deserializer import StoredDocEntryListDeserializer
 from stores.infrastructure.stored_entry_title_finder import StoredEntryTitleFinder
 from tests.docs.usecase.validator._data.path_resolver import resolve_test_data_dir_path
 
@@ -18,8 +17,8 @@ class TestEntryLinkValidator:
         store_dir = dir_path.add_dir('store')
         docs_dir = dir_path.add_dir('docs')
         blog_to_doc_mapping = BlogToDocEntryMapping(store_dir.add_file('blog_to_doc_mapping.json'))
-        stored_doc_entries_accessor = StoredEntriesAccessorFactory(store_dir).build_for_doc()
         doc_entry_list = StoredDocEntryListDeserializer(store_dir.add_file('doc_entry_list.json')).deserialize()
+        stored_doc_entries_accessor = StoredDocEntriesAccessorFactory(store_dir).build(doc_entry_list)
         resolver_mock = mock.MagicMock(AllDocumentPathResolver)
         document_reader = DocumentFileReader(stored_doc_entries_accessor, doc_entry_list, resolver_mock, docs_dir)
         self.__entry_title_validator = DocEntryLinkValidator(StoredEntryTitleFinder(stored_doc_entries_accessor),

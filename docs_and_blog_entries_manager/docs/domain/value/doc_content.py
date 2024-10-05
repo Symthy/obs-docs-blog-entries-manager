@@ -37,7 +37,7 @@ class DocContent:
     def value(self) -> str:
         return self.__content
 
-    def value_with_removed_categories(self) -> str:
+    def value_with_removed_category_line(self) -> str:
         # BlogContent変換用。タグが付いている行は削除する。はてブ上ではタグはセクションとして扱われてしまう
         content = re.sub(r'^(\n|\r\n)(\s*#\S+)+\s*$', r'\1', self.__content, flags=re.MULTILINE)
         return content
@@ -78,7 +78,7 @@ class DocContent:
 
     def __update_categories_line(self, category_path: CategoryPath, *categories: str) -> DocContent:
         new_category_line = ' '.join(list(map(lambda c: f'#{c}', [category_path.value, *categories]))) + '\n'
-        new_content = self.value_with_removed_categories() + new_category_line
+        new_content = self.value_with_removed_category_line() + new_category_line
         return DocContent(new_content)
 
     def replace_internal_link_titles(self, title_to_url: dict[str, str]) -> str:
