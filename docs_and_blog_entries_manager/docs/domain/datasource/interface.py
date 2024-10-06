@@ -57,7 +57,7 @@ class IDocumentModifier(ABC):
         pass
 
 
-class IDocDocumentAccessor(IDocumentSaver, IDocSummaryFileSaver, IDocumentReader, IDocumentModifier, ABC):
+class IDocumentAccessor(IDocumentSaver, IDocSummaryFileSaver, IDocumentReader, IDocumentModifier, ABC):
     pass
 
 

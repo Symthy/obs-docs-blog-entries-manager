@@ -1,4 +1,4 @@
-from docs.domain.datasource.interface import IDocDocumentAccessor, StoredDocEntriesModifier
+from docs.domain.datasource.interface import IDocumentAccessor, StoredDocEntriesModifier
 from docs.domain.entity import DocEntries
 from logs.logger import Logger
 
@@ -8,7 +8,7 @@ class LocalDocImporterService:
     documentフォルダに直接作成された未登録記事を認識＆登録
     """
 
-    def __init__(self, document_file_accessor: IDocDocumentAccessor,
+    def __init__(self, document_file_accessor: IDocumentAccessor,
                  stored_doc_entries_modifier: StoredDocEntriesModifier):
         self.__document_file_accessor = document_file_accessor
         self.__stored_doc_entries_modifier = stored_doc_entries_modifier

@@ -1,11 +1,11 @@
 import argparse
 
+from cli.comand.interface import ISubCommandOption
 from docs.usecase.local_doc_importer_service import LocalDocImporterService
 from docs.usecase.local_doc_organizer_service import LocalDocOrganizerService
-from cli.comand.interface import ISubCommandOption
 
 
-class IngestDocumentOption(ISubCommandOption):
+class ImportDocumentOption(ISubCommandOption):
     def __init__(self, local_doc_importer_service: LocalDocImporterService,
                  local_doc_organizer_service: LocalDocOrganizerService):
         self.__local_doc_importer_service = local_doc_importer_service

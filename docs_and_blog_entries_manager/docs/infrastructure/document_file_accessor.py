@@ -1,5 +1,5 @@
 from common.constants import DOCS_DIR_PATH
-from docs.domain.datasource.interface import IDocDocumentAccessor, StoredDocEntriesAccessor
+from docs.domain.datasource.interface import IDocumentAccessor, StoredDocEntriesAccessor
 from docs.domain.entity import DocEntries, DocEntry, DocumentDataset
 from docs.domain.value import DocContent, DocEntryId, DocImages
 from entries.domain.value import CategoryPath, EntryDateTime
@@ -10,7 +10,7 @@ from .content.document_content_saver import DocumentContentSaver
 from .document_file_reader import DocumentFileReader
 
 
-class DocumentFileAccessor(IDocDocumentAccessor):
+class DocumentFileAccessor(IDocumentAccessor):
     """
     ローカル記事への読み書き担当。読み込みはReaderに委譲
     """

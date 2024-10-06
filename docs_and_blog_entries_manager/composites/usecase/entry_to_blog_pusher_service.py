@@ -21,14 +21,14 @@ class EntryToBlogPusherService:
                  doc_to_blog_entry_converter: DocToBlogEntryConverter,
                  blog_to_doc_mapping: BlogToDocEntryMapping,
                  entry_link_validator: DocEntryLinkValidator,
-                 blog_entry_server: BlogEntrySaverService,
+                 blog_entry_saver: BlogEntrySaverService,
                  stored_blog_entries_accessor: StoredBlogEntriesAccessor):
         self.__document_file_modifier = document_file_modifier
         self.__doc_to_blog_entry_converter = doc_to_blog_entry_converter
         self.__blog_to_doc_mapping = blog_to_doc_mapping
         self.__entry_link_validator = entry_link_validator
         self.__stored_blog_entries_accessor = stored_blog_entries_accessor
-        self.__blog_entry_server = blog_entry_server
+        self.__blog_entry_saver = blog_entry_saver
 
     def execute(self, doc_id: DocEntryId):
         """
@@ -45,7 +45,7 @@ class EntryToBlogPusherService:
 
     def __register_to_blog(self, doc_dateset: DocumentDataset, doc_id: DocEntryId):
         pre_post_blog_entry = self.__doc_to_blog_entry_converter.convert_to_prepost(doc_dateset)
-        blog_entry_id = self.__blog_entry_server.register(pre_post_blog_entry)
+        blog_entry_id = self.__blog_entry_saver.register(pre_post_blog_entry)
         self.__blog_to_doc_mapping.push_entry_pair(blog_entry_id, doc_id)
 
     def __update_to_blog(self, doc_dateset: DocumentDataset, blog_entry_id: BlogEntryId):
@@ -54,4 +54,4 @@ class EntryToBlogPusherService:
             Logger.info(f'Skipped because blog is newer: {doc_dateset.doc_entry.doc_file_path}')
             return
         pre_post_blog_entry = self.__doc_to_blog_entry_converter.convert_to_prepost(doc_dateset)
-        self.__blog_entry_server.update(pre_post_blog_entry, blog_entry_id)
+        self.__blog_entry_saver.update(pre_post_blog_entry, blog_entry_id)

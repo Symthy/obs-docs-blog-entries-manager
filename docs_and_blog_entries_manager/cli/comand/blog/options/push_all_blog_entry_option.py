@@ -1,10 +1,10 @@
 import argparse
 
-from composites.usecase.blog_entry_all_updater_service import BlogEntryAllUpdaterService
 from cli.comand.interface import ISubCommandOption
+from composites.usecase.blog_entry_all_updater_service import BlogEntryAllUpdaterService
 
 
-class PushBlogEntryOption(ISubCommandOption):
+class PushAllBlogEntryOption(ISubCommandOption):
     """
     ローカルのドキュメントを一括でblogに反映する（新しい物は投稿し、無い物は削除する）
     """

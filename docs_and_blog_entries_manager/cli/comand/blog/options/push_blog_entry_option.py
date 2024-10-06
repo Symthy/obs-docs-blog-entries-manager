@@ -1,9 +1,8 @@
 import argparse
 
-from domain.docs.value.doc_entry_id import DocEntryId
-
 from cli.comand.interface import ISubCommandOption
 from composites.usecase.entry_to_blog_pusher_service import EntryToBlogPusherService
+from docs.domain.value import DocEntryId
 
 
 class PushBlogEntryOption(ISubCommandOption):

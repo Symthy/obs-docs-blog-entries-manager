@@ -6,7 +6,7 @@ from docs.usecase.local_doc_pusher_service import LocalDocPusherService
 from logs.logger import Logger
 
 
-class PushDocumentOption(ISubCommandOption):
+class PushAllDocumentOption(ISubCommandOption):
     def __init__(self, local_doc_pusher_service: LocalDocPusherService,
                  blog_entry_pusher_service: EntryToBlogPusherService):
         self.__local_doc_pusher_service = local_doc_pusher_service
