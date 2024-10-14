@@ -2,53 +2,38 @@
 'https://plantuml.com/class-diagram
 
 
-package application {
-    package service {
-'        class BlogEntryCollectorService
-
-        package converter {
-            class BlogsToDocsConverter
-            class DocsToBlogsConverter
-        }
-    }
+package composites {
 }
+note right of composites : ブログとローカルの「記事」両方を扱う\nユースケースや相互変換ロジックを持つ
 
-application.service.converter.BlogsToDocsConverter ..> domain.blogs.BlogEntry
-application.service.converter.BlogsToDocsConverter ..> domain.docs.DocEntry
-application.service.converter.DocsToBlogsConverter ..> domain.blogs.BlogEntry
-application.service.converter.DocsToBlogsConverter ..> domain.docs.DocEntry
-
-'application.service.BlogEntryCollectorService ..> domain.converter
-'application.service.BlogEntryCollectorService ...> domain.store
-'application.service.BlogEntryCollectorService ...> domain.blogs
-'application.service.BlogEntryCollectorService ...> domain.docs
-
-package domain {
-    package blogs {
-        class BlogEntry
-    }
-    package docs {
-        class DocEntry
-    }
-    package entries {
-        interface IEntry
-        class EntryTree
-        interface IStoredEntryAccessor
-        EntryTreeRestorer .> EntryTree
-        EntryTree .> IEntry
-    }
-    blogs.BlogEntry ..|> entries.IEntry
-    docs.DocEntry ..|> entries.IEntry
+package blogs {
 }
+note left of blogs : ブログの「記事」の参照や\n作成/更新/削除の操作が責務
 
-domain.entries.EntryTreeRestorer ..> domain.entries.IStoredEntryAccessor
-domain.entries.IEntry <.. infrastructure.store.StoredEntryAccessor
-domain.entries.IStoredEntryAccessor <|.. infrastructure.store.StoredEntryAccessor
-
-package infrastructure {
-    package store {
-        class StoredEntryAccessor
-    }
+package docs {
 }
+note right of docs : ローカルの「記事」の参照や\n作成/更新/削除の操作が責務
+
+package entries {
+}
+note right of entries : 両者の「記事」の共通インターフェース\nや共通する値オブジェクト、ロジック、\nデータ構造を提供する
+
+package stores {
+}
+note right of stores : 「記事」の基本情報を保存/永続化\nするデータストアの管理が責務
+
+package cli {}
+note right of cli : CLIコマンドを提供する
+
+cli ..> composites
+cli ..> docs
+cli ..> blogs
+composites ..> blogs
+composites ..> docs
+composites ....> entries
+blogs ..> entries
+docs ..> entries
+entries <.. stores
+
 
 @enduml

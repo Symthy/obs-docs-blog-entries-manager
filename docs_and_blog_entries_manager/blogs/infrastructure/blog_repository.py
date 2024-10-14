@@ -17,7 +17,7 @@ from files import config
 from logs.logger import Logger
 
 
-class BlogEntryRepository(IBlogEntryRepository):
+class BlogRepository(IBlogEntryRepository):
     def __init__(self, blog_api_client: BlogApiClient, hatena_id: str, summary_entry_id: BlogEntryId):
         self.__api_client = blog_api_client
         self.__hatena_id = hatena_id

@@ -1,0 +1,95 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+
+package composites {
+    package usecase {
+        class BlogEntryCollectorService
+        class EntryToBlogPusherService
+        class SummaryEntryPusherService
+    }
+    package converter {
+        class BlogToDocEntryConverter
+        class DocToBlogEntryConverter
+    }
+    converter.BlogToDocEntryConverter <.. usecase.BlogEntryCollectorService
+    converter.DocToBlogEntryConverter <.. usecase.EntryToBlogPusherService
+}
+
+package blogs {
+    package domain {
+        class BlogEntry
+        interface IBlogEntryRepository
+        IBlogEntryRepository .> BlogEntry
+    }
+    package usecase {
+        class BlogEntrySaverService
+    }
+    package infrastructure {
+        class BlogEntryRepository
+    }
+    domain.IBlogEntryRepository <|.. infrastructure.BlogEntryRepository
+    usecase.BlogEntrySaverService ..> domain.IBlogEntryRepository
+    usecase.BlogEntrySaverService ..> domain.BlogEntry
+}
+
+package docs {
+    package domain {
+        class DocEntry
+        interface IDocumentAccessor
+        IDocumentAccessor .> DocEntry
+    }
+    package usecase {
+        class LocalDocPusherService
+    }
+    package infrastructure {
+        class DocumentFileAccessor
+    }
+    usecase.LocalDocPusherService ..> domain.IDocumentAccessor
+    domain.IDocumentAccessor <|.. infrastructure.DocumentFileAccessor
+    usecase.LocalDocPusherService ..> domain.DocEntry
+}
+
+package entries {
+    package domain {
+        class EntriesSummary
+        class CategoryTreeDefinition
+    }
+    interface IEntry
+    interface IStoredEntryAccessor
+    IStoredEntryAccessor .> IEntry
+    EntriesSummary ..> IEntry
+}
+
+package stores {
+    package model {
+        class StoredEntryListHolder
+    }
+    package infrastructure {
+        class StoredEntryAccessor
+    }
+    stores.infrastructure.StoredEntryAccessor .> model.StoredEntryListHolder
+}
+
+package cli {}
+
+cli ..> composites.usecase
+cli ..> docs.usecase
+
+entries.IEntry <.... stores.infrastructure.StoredEntryAccessor
+entries.IEntry <.... stores.model.StoredEntryListHolder
+
+entries.IEntry <|.. blogs.domain.BlogEntry
+entries.IEntry <|.. docs.domain.DocEntry
+entries.IStoredEntryAccessor <|.. stores.infrastructure.StoredEntryAccessor
+entries.domain.CategoryTreeDefinition <.. docs.infrastructure.DocumentFileAccessor
+entries.IStoredEntryAccessor <.. docs.infrastructure.DocumentFileAccessor
+
+composites.usecase.BlogEntryCollectorService ....> entries.IStoredEntryAccessor
+composites.usecase.BlogEntryCollectorService ..> docs.domain.IDocumentAccessor
+composites.usecase.SummaryEntryPusherService ....> entries.domain.EntriesSummary
+composites.usecase.BlogEntryCollectorService ...> blogs.domain.IBlogEntryRepository
+composites.usecase.EntryToBlogPusherService ...> blogs.usecase.BlogEntrySaverService
+composites.usecase.EntryToBlogPusherService ...> blogs.domain.IBlogEntryRepository
+
+@enduml

@@ -6,6 +6,10 @@ from .entries_tree import EntriesTree
 
 
 class EntriesTreeRoots(IConvertibleMarkdownLines):
+    """
+    CategoryPathと、それに属するEntryをtree状に保持するデータ構造のルートクラス
+    """
+
     def __init__(self, category_path_to_entries_tree: dict[CategoryPath, EntriesTree]):
         self.__category_path_to_entries_tree = category_path_to_entries_tree
 

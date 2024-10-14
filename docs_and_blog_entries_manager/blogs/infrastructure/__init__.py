@@ -1,1 +1,1 @@
-from .blog_photo_entry_repository import BlogPhotoEntryRepository
+from .blog_photo_entry_repository import BlogEntryRepository

@@ -9,6 +9,9 @@ from .category_group import CategoryGroup
 
 
 class CategoryTreeDefinition:
+    """
+    ローカルドキュメントのすべてのフォルダパス（CategoryPath）をTree形式で保持する物
+    """
     __LOCAL_DOCUMENT_ROOT_DIR_PATH: DirectoryPath = DOCS_DIR_PATH
 
     def __init__(self, category_name_to_categories: dict[str, CategoryGroup] = None):

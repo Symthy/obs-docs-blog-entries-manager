@@ -32,7 +32,6 @@ class DocEntry extends IEntry
 DocEntries "1" o..> "m" DocEntry
 
 class PhotoEntries extends IEntries
-class PhotoEntry extends IEntry
 PhotoEntries "1" o.> "m" PhotoEntry
 BlogEntry "0.1" o..> "1" PhotoEntries
 

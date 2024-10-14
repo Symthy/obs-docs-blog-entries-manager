@@ -3,12 +3,12 @@ from typing import Optional
 from blogs.domain.datasource.interface import IBlogEntryRepository
 from blogs.domain.entity import BlogEntry, PhotoEntry, PhotoEntries, PostedBlogEntry, PrePostBlogEntry
 from blogs.domain.value import BlogEntryId, PhotoEntryId
-from .blog_entry_repository import BlogEntryRepository
+from .blog_repository import BlogRepository
 from .photo_entry_repository import PhotoEntryRepository
 
 
-class BlogPhotoEntryRepository(IBlogEntryRepository):
-    def __init__(self, blog_entry_repository: BlogEntryRepository,
+class BlogEntryRepository(IBlogEntryRepository):
+    def __init__(self, blog_entry_repository: BlogRepository,
                  photo_entry_repository: PhotoEntryRepository):
         self.__blog_entry_repository = blog_entry_repository
         self.__photo_entry_repository = photo_entry_repository

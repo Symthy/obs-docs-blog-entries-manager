@@ -4,7 +4,7 @@ from typing import Generic, Callable
 from entries.domain.interface import TI, TM, TS
 from files import json_file
 from files.value import FilePath
-from stores.infrastructure import StoredEntryListHolder
+from stores.model import StoredEntryListHolder
 
 
 class IStoredEntryListDeserializer(ABC, Generic[TM, TS, TI]):
